@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data> 
+
+        <!-- Top menu -->
+        <menuitem name="LC Documents" id="custom_top_menu" />
+        <!-- Sub child menu -->
+        <menuitem name="LC Documents" id ="custom_sub_menu" parent="custom_top_menu"/>
+
+        <!--Import assets-->
+        <template id="assets_backend" name="custom assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/lc_report_generator/static/src/css/style.css"/>
+                <!-- <script type="text/javascript" src="/lc_report_generator/static/src/js//myscript.js"/> -->
+            </xpath>
+        </template>
+        <!-- inherit_id="web.assets_frontend" -->
+        <!--Import assets-->
+
+        <!-- bill_of_exchange start -->
+
+            <!-- <tree view start> -->
+            <record id="view_bill_of_exchange_tree" model="ir.ui.view">
+                <field name="name">bill_of_exchange.model.tree</field>
+                <field name="model">bill_of_exchange.model</field>
+                <field name="priority" eval="8" />
+                <field name="arch" type="xml">
+                    <tree string="Bill Of Exchange" default_order="id desc">
+                        <field name="commercial_invoice_id" />
+                        <field name="bill_of_exchange_created_date" />
+                        <field name="ordered_products_total_amount" />
+                    </tree>
+                </field>
+            </record>
+            <!-- <tree view end> -->
+
+            <!-- <form view start> -->
+            <record id="view_bill_of_exchange_form" model="ir.ui.view">
+                <field name="name">bill_of_exchange.form</field>
+                <field name="model">bill_of_exchange.model</field>
+                <field name="arch" type="xml">
+                    <form string="Bill_Of_Exchange">
+                        <header>
+                        </header>
+        
+                        <sheet string="Bill_Of_Exchange">
+                            
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h2>BILL OF EXCHANGE</h2>
+                                </div>
+
+                                <div class="col-xs-6">
+                                    <group>
+                                        <field name="commercial_invoice_id" on_change="onchange_commercial_invoice_id(commercial_invoice_id)"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-6"></div>
+                            </div>
+
+
+                            <div class='row' style='margin-top:20px;'>
+                                <div class='col-xs-9' style='font-weight:bold;'>
+                                    <h4>For <field name="currency_symbol_name" class="oe_inline" nolabel="1"/> <field name="currency_symbol" class="oe_inline" nolabel="1"/> <field name="ordered_products_total_amount" class="oe_inline" nolabel="1"/></h4>
+                                </div>
+
+
+                                <div class='col-xs-3' style='float:right!important;'>
+                                    <h4>Date : <field name="bill_of_exchange_created_date" class="oe_inline" nolabel="1"/></h4>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <p>AT <field name="days" class="oe_inline" nolabel="1"/> days SIGHT of this First of Exchange (Second being unpaid) pay to the order of</p>
+                                </div>
+                            </div>    
+
+                            <div class="row">
+                                <div class="col-xs-3"></div>
+                                <div class="text-center col-xs-6">
+                                    <p><field name="bank_name" class="oe_inline" nolabel="1"/>, <field name="bank_brunch" class="oe_inline" nolabel="1"/>, <field name="bank_address" class="oe_inline" nolabel="1"/>, Swift Code: <field name="swift_code" class="oe_inline" nolabel="1"/></p>
+                                </div>
+                                <div class="col-xs-3"></div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h5>The Sum of <field name="currency_symbol_name2" class="oe_inline" nolabel="1"/> <field name="currency_symbol2" class="oe_inline" nolabel="1"/> <field name="ordered_products_total_amount_in_word" class="oe_inline" nolabel="1"/> only</h5>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <p>Value Received and charge the same the account of <field name="customer_name" class="oe_inline" nolabel="1"/>,<field name="customer_full_address" class="oe_inline" nolabel="1"/></p>
+                                </div>
+
+                                <div class="col-xs-12">
+                                    <p>DRAWN under L/C No.<field name="lc_num" class="oe_inline" nolabel="1"/> dated <field name="lc_date" class="oe_inline" nolabel="1"/> issued by <field name="lc_bank_name" class="oe_inline" nolabel="1"/>, against Export Sales Contact No.<field name="contact_no" class="oe_inline" nolabel="1"/> dated <field name="contact_no_date" class="oe_inline" nolabel="1"/></p>
+                                </div>
+                            </div>    
+
+                            <div class="row" style='margin-top:20px;'>
+                                <div class='col-xs-6'>
+                                    <div class="col-xs-2">
+                                        <p>To : </p>
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <p><field name="lc_bank_name2" class="oe_inline" nolabel="1"/></p>
+                                        <p><field name="lc_bank_brunch" class="oe_inline" nolabel="1"/></p>
+                                        <p><field name="lc_bank_address" class="oe_inline" nolabel="1"/></p>
+                                    </div>
+                                </div>
+
+                                <div class='col-xs-3'></div>
+
+                                <div class='col-xs-3' style='margin-top:30px;'>
+                                    <p>Authorized Signature</p>
+                                    <p style='font-weight:bold;'><field name="company_name" class="oe_inline" nolabel="1"/></p>
+                                </div>
+
+                            </div>
+
+                        </sheet>
+                    </form>
+                </field>
+            </record>            
+            <!-- <form view start> -->
+
+            <!-- <search start> -->
+                    <record id="view_bill_of_exchange_search" model="ir.ui.view">
+                            <field name="name">bill_of_exchange.model.search</field>
+                            <field name="model">bill_of_exchange.model</field>
+                            <field name="priority" eval="8" />
+                            <field name="arch" type="xml">
+                                <search string="bill_of_exchange">
+                                    <field name="name" />
+                                    <field name="bill_of_exchange_created_date" />
+                                    <field name="commercial_invoice_id" />
+                                    <field name="ordered_products_total_amount" />
+                                    <field name="ordered_products_total_amount_in_word" />
+                                    <field name="currency_symbol" />
+                                    <field name="bank_name" />
+                                    <field name="bank_brunch" />
+                                    <field name="bank_address" />
+                                    <field name="swift_code" />
+                                    <field name="customer_name" />
+                                    <field name="customer_full_address" />
+                                    <field name="lc_num" />
+                                    <field name="lc_date" />
+                                    <field name="lc_bank_name" />
+                                    <field name="lc_bank_brunch" /> 
+                                    <field name="lc_bank_address" />
+                                    <field name="contact_no" />
+                                    <field name="contact_no_date" />
+                                    <field name="company_name" />
+                                </search>
+                            </field>
+                        </record>
+                        <!-- <search end> -->    
+
+            <!-- <act_window start> -->
+                <record id="act_open_bill_of_exchange_view" model="ir.actions.act_window">
+                    <field name="name">Bill Of Exchange</field>
+                    <field name="type">ir.actions.act_window</field>
+                    <field name="res_model">bill_of_exchange.model</field>
+                    <field name="view_type">form</field>
+                    <field name="view_mode">tree,form</field>
+                    <field name="search_view_id" ref='view_bill_of_exchange_search'/>
+                    <field name='domain'>[]</field>
+                    <field name="context">{}</field>
+                    <field name="help" type="html">
+                        <p class="oe_view_nocontent_create">
+                            Click here to creat Bill Of Exchange
+                        </p>
+                    </field>
+                </record>
+                <record model="ir.actions.act_window.view" id="act_open_bill_of_exchange_view_tree">
+                    <field name="act_window_id" ref="act_open_bill_of_exchange_view" />
+                    <field name="sequence" eval="10" />
+                    <field name="view_mode">tree</field>
+                    <field name="view_id" ref="view_bill_of_exchange_tree" />
+                </record>
+                <record model="ir.actions.act_window.view" id="act_open_bill_of_exchange_view_form">
+                    <field name="act_window_id" ref="act_open_bill_of_exchange_view" />
+                    <field name="sequence" eval="20" />
+                    <field name="view_mode">form</field>
+                    <field name="view_id" ref="view_bill_of_exchange_form" />
+                </record>
+            <!-- <act_window end> -->
+        <!-- bill_of_exchange end -->
+
+
+        <menuitem action="act_open_bill_of_exchange_view" name="Bill Of Exchange" id="custom_child_menu10" parent="custom_sub_menu"  sequence="10"/> 
+
+
+        <!-- pdf report generate start-->
+        <report
+        id="report_of_bill_of_exchange" 
+        model="bill_of_exchange.model"
+        string="Bill Of Exchange"
+        name="lc_report_generator.report_bill_of_exchange_report_view"
+        file="lc_report_generator.bill_of_exchange.model"
+        report_type="qweb-pdf"/>
+
+        <template id="report_bill_of_exchange_report_view">
+                
+            <t t-call="report.external_layout" t-lang="en_US">              
+                <t t-foreach="docs" t-as="o">
+                    <t>          
+                        <div class="page">
+                           <!-- < page content start> -->
+                            <!-- <part1 start> -->
+                            <div style='border:1px solid #000; padding:15px;'>
+                                <div class="row">
+                                    <div class="col-xs-12" style='font-weight:bold !important;'>
+                                        <h4>BILL OF EXCHANGE</h4>
+                                    </div>
+                                </div>
+                                
+                                <div class='row' style='margin-top:20px;'>
+                                        <div class='col-xs-6' style='font-weight:bold !important;'>
+                                            <h4>For <span t-field="o.currency_symbol_name" /> <span t-field="o.currency_symbol" /> <span t-field="o.ordered_products_total_amount" /></h4>
+                                        </div>
+        
+                                        <div class="col-xs-3"></div>
+        
+                                        <div class='col-xs-3' >
+                                            <h4>Date : <span t-field="o.bill_of_exchange_created_date" /></h4>
+                                        </div>
+                                </div>
+
+                                <div class="row">
+                                        <div class="col-xs-12">
+                                            <p>AT <span t-field="o.days" /> days SIGHT of this First of Exchange (Second being unpaid) pay to the order of</p>
+                                        </div>
+                                </div>
+
+                                <div class="row" style='font-weight:bold !important;'>
+                                        <div class="col-xs-3"></div>
+                                        <div class="text-center col-xs-6">
+                                            <p><span t-field="o.bank_name" />, <span t-field="o.bank_brunch" />,  <span t-field="o.bank_address" />, Swift Code: <span t-field="o.swift_code" /></p>
+                                        </div>
+                                        <div class="col-xs-3"></div>
+                                </div>
+
+                                <div class="row" style='font-weight:bold !important;'>
+                                        <div class="col-xs-12">
+                                            <h5>The Sum of <span style='font-weight:bold;' t-field="o.currency_symbol_name" /> <span style='font-weight:bold;' t-field="o.currency_symbol2" /> <span style='font-weight:bold;' t-field="o.ordered_products_total_amount_in_word" /> only</h5>
+                                        </div>
+                                </div>
+
+
+                                <div class="row">
+                                        <div class="col-xs-12">
+                                            <p>Value Received and charge the same the account of <span style='font-weight:bold;' t-field="o.customer_name" />, <span style='font-weight:bold;' t-field="o.customer_full_address" /></p>
+                                        </div>
+        
+                                        <div class="col-xs-12">
+                                            <p>DRAWN under L/C No.<span style='font-weight:bold;' t-field="o.lc_num" /> dated <span style='font-weight:bold;' t-field="o.lc_date" /> issued by <span style='font-weight:bold;' t-field="o.lc_bank_name" />, against Export Sales Contact No.<span style='font-weight:bold;' t-field="o.contact_no" /> dated <span t-field="o.contact_no_date" /></p>
+                                        </div>
+                                </div>    
+        
+                                <div class="row" style='margin-top:20px;'>
+                                        <div class='col-xs-6'>
+                                            <div class="col-xs-2">
+                                                <p>To : </p>
+                                            </div>
+                                            <div class="col-xs-10">
+                                                <p><span style='font-weight:bold;' t-field="o.lc_bank_name2" /></p>
+                                                <p><span style='font-weight:bold;' t-field="o.lc_bank_brunch" /></p>
+                                                <p><span style='font-weight:bold;' t-field="o.lc_bank_address" /></p>
+                                            </div>
+                                        </div>
+        
+                                        <div class='col-xs-3'></div>
+        
+                                        <div class='col-xs-3' style='margin-top:30px;'>
+                                            <p>Authorized Signature</p>
+                                            <p style='font-weight:bold;'><span t-field="o.company_name" /></p>
+                                        </div>
+                                </div>
+                            </div> 
+                            <!-- <part1 end> -->  
+
+
+                            <!-- <part2 start> -->
+                                    <div style='border:1px solid #000; padding:15px; margin-top: 100px;'>
+                                            <div class="row">
+                                                <div class="col-xs-12" style='font-weight:bold !important;'>
+                                                    <h4>BILL OF EXCHANGE</h4>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class='row' style='margin-top:20px;'>
+                                                    <div class='col-xs-6' style='font-weight:bold !important;'>
+                                                        <h4>For <span t-field="o.currency_symbol_name" /> <span t-field="o.currency_symbol" /> <span t-field="o.ordered_products_total_amount" /></h4>
+                                                    </div>
+                    
+                                                    <div class="col-xs-3"></div>
+                    
+                                                    <div class='col-xs-3' >
+                                                        <h4>Date : <span t-field="o.bill_of_exchange_created_date" /></h4>
+                                                    </div>
+                                            </div>
+            
+                                            <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <p>AT <span t-field="o.days" /> days SIGHT of this First of Exchange (Second being unpaid) pay to the order of</p>
+                                                    </div>
+                                            </div>
+            
+                                            <div class="row" style='font-weight:bold !important;'>
+                                                    <div class="col-xs-3"></div>
+                                                    <div class="text-center col-xs-6">
+                                                        <p><span t-field="o.bank_name" />, <span t-field="o.bank_brunch" />, <span t-field="o.bank_address" />, Swift Code: <span t-field="o.swift_code" /></p>
+                                                    </div>
+                                                    <div class="col-xs-3"></div>
+                                            </div>
+            
+                                            <div class="row" style='font-weight:bold !important;'>
+                                                    <div class="col-xs-12">
+                                                        <h5>The Sum of <span t-field="o.currency_symbol_name" /> <span t-field="o.currency_symbol2" /> <span t-field="o.ordered_products_total_amount_in_word" /> only</h5>
+                                                    </div>
+                                            </div>
+            
+            
+                                            <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <p>Value Received and charge the same the account of <span t-field="o.customer_name" />, <span t-field="o.customer_full_address" /></p>
+                                                    </div>
+                    
+                                                    <div class="col-xs-12">
+                                                        <p>DRAWN under L/C No.<span t-field="o.lc_num" /> dated <span t-field="o.lc_date" /> issued by <span t-field="o.lc_bank_name" />, against Export Sales Contact No.<span t-field="o.contact_no" /> dated <span t-field="o.contact_no_date" /></p>
+                                                    </div>
+                                            </div>    
+                    
+                                            <div class="row" style='margin-top:20px;'>
+                                                    <div class='col-xs-6'>
+                                                        <div class="col-xs-2">
+                                                            <p>To : </p>
+                                                        </div>
+                                                        <div class="col-xs-10">
+                                                            <p><span t-field="o.lc_bank_name2" /></p>
+                                                            <p><span t-field="o.lc_bank_brunch" /></p>
+                                                            <p><span t-field="o.lc_bank_address" /></p>
+                                                        </div>
+                                                    </div>
+                    
+                                                    <div class='col-xs-3'></div>
+                    
+                                                    <div class='col-xs-3' style='margin-top:30px;'>
+                                                        <p>Authorized Signature</p>
+                                                        <p style='font-weight:bold;'><span t-field="o.company_name" /></p>
+                                                    </div>
+                                            </div>
+                                        </div> 
+                                        <!-- <part2 end> -->    
+
+                           <!-- < page content end> -->
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>                   
+
+    </data>
+</openerp>         

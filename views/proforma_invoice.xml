@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data> 
+
+        <!-- Top menu -->
+        <menuitem name="LC Documents" id="custom_top_menu" />
+        <!-- Sub child menu -->
+        <menuitem name="LC Documents" id ="custom_sub_menu" parent="custom_top_menu"/>
+
+        <!--Import assets-->
+        <template id="assets_backend" name="custom assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/lc_report_generator/static/src/css/style.css"/>
+                <!-- <link rel="stylesheet" href="/lc_report_generator/static/src/css/bootstrap.min.css"/> -->
+                <!-- <script type="text/javascript" src="/lc_report_generator/static/src/js//myscript.js"/> -->
+                <!-- <script type="text/javascript" src="/lc_report_generator/static/src/js//bootstrap.min.js"/> -->
+            </xpath>
+        </template>
+        <!-- inherit_id="web.assets_frontend" -->
+        <!--Import assets-->
+
+
+        <!-- porforma invoice main start -->
+
+            <!-- <tree view start> -->
+            <record id="view_proforma_invoice_tree" model="ir.ui.view">
+                <field name="name">proforma_invoice.model.tree</field>
+                <field name="model">proforma_invoice.model</field>
+                <field name="priority" eval="8" />
+                <field name="arch" type="xml">
+                    <tree string="Proforma_Invoice" default_order="id desc">
+                        <field name="customer_name" />
+                        <field name="proforma_invoice_created_date" />
+                        <field name="name" />
+                        <field name="validity_date" />
+                        <field name="ordered_products_total_amount" />
+                    </tree>
+                </field>
+            </record>
+            <!-- <tree view end> -->
+            
+            <!-- <form view start> -->
+            <record id="view_proforma_invoice_form" model="ir.ui.view">
+                <field name="name">proforma_invoice.form</field>
+                <field name="model">proforma_invoice.model</field>
+                <field name="arch" type="xml">
+                    <form string="Proforma_Invoice">
+                        <header>
+                        </header>
+                        <sheet string="Proforma_Invoice">
+                            <h2 class="mt1 pro_invoice_title text-center">
+                                <span class="pro_invoice_title_span" style='border-bottom:2px solid #000;'>PROFORMA INVOICE</span>
+                            </h2>
+
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <group> 
+                                        <field name='account_invoice_id' on_change="onchange_account_invoice_id(account_invoice_id)"/>
+                                        <field name="customer_name"/>
+                                        <field name="customer_full_address"/>
+                                    </group>        
+                                </div>    
+                                <div class="col-xs-6">
+                                    <group>
+                                            <field name="name"/>
+                                            <field name="proforma_invoice_created_date"/>
+                                            <field name="validity_date" />
+                                    </group>
+                                </div>    
+                            </div>    
+
+                            
+                            <table class="table table-bordered">
+                                    <thead class="thead-default">
+                                        <tr>
+                                            <th class="text-center">Product</th>
+                                            <th class="text-center">Unit Price </th>
+                                            <th class="text-center">Quantity in kgs.</th>
+                                            <th class="text-center">Total Price </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            
+                                            <tr>
+                                                <td>
+                                                    <field name="ordered_products_name" style='width:450px;'/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <field name="ordered_products_price_of_unit"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <field name="ordered_products_quantity"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <field name="ordered_products_amount"/>
+                                                </td>
+                                            </tr>
+
+                                            <tr style='border: 1px solid #ededed !important;'>
+                                                <td class="text-center" style='border-right:none !important;'>Total:</td>
+                                                <td  style='border:none !important;'>
+                                                                
+                                                </td>
+                                                
+                                                <td class="text-center"  style='border:none !important;'>
+                                                    <field name="ordered_products_total_quantity"/>    
+                                                </td>
+                                                <td class="text-center"  style='border:none !important;'>
+                                                    <field name="ordered_products_total_amount"/>
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td colspan="4">
+                                                    <div style="float:right !important;"> 
+                                                        <p style="font-weight:bold; ">(<field name="currency_symbol_name2"  class="oe_inline" nolabel="1"/><field name="currency_symbol2" class="oe_inline"/> <field name="ordered_products_total_amount_in_word" class="oe_inline"/> only )</p>
+                                                    </div>    
+                                                </td>
+                                            </tr>
+                                            
+                                    </tbody>
+                            </table>    
+
+                            <div class='row'>
+                                <div class="col-xs-6">
+                                    <h4 style='font-weight:bold;'>Payment Details</h4>
+                                    <group>
+                                        <field name="beneficiary_full_name" on_change="onchange_beneficiary_full_name(beneficiary_full_name)"/>
+                                        <field name="erc_no"/> 
+                                        <field name="method_of_payment"/>
+                                        <field name="reimbursement"/>
+                                        <field name="beneficiary_bank_name" on_change="onchange_bank_name_branch(beneficiary_bank_name,beneficiary_bank_branch)"/>
+                                        <field name="beneficiary_bank_branch" on_change="onchange_bank_name_branch(beneficiary_bank_name,beneficiary_bank_branch)"/>
+                                        <field name="beneficiary_bank_address"/>
+                                        <field name="swift_code"/>
+                                    </group>
+                                </div>
+                                <div class="col-xs-6">
+                                    <h4 style='font-weight:bold;'>Product and Delivery Details</h4>
+                                    <group>
+                                        <field name="product_type"/>
+                                        <field name="bin_no"/>
+                                        <field name="country_of_origin"/>
+                                        <field name="terms_of_delivery"/>
+                                    </group>
+
+                                    <!-- <p style='font-weight:bold;'>Time of Delivery: Within <field name="time_of_delivery" class='oe_inline' nolabel="1"/> days from the date of receiving confirm L/C</p> -->
+
+                                    <div class='col-xs-5' style='padding-left:0px !important;'>
+                                        <p style='font-weight:bold;'>Time of Delivery: </p>
+                                    </div>
+                                    <div class='col-xs-7' style='padding-left:0px !important;'>
+                                        <p style='font-weight:bold;'>Within <field name="time_of_delivery" class='oe_inline' nolabel="1"/> days from the date of receiving confirm L/C</p>
+                                    </div>
+
+                                    <group>
+                                        <field name="place_of_delivery_name" on_change="onchange_factory_name(place_of_delivery_name)"/>
+                                        <field name="place_of_delivery_addr"/>
+                                    </group>
+
+                                    <!-- <p style='font-weight:bold;'>Packing: Standard Bag Packing <field name="bags_of_packing" class='oe_inline'/>kgs./bag</p> -->
+
+                                    <div class='col-xs-5' style='padding-left:0px !important;'>
+                                        <p style='font-weight:bold;'>Packing: </p>
+                                    </div>
+                                    <div class='col-xs-7' style='padding-left:0px !important;'>
+                                        <p style='font-weight:bold;'>Standard Bag Packing <field name="bags_of_packing" class='oe_inline'/>kgs./bag</p>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-xs-12">
+                                    <h4 style='font-weight:bold;'>Other Terms and Conditions</h4>
+                                    <field name="other_terms_and_condition"/>
+                                </div>
+
+                                <div class="col-xs-4" style="margin-top:80px;">
+                                    <p style="border-top:2px solid #000;">Authorized Signature</p>
+                                    <p>On behalf of <field name="behalf_of" class="oe_inline" nolabel="1"/></p>
+                                </div>
+                                <div class="col-xs-8"></div>
+                            </div>
+
+                                                
+                        </sheet>
+                    </form>
+                </field>
+            </record>            
+            <!-- <form view end> -->
+
+            <!-- <kanban view start> -->
+            <!-- <record model="ir.ui.view" id="view_proforma_invoice_kanban">
+                <field name="name">proforma_invoice.kanban</field>
+                <field name="model">proforma_invoice.model</field>
+                <field name="type">kanban</field>
+                <field name="arch" type="xml">
+                    <kanban default_order="id desc"> 
+                        <templates>
+                            <t t-name="kanban-box">
+                                <div class="oe_resource_vignette"> -->
+                                    <!-- <div class="oe_resource_image">
+                                        <a type="edit"><img t-att-src="kanban_image('object.name', 'photo', record.id.value)" class="oe_resource_picture"/></a>
+                                    </div> -->
+                                    <!-- <div class="oe_resource_details">
+                                        <ul>
+                                            <li><field name="name"/></li>
+                                        </ul>
+                                    </div>
+                                </div>                      
+                            </t>
+                        </templates>
+                    </kanban>
+                </field>
+            </record>             -->
+            <!-- <kanban view end> -->
+
+            <!-- <search start> -->
+            <record id="view_proforma_invoice_search" model="ir.ui.view">
+                <field name="name">proforma_invoice.model.search</field>
+                <field name="model">proforma_invoice.model</field>
+                <field name="priority" eval="8" />
+                <field name="arch" type="xml">
+                    <search string="Proforma_Invoice">
+                        <field name="name" />
+                        <field name="proforma_invoice_created_date" />
+                        <field name="validity_date" />
+                        <field name="account_invoice_id" />
+                        <field name="customer_name" />
+                        <field name="customer_full_address" />
+                        <field name="ordered_products_name" />
+                        <field name="ordered_products_price_of_unit" />
+                        <field name="ordered_products_quantity" />
+                        <field name="ordered_products_amount" />
+                        <field name="ordered_products_total_quantity" /> 
+                        <field name="ordered_products_total_amount" />
+                        <field name="ordered_products_total_amount_in_word" />
+                        <field name="currency_symbol" />
+                        <field name="beneficiary_full_name" />
+                        <field name="erc_no" />
+                        <field name="method_of_payment" />
+                        <field name="reimbursement" />
+                        <field name="beneficiary_bank_name" />
+                        <field name="beneficiary_bank_branch" />
+                        <field name="beneficiary_bank_address" />
+                        <field name="swift_code" />
+                        <field name="product_type" />
+                        <field name="bin_no" />
+                        <field name="country_of_origin" />
+                        <field name="terms_of_delivery" />
+                        <field name="time_of_delivery" />
+                        <field name="place_of_delivery_name" />
+                        <field name="place_of_delivery_addr" />
+                        <field name="bags_of_packing" />
+                        <field name="other_terms_and_condition" />
+                        <field name="behalf_of" />
+                    </search>
+                </field>
+            </record>
+            <!-- <search end> -->
+
+            <!-- <act_window start> -->
+            <record id="act_open_proforma_invoice_view" model="ir.actions.act_window">
+                <field name="name">Proforma Invoice</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">proforma_invoice.model</field>
+                <field name="view_type">form</field>
+                <field name="view_mode">form,tree</field>
+                <field name="search_view_id" ref='view_proforma_invoice_search'/>
+                <field name='domain'>[]</field>
+                <field name="context">{}</field>
+                <field name="help" type="html">
+                    <p class="oe_view_nocontent_create">
+                        Click Here To Creat Proforma Invoice
+                    </p>
+                </field>
+            </record>
+            <record model="ir.actions.act_window.view" id="act_open_proforma_invoice_view_tree">
+                <field name="act_window_id" ref="act_open_proforma_invoice_view" />
+                <field name="sequence" eval="10" />
+                <field name="view_mode">tree</field>
+                <field name="view_id" ref="view_proforma_invoice_tree" />
+            </record>
+            <record model="ir.actions.act_window.view" id="act_open_proforma_invoice_view_form">
+                <field name="act_window_id" ref="act_open_proforma_invoice_view" />
+                <field name="sequence" eval="20" />
+                <field name="view_mode">form</field>
+                <field name="view_id" ref="view_proforma_invoice_form" />
+            </record>
+            <!-- <record model="ir.actions.act_window.view" id="act_open_proforma_invoice_view_kanban">
+                <field name="act_window_id" ref="act_open_proforma_invoice_view" />
+                <field name="sequence" eval="10" />
+                <field name="view_mode">kanban</field>
+                <field name="view_id" ref="view_proforma_invoice_kanban" />
+            </record> -->
+            <!-- <act_window end> -->
+
+        <!-- proforma invoice main end -->
+
+        <!-- Creat child menu / Action menu -->
+        <menuitem action="act_open_proforma_invoice_view" name="Proforma Invoice" id="custom_child_menu2" parent="custom_sub_menu"  sequence="2"/>
+
+        <!-- pdf report generate start-->
+        <report
+            id="report_of_proforma_invoice" 
+            model="proforma_invoice.model"
+            string="Proforma Invoice"
+            name="lc_report_generator.report_proforma_invoice_report_view"
+            file="lc_report_generator.proforma_invoice.model"
+            report_type="qweb-pdf"/>
+
+            <template id="report_proforma_invoice_report_view">
+                    
+                <t t-call="report.external_layout" t-lang="en_US">              
+                    <t t-foreach="docs" t-as="o">
+                        <t>          
+                            <div class="page" style='margin-left:30px !important;'>
+                            
+                            <!-- < page content start> -->
+    
+                                <div class="container">
+                                    <h4 class="text-center"><span style='border-bottom:2px solid #000;font-weight:bold;'>PROFORMA INVOICE</span></h4>
+                                </div>
+                                
+                                
+                                <div class="row" style='margin-top:40px !important;'>
+                                    <div class="col-xs-6">
+                                        <p>Buyer:</p>
+                                        <p style='font-weight:bold;'><span t-field="o.customer_name"/></p>
+                                        <p style='font-weight:bold;'><span t-field="o.customer_full_address"/></p>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="col-xs-3">
+                                            <p>P/I No</p>    
+                                        </div>   
+                                        <div class="col-xs-1">
+                                            <p> : </p>    
+                                        </div>   
+                                        <div class="col-xs-8">
+                                            <p style='font-weight:bold;'> <span t-field="o.name"/> </p>    
+                                        </div>
+                                        
+                                        <div class="col-xs-3">
+                                            <p>Date</p>    
+                                        </div>   
+                                        <div class="col-xs-1">
+                                            <p> : </p>    
+                                        </div>   
+                                        <div class="col-xs-8">
+                                            <p style='font-weight:bold;'> <span t-field="o.proforma_invoice_created_date"/> </p>    
+                                        </div>
+
+                                        <div class="col-xs-3">
+                                            <p>Validity</p>    
+                                        </div>   
+                                        <div class="col-xs-1">
+                                            <p> : </p>    
+                                        </div>   
+                                        <div class="col-xs-8">
+                                            <p style='font-weight:bold;'> <span t-field="o.validity_date"/> </p>    
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12">
+                                            <table class="table table-bordered">
+                                                    <thead class="thead-default">
+                                                        <tr>
+                                                            <th class="text-center">Product</th>
+                                                            <th class="text-center">Unit Price in <span t-field="o.currency_symbol_name2"/><span t-field="o.currency_symbol2"/></th>
+                                                            <th class="text-center">Quantity in kgs.</th>
+                                                            <th class="text-center">Total Price in <span t-field="o.currency_symbol_name2"/><span t-field="o.currency_symbol2"/></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <span t-field="o.ordered_products_name"/>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <span t-field="o.ordered_products_price_of_unit"/>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <span t-field="o.ordered_products_quantity"/>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <span t-field="o.ordered_products_amount"/>
+                                                                </td>
+                                                            </tr>
+                
+                                                            <tr style='border: 1px solid #ededed !important;'>
+                                                                <td class="" style='border-right:none !important;'>Total:</td>
+                                                                <td  style='border:none !important;'>
+                                                                                
+                                                                </td>
+                                                                
+                                                                <td class="text-center"  style='border:none !important;'>
+                                                                    <span t-field="o.ordered_products_total_quantity"/> Kgs
+                                                                </td>
+                                                                <td class="text-center"  style='border:none !important;'>
+                                                                    <span t-field="o.currency_symbol"/> <span t-field="o.ordered_products_total_amount"/>
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                <td colspan="4">
+                                                                    <div style="float:right !important;"> 
+                                                                        <p style="font-weight:bold; ">(<span t-field="o.currency_symbol_name2"/><span t-field="o.currency_symbol2"/> <span t-field="o.ordered_products_total_amount_in_word"/> only )</p>
+                                                                    </div>    
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                    </tbody>
+                                            </table>
+                                    </div>
+
+                                    <div class="col-xs-6">
+                                            <h4 style='font-weight:bold;'>Payment Details</h4>
+                                            <group>
+                                                <div class="col-xs-5" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>Beneficiary Full Name</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-6">
+                                                    <p style='font-weight:bold;'> <span t-field="o.beneficiary_full_name"/></p>
+                                                </div>
+
+                                                <div class="col-xs-5" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>ERC No</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-6">
+                                                    <p style='font-weight:bold;'> <span t-field="o.erc_no"/></p>
+                                                </div>
+
+                                                <div class="col-xs-5" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>Method of Payment</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-6">
+                                                    <p style='font-weight:bold;'> <span t-field="o.method_of_payment"/></p>
+                                                </div>
+
+                                                <div class="col-xs-5" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>Reimbursement</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-6">
+                                                    <p style='font-weight:bold;'> <span t-field="o.reimbursement"/></p>
+                                                </div>
+
+                                                <div class="col-xs-5" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>Beneficiary Bank and Branch</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-6">
+                                                    <p style='font-weight:bold;'> <span t-field="o.beneficiary_bank_name"/>, <span t-field="o.beneficiary_bank_branch"/>, <span t-field="o.beneficiary_bank_address"/>. </p>
+                                                </div>
+
+                                                <div class="col-xs-5" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>Swift Code</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-6">
+                                                    <p style='font-weight:bold;'> <span t-field="o.swift_code"/></p>
+                                                </div>
+                                            </group>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <h4 style='font-weight:bold;'>Product and Delivery Details</h4>
+                                            <group>
+                                                <div class="col-xs-4" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>Type</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-7">
+                                                    <p style='font-weight:bold;'> <span t-field="o.product_type"/></p>
+                                                </div>
+                                                
+                                                <div class="col-xs-4" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>BIN</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-7">
+                                                    <p style='font-weight:bold;'> <span t-field="o.bin_no"/></p>
+                                                </div>
+
+                                                <div class="col-xs-4" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>Country of Origin</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-7">
+                                                    <p style='font-weight:bold;'> <span t-field="o.country_of_origin"/></p>
+                                                </div>
+
+                                                <div class="col-xs-4" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>Terms of Delivery</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-7">
+                                                    <p style='font-weight:bold;'> <span t-field="o.terms_of_delivery"/></p>
+                                                </div>
+
+                                                <div class="col-xs-4" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>Time of Delivery</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-7">
+                                                    <p style='font-weight:bold;'> Within <span t-field="o.time_of_delivery"/> days form the date of receiving confirm L/C</p>
+                                                </div>
+
+                                                <div class="col-xs-4" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>Place of Delivery</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-7">
+                                                    <p style='font-weight:bold;'><span t-field="o.place_of_delivery_name"/>,   <span t-field="o.place_of_delivery_addr"/></p>
+                                                </div>
+
+                                                <div class="col-xs-4" style='margin-left:0px !important;padding-left:0px !important'>
+                                                    <p>Packing</p>    
+                                                </div>   
+                                                <div class="col-xs-1">
+                                                    <p> : </p>    
+                                                </div>   
+                                                <div class="col-xs-7">
+                                                    <p style='font-weight:bold;'>Standard Bag Packing <span t-field="o.bags_of_packing"/>kgs./bag</p>
+                                                </div>
+                                            </group>
+                                        </div>
+        
+                                        <div class="col-xs-12">
+                                            <h4 style='font-weight:bold;'>Other Terms and Conditions</h4>
+                                            <p  style='font-weight:bold;'><span t-field="o.other_terms_and_condition"/></p>
+                                        </div>
+        
+                                        <div class="col-xs-4" style="margin-top:80px;">
+                                            <p style="border-top:2px solid #000;">Authorized Signature</p>
+                                            <p  style='font-weight:bold;'>On behalf of <span t-field="o.behalf_of"/></p>
+                                        </div>
+                                        <div class="col-xs-8"></div>
+
+                                </div>
+
+                            <!-- < page content end> -->
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </template>                                
+        <!-- pdf report generate end-->
+
+    </data>
+</openerp>            

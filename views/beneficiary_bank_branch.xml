@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data> 
+        <!-- Top menu -->
+        <menuitem name="LC Documents" id="custom_top_menu" />
+        <!-- Sub child menu -->
+        <menuitem name="Settings" id ="custom_sub_menu2" parent="custom_top_menu"/>
+
+        <!--Import assets-->
+        <template id="assets_backend" name="custom assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/lc_report_generator/static/src/css/style.css"/>
+                <!-- <script type="text/javascript" src="/lc_report_generator/static/src/js//myscript.js"/> -->
+            </xpath>
+        </template>
+        <!-- inherit_id="web.assets_frontend" -->
+        <!--Import assets-->
+
+        <!-- beneficiary_bank_branch start -->
+
+            <!-- <tree view start> -->
+            <record id="view_beneficiary_bank_branch_tree" model="ir.ui.view">
+                <field name="name">beneficiary_bank_branch.model.tree</field>
+                <field name="model">beneficiary_bank_branch.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <tree string="beneficiary_bank_branch">
+                        <field name="name" />
+                        <field name="bank_branch" />
+                        <field name="bank_address" />
+                        <field name="swift_code" />
+                        <field name="date" />
+                    </tree>
+                </field>
+            </record>
+            <!-- <tree view end> -->    
+
+            <!-- <form view start> -->
+            <record id="view_beneficiary_bank_branch_form" model="ir.ui.view">
+                <field name="name">beneficiary_bank_branch.model.form</field>
+                <field name="model">beneficiary_bank_branch.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <form string="beneficiary_bank_branch">
+                        <sheet>
+                            <group colspan="4" col="4" name="main" >
+                                <field name="name" />
+                                <field name="bank_branch" />
+                                <field name="bank_address" />
+                                <field name="swift_code" />
+                                <field name="date" />
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+            <!-- <form view end> -->                
+
+            <!-- <act_window start> -->
+                <record id="act_open_beneficiary_bank_branch_view" model="ir.actions.act_window">
+                    <field name="name">Beneficiary Bank Branch</field>
+                    <field name="type">ir.actions.act_window</field>
+                    <field name="res_model">beneficiary_bank_branch.model</field>
+                    <field name="view_type">form</field>
+                    <field name="view_mode">tree,form</field>
+                    <!-- <field name="search_view_id" ref='view_lc_informations_search'/> -->
+                    <field name='domain'>[]</field>
+                    <field name="context">{}</field> 
+                    <field name="help" type="html">
+                        <p class="oe_view_nocontent_create">
+                            Click here to creat Beneficiary Bank Branch
+                        </p>
+                    </field>
+                </record>
+                <record model="ir.actions.act_window.view" id="act_open_beneficiary_bank_branch_view_form">
+                    <field name="act_window_id" ref="act_open_beneficiary_bank_branch_view" />
+                    <field name="sequence" eval="20" />
+                    <field name="view_mode">form</field>
+                    <field name="view_id" ref="view_beneficiary_bank_branch_form" />
+                </record>
+                <record model="ir.actions.act_window.view" id="act_open_beneficiary_bank_branch_view_tree">
+                    <field name="act_window_id" ref="act_open_beneficiary_bank_branch_view" />
+                    <field name="sequence" eval="10" />
+                    <field name="view_mode">tree</field>
+                    <field name="view_id" ref="view_beneficiary_bank_branch_tree" />
+                </record>
+                <!-- <act_window end> -->
+        <!-- beneficiary_bank_branch end -->
+
+        <menuitem action="act_open_beneficiary_bank_branch_view" name="Beneficiary Bank Branch" id="beneficiary_bank_branch" parent="custom_sub_menu2"  sequence="6"/>  
+
+    </data>
+</openerp>

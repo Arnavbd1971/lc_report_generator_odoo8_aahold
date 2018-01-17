@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data> 
+        <!-- Top menu -->
+        <menuitem name="LC Documents" id="custom_top_menu" />
+        <!-- Sub child menu -->
+        <menuitem name="Settings" id ="custom_sub_menu2" parent="custom_top_menu"/>
+
+        <!--Import assets-->
+        <template id="assets_backend" name="custom assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/lc_report_generator/static/src/css/style.css"/>
+                <!-- <script type="text/javascript" src="/lc_report_generator/static/src/js//myscript.js"/> -->
+            </xpath>
+        </template>
+        <!-- inherit_id="web.assets_frontend" -->
+        <!--Import assets-->
+
+        <!-- bank names start -->
+
+            <!-- <tree view start> -->
+            <record id="view_bank_branch_tree" model="ir.ui.view">
+                <field name="name">bank_branch.model.tree</field>
+                <field name="model">bank_branch.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <tree string="bank_branch">
+                        <field name="name" />
+                        <field name="created_date" />
+                    </tree>
+                </field>
+            </record>
+            <!-- <tree view end> -->    
+
+            <!-- <form view start> -->
+            <record id="view_bank_branch_form" model="ir.ui.view">
+                <field name="name">bank_branch.model.form</field>
+                <field name="model">bank_branch.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <form string="lc_informations">
+                        <sheet>
+                            <group colspan="4" col="4" name="main" >
+                                <field name="name" />
+                                <field name="created_date" />
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+            <!-- <form view end> -->
+
+            <!-- <search start> -->
+            <record id="view_bank_branch_search" model="ir.ui.view">
+                <field name="name">bank_branch.model.search</field>
+                <field name="model">bank_branch.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <search string="bank_branch">
+                        <field name="name" />
+                        <field name="created_date" />
+                    </search>
+                </field>
+            </record>
+            <!-- <search end> -->
+
+            <!-- <act_window start> -->
+            <record id="act_open_bank_branch_view" model="ir.actions.act_window">
+                <field name="name">Bank Branch</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">bank_branch.model</field>
+                <field name="view_type">form</field>
+                <field name="view_mode">tree,form</field>
+                <field name="search_view_id" ref='view_bank_branch_search'/>
+                <field name='domain'>[]</field>
+                <field name="context">{}</field> 
+                <field name="help" type="html">
+                    <p class="oe_view_nocontent_create">
+                        Click here to creat Bank Branch
+                    </p>
+                </field>
+            </record>
+            <record model="ir.actions.act_window.view" id="act_open_bank_branch_view_form">
+                <field name="act_window_id" ref="act_open_bank_branch_view" />
+                <field name="sequence" eval="20" />
+                <field name="view_mode">form</field>
+                <field name="view_id" ref="view_bank_branch_form" />
+            </record>
+            <record model="ir.actions.act_window.view" id="act_open_bank_branch_view_tree">
+                <field name="act_window_id" ref="act_open_bank_branch_view" />
+                <field name="sequence" eval="10" />
+                <field name="view_mode">tree</field>
+                <field name="view_id" ref="view_bank_branch_tree" />
+            </record>
+            <!-- <act_window end> -->
+
+
+
+        <!-- bank names end -->
+
+        <!-- Creat child menu / Action menu -->
+        <menuitem action="act_open_bank_branch_view" name="Bank Branch" id="bank_branch" parent="custom_sub_menu2"  sequence="9"/>  
+
+    </data>
+</openerp>        

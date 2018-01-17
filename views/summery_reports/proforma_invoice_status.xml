@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+
+    <!-- Top menu -->
+    <menuitem name="LC Documents" id="custom_top_menu" />
+    <!-- Sub child menu -->
+    <menuitem name="Settings" id ="custom_sub_menu2" parent="custom_top_menu"/>
+
+    <menuitem name="Summery Report" id ="custom_sub_menu3" parent="custom_top_menu"/>
+
+
+    <!--Import assets-->
+        <template id="assets_backend" name="custom assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/lc_report_generator/static/src/css/style.css"/>
+                <!-- <link rel="stylesheet" href="/lc_report_generator/static/src/css/bootstrap.min.css"/> -->
+                <!-- <script type="text/javascript" src="/lc_report_generator/static/src/js//myscript.js"/> -->
+                <!-- <script type="text/javascript" src="/lc_report_generator/static/src/js//bootstrap.min.js"/> -->
+            </xpath>
+        </template>
+        <!-- inherit_id="web.assets_frontend" -->
+    <!--Import assets-->
+
+    <!-- porforma invoice status main start -->
+
+        <!-- <tree view start> -->
+        <record id="view_proforma_invoice_status_tree" model="ir.ui.view">
+            <field name="name">proforma_invoice_status.model</field>
+            <field name="model">proforma_invoice_status.model</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree string="Proforma Invoice Status" default_order="id desc">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        <!-- <tree view end> -->
+
+        <!-- <form view start> -->
+        <record id="view_proforma_invoice_status_form" model="ir.ui.view">
+            <field name="name">proforma_invoice_status.form</field>
+            <field name="model">proforma_invoice_status.model</field>
+            <field name="arch" type="xml">
+                <form string="Proforma Invoice Status">
+                    <header>
+                    </header>
+                    <sheet string="proforma_invoice_status">
+                        <h2 class="mt1 pro_invoice_title text-center">
+                            <span class="pro_invoice_title_span" style='border-bottom:2px solid #000;'>Proforma Invoice Status</span>
+                        </h2>
+                        <div class='text-center' style='margin-top:10px;'>
+                            <span>Date From : <field name="from_date"  class="oe_inline" nolabel="1" on_change="onchange_from_date(from_date)"/> To <field name="to_date"  class="oe_inline" nolabel="1" on_change="onchange_to_date(from_date,to_date)"/></span>
+                        </div>
+
+                        <div class='row'>
+                            <div class='col-xs-12'>
+                                <field name="created_date"  class="oe_inline" nolabel="1"/>
+                            </div>
+                        </div>
+
+                        <div class="row" style='margin-top:10px;'>
+                            <div class="col-xs-12">
+
+                                 <table class="table table-bordered">
+                                    <thead class="thead-default">
+                                        <tr>
+                                            <th class="text-center">PI No and Date</th>
+                                            <th class="text-center">Customer </th>
+                                            <th class="text-center">Bank and Branch</th>
+                                            <th class="text-center">L/C No and Date</th>
+                                            <th class="text-center">Bill Maturity Date</th>
+                                            <th class="text-center">Product Specification</th>
+                                            <th class="text-center">Amount</th>
+                                            <th class="text-center">Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                        
+                                            <td><field name="test"  /></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                    </tbody> 
+                                </table>   
+
+                            </div>
+                        </div>
+
+
+                    </sheet>
+                </form>
+            </field>
+        </record>  
+        <!-- <form view end> -->
+                      
+
+
+        <!-- <act_window start> -->
+        <record id="act_open_proforma_invoice_status_view" model="ir.actions.act_window">
+            <field name="name">Proforma Invoice Status</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">proforma_invoice_status.model</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!-- <field name="search_view_id" ref='view_lc_informations_search'/> -->
+            <field name='domain'>[]</field>
+            <field name="context">{}</field> 
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click here to creat Proforma Invoice Status Reprot
+                </p>
+            </field>
+        </record>
+        <record model="ir.actions.act_window.view" id="act_open_proforma_invoice_status_view_form">
+            <field name="act_window_id" ref="act_open_proforma_invoice_status_view" />
+            <field name="sequence" eval="20" />
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_proforma_invoice_status_form" />
+        </record>
+        <record model="ir.actions.act_window.view" id="act_open_proforma_invoice_status_view_tree">
+            <field name="act_window_id" ref="act_open_proforma_invoice_status_view" />
+            <field name="sequence" eval="10" />
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_proforma_invoice_status_tree" />
+        </record>
+        <!-- <act_window end> -->
+    <!-- porforma invoice status main end -->
+
+    
+
+
+
+    <!-- Creat child menu / Action menu -->
+    <menuitem action="act_open_proforma_invoice_status_view" name="Proforma Invoice Status" id="proforma_invoice_status" parent="custom_sub_menu3"  sequence="1"/>  
+
+    </data>
+</openerp>

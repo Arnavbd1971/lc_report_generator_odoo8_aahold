@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data> 
+        <!-- Top menu -->
+        <menuitem name="LC Documents" id="custom_top_menu" />
+        <!-- Sub child menu -->
+        <menuitem name="Settings" id ="custom_sub_menu2" parent="custom_top_menu"/>
+
+        <!--Import assets-->
+        <template id="assets_backend" name="custom assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/lc_report_generator/static/src/css/style.css"/>
+                <!-- <script type="text/javascript" src="/lc_report_generator/static/src/js//myscript.js"/> -->
+            </xpath>
+        </template>
+        <!-- inherit_id="web.assets_frontend" -->
+        <!--Import assets-->
+
+            <!-- Tree View for Student Information -->
+		<record id="view_first_form_list_tree" model="ir.ui.view">
+			<field name="name">signature_upload.tree.view</field>
+			<field name="model">signature_upload.model</field>
+			<field name= "arch" type = "xml">
+				<tree string="signature">
+                    <field string='Name' name="name" />
+                    <field string='Signatrue' name="my_binary_field_name" widget="image" />
+                    <field string='Upload Date' name="created_date" />
+					
+				</tree>
+			</field>
+		</record>
+            <!-- <tree view end> -->    
+
+            <!-- <form view start> -->
+
+            <record id="view_first_form" model="ir.ui.view">
+            <field name="name">signature_upload.form.view</field>
+            <field name="model">signature_upload.model</field>
+            <field name="arch" type="xml">
+                <form string="first">
+
+                    <header>
+                        <p>Please input your signature</p>
+                    </header>
+
+                    <sheet>
+
+                        <group>
+                                
+                            <field name="name" />
+                            <field name="my_binary_field_name" widget="image" />
+                            <field name="created_date" />
+                        
+                        </group>
+                    
+                    </sheet>
+                </form>    
+
+            </field>
+        </record>
+            <!-- <record id="view_signature_form" model="ir.ui.view">
+                <field name="name">signature_upload.model.form</field>
+                <field name="model">signature_upload.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <form string="signature">
+                        <sheet>
+                            <group>
+                                <field name="name" />
+                                <field name="my_binary_field_name" widget="image" />
+                                <field name="created_date" />
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+            </record> -->
+            <!-- <form view end> -->
+
+            <!-- <search start> -->
+            <record id="view_signature_search" model="ir.ui.view">
+                <field name="name">signature_upload.model.search</field>
+                <field name="model">signature_upload.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <search string="signature">
+                        <field name="name" />
+                        <field name="my_binary_field_name" widget="image" />
+                        <field name="created_date" />
+                    </search>
+                </field>
+            </record>
+            <!-- <search end> -->
+
+            <!-- <act_window start> -->
+            <record id="act_open_signature_view" model="ir.actions.act_window">
+                <field name="name">Set Signature</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">signature_upload.model</field>
+                <field name="view_type">form</field>
+                <field name="view_mode">tree,form</field>
+                <field name="search_view_id" ref='view_signature_search'/>
+                <field name='domain'>[]</field>
+                <field name="context">{}</field> 
+                <field name="help" type="html">
+                    <p class="oe_view_nocontent_create">
+                        Click here to Upload Signature
+                    </p>
+                </field>
+            </record>
+            <!-- <record model="ir.actions.act_window.view" id="act_open_signature_view_form">
+                <field name="act_window_id" ref="act_open_signature_view" />
+                <field name="sequence" eval="20" />
+                <field name="view_mode">form</field>
+                <field name="view_id" ref="view_signature_form" />
+            </record>
+            <record model="ir.actions.act_window.view" id="act_open_signature_view_tree">
+                <field name="act_window_id" ref="act_open_signature_view" />
+                <field name="sequence" eval="10" />
+                <field name="view_mode">tree</field>
+                <field name="view_id" ref="view_signature_tree" />
+            </record> -->
+            <!-- <act_window end> -->
+
+
+
+        <!-- bank names end -->
+
+        <!-- Creat child menu / Action menu -->
+        <menuitem action="act_open_signature_view" name="Set Signature" id="signature" parent="custom_sub_menu2"  sequence="15"/>  
+
+    </data>
+</openerp>        

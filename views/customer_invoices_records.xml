@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data> 
+        <!--Import assets-->
+        <template id="assets_backend" name="custom assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/LC_report_generator/static/src/css/style.css"/>
+                <script type="text/javascript" src="/LC_report_generator/static/src/js//myscript.js"/>
+            </xpath>
+        </template>
+        <!-- inherit_id="web.assets_frontend" -->
+        <!--Import assets-->
+
+        <!-- Top menu -->
+        <menuitem name="LC Documents" id="custom_top_menu" />
+        <!-- Sub child menu -->
+        <menuitem name="LC Documents" id ="custom_sub_menu" parent="custom_top_menu"/>
+
+
+
+        <record id="customer_invoices_action" model="ir.actions.act_window" >
+             <field name="name">Customer Invoices</field>
+             <field name="res_model">account.invoice</field>
+             <field name="view_type">form</field>
+             <field name="view_mode">tree,form,calendar</field>
+             <field name="search_view_id" eval="False"/>
+             <field name="context">{}</field>
+             <field name="arch" type="xml">
+                <!-- <p class="oe_view_nocontent_create">
+                    Click here to creat Customer Invoices
+                </p> -->
+                <xpath expr="//button[@name='invoice_print'][1]" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+             </field> 
+        </record>
+
+
+
+        <!-- <record id="customer_invoices_action_tree" model="ir.ui.view">
+            <field name="name">account.invoice.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="view_mode">tree</field>
+            <field name="inherit_id" ref=""/>
+
+            <field name="arch" type="xml">
+                <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" string="Invoice">
+                    <field name="partner_id" groups="base.group_user" string="Customer"/>
+                    <field name="date_invoice"/>
+                    <field name="number"/>
+                    <field name="commercial_partner_id" invisible="1"/>
+                    <field name="reference" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="journal_id" invisible="1"/>
+                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                    <field name="user_id"/>
+                    <field name="date_due"/>
+                    <field name="origin"/>
+                    <field name="amount_total_signed" sum="Total" />
+                    <field name="residual_signed" sum="Amount due"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="company_currency_id" invisible="1"/>
+                    <field name="state"/>
+                    <field name="type" invisible="context.get('type',True)"/>
+                </tree>
+            </field>
+        </record> -->
+
+        <!-- Creat child menu / Action menu -->
+        <menuitem action="customer_invoices_action" name="Customer Invoices" id="custom_child_menu1" parent="custom_sub_menu"  sequence="1"/>
+    </data>
+</openerp>    

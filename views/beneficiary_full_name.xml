@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data> 
+        <!-- Top menu -->
+        <menuitem name="LC Documents" id="custom_top_menu" />
+        <!-- Sub child menu -->
+        <menuitem name="Settings" id ="custom_sub_menu2" parent="custom_top_menu"/>
+
+        <!--Import assets-->
+        <template id="assets_backend" name="custom assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/lc_report_generator/static/src/css/style.css"/>
+                <!-- <script type="text/javascript" src="/lc_report_generator/static/src/js//myscript.js"/> -->
+            </xpath>
+        </template>
+        <!-- inherit_id="web.assets_frontend" -->
+        <!--Import assets-->
+
+        <!-- bank names start -->
+
+            <!-- <tree view start> -->
+            <record id="view_beneficiary_full_name_tree" model="ir.ui.view">
+                <field name="name">beneficiary_full_name.model.tree</field>
+                <field name="model">beneficiary_full_name.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <tree string="beneficiary_full_name">
+                        <field name="name" />
+                        <field name="erc_no" />
+                        <field name="created_date" />
+                    </tree>
+                </field>
+            </record>
+            <!-- <tree view end> -->    
+
+            <!-- <form view start> -->
+            <record id="view_beneficiary_full_name_form" model="ir.ui.view">
+                <field name="name">beneficiary_full_name.model.form</field>
+                <field name="model">beneficiary_full_name.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <form string="beneficiary_full_name">
+                        <sheet>
+                            <group colspan="4" col="4" name="main" >
+                                <field name="name" />
+                                <field name="erc_no" />
+                                <field name="created_date" />
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+            <!-- <form view end> -->
+
+            <!-- <search start> -->
+            <record id="view_beneficiary_full_name_search" model="ir.ui.view">
+                <field name="name">beneficiary_full_name.model.search</field>
+                <field name="model">beneficiary_full_name.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <search string="beneficiary_full_name">
+                        <field name="name" />
+                        <field name="erc_no" />
+                        <field name="created_date" />
+                    </search>
+                </field>
+            </record>
+            <!-- <search end> -->
+
+            <!-- <act_window start> -->
+            <record id="act_open_beneficiary_full_name_view" model="ir.actions.act_window">
+                <field name="name">Beneficiary Full Name</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">beneficiary_full_name.model</field>
+                <field name="view_type">form</field>
+                <field name="view_mode">tree,form</field>
+                <field name="search_view_id" ref='view_beneficiary_full_name_search'/>
+                <field name='domain'>[]</field>
+                <field name="context">{}</field> 
+                <field name="help" type="html">
+                    <p class="oe_view_nocontent_create">
+                        Click here to creat Beneficiary Full Name
+                    </p>
+                </field>
+            </record>
+            <record model="ir.actions.act_window.view" id="act_open_beneficiary_full_name_view_form">
+                <field name="act_window_id" ref="act_open_beneficiary_full_name_view" />
+                <field name="sequence" eval="20" />
+                <field name="view_mode">form</field>
+                <field name="view_id" ref="view_beneficiary_full_name_form" />
+            </record>
+            <record model="ir.actions.act_window.view" id="act_open_bank_branch_view_tree">
+                <field name="act_window_id" ref="act_open_beneficiary_full_name_view" />
+                <field name="sequence" eval="10" />
+                <field name="view_mode">tree</field>
+                <field name="view_id" ref="view_beneficiary_full_name_tree" />
+            </record>
+            <!-- <act_window end> -->
+
+
+
+        <!-- bank names end -->
+
+        <!-- Creat child menu / Action menu -->
+        <menuitem action="act_open_beneficiary_full_name_view" name="Beneficiary Full Name" id="beneficiary_full_name" parent="custom_sub_menu2"  sequence="10"/>  
+
+    </data>
+</openerp>        

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data> 
+        <!-- Top menu -->
+        <menuitem name="LC Documents" id="custom_top_menu" />
+        <!-- Sub child menu -->
+        <menuitem name="Settings" id ="custom_sub_menu2" parent="custom_top_menu"/>
+
+        <!--Import assets-->
+        <template id="assets_backend" name="custom assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/lc_report_generator/static/src/css/style.css"/>
+                <script type="text/javascript" src="/lc_report_generator/static/src/js//myscript.js"/>
+            </xpath>
+        </template>
+        <!-- inherit_id="web.assets_frontend" -->
+        <!--Import assets-->
+
+        <!-- L/C informations start -->
+
+            <!-- <tree view start> -->
+            <record id="view_country_origin_tree" model="ir.ui.view">
+                <field name="name">country_origin.model.tree</field>
+                <field name="model">country_origin.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <tree string="lc_informations">
+                        <field name="name" />
+                        <field name="date" />
+                    </tree>
+                </field>
+            </record>
+            <!-- <tree view end> -->    
+
+            <!-- <form view start> -->
+            <record id="view_country_origin_form" model="ir.ui.view">
+                <field name="name">country_origin.model.form</field>
+                <field name="model">country_origin.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <form string="country_origin">
+                        <sheet>
+                            <group colspan="4" col="4" name="main" >
+                                <field name="name" />
+                                <field name="date" />
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+            <!-- <form view end> -->
+
+            <!-- <search start> -->
+            <record id="view_country_origin_search" model="ir.ui.view">
+                <field name="name">country_origin.model.search</field>
+                <field name="model">country_origin.model</field>
+                <field name="priority" eval="16" />
+                <field name="arch" type="xml">
+                    <search string="country_origin">
+                        <field name="name" />
+                        <field name="date" />
+                    </search>
+                </field>
+            </record>
+            <!-- <search end> -->
+
+            <!-- <act_window start> -->
+            <record id="act_open_country_origin_view" model="ir.actions.act_window">
+                <field name="name">Country Origin</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">country_origin.model</field>
+                <field name="view_type">form</field>
+                <field name="view_mode">tree,form</field>
+                <field name="search_view_id" ref='view_country_origin_search'/>
+                <field name='domain'>[]</field>
+                <field name="context">{}</field> 
+                <field name="help" type="html">
+                    <p class="oe_view_nocontent_create">
+                        Click here to creat Country Origin
+                    </p>
+                </field>
+            </record>
+            <record model="ir.actions.act_window.view" id="act_open_country_origin_view_form">
+                <field name="act_window_id" ref="act_open_country_origin_view" />
+                <field name="sequence" eval="20" />
+                <field name="view_mode">form</field>
+                <field name="view_id" ref="view_country_origin_form" />
+            </record>
+            <record model="ir.actions.act_window.view" id="act_open_country_origin_view_tree">
+                <field name="act_window_id" ref="act_open_country_origin_view" />
+                <field name="sequence" eval="10" />
+                <field name="view_mode">tree</field>
+                <field name="view_id" ref="view_country_origin_tree" />
+            </record>
+            <!-- <act_window end> -->
+
+
+
+        <!-- L/C informations end -->
+
+        <!-- Creat child menu / Action menu -->
+        <menuitem action="act_open_country_origin_view" name="Country Of Origin" id="country_origin" parent="custom_sub_menu2"  sequence="2"/>  
+
+    </data>
+</openerp>        

@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data> 
+
+        <!-- Top menu -->
+        <menuitem name="LC Documents" id="custom_top_menu" />
+        <!-- Sub child menu -->
+        <menuitem name="LC Documents" id ="custom_sub_menu" parent="custom_top_menu"/>
+
+        <!--Import assets-->
+        <template id="assets_backend_for_packing_list" name="custom assets" inherit_id="web.assets_backend">
+                <xpath expr="." position="inside">
+                    <link rel="stylesheet" href="/lc_report_generator/static/src/css/style.css"/>
+                    <!-- <script type="text/javascript" src="/lc_report_generator/static/src/js//myscript.js"/> -->
+                </xpath>
+        </template>
+         <!-- inherit_id="web.assets_frontend" -->
+
+        <!-- commercial invoice generator start -->
+
+
+            <!-- <tree view start> -->
+            <record id="view_packing_list_tree" model="ir.ui.view">
+                <field name="name">packing_list.model.tree</field>
+                <field name="model">packing_list.model</field>
+                <field name="priority" eval="8" />
+                <field name="arch" type="xml">
+                    <tree string="Packing_List" default_order="id desc">
+                        <field name="name" />
+                        <field name="packing_list_created_date" />
+                        <field name="customer_name" />
+                        <field name="total_bags" />
+                        <field name="total_gross_weight" />
+                        <field name="proforma_invoice_uniq_id" />
+                        <field name="lc_num" />
+                    </tree>
+                </field>
+            </record>
+            <!-- <tree view end> -->
+
+            <!-- <form view start> -->
+            <record id="view_packing_list_form" model="ir.ui.view">
+                <field name="name">packing_list.form</field>
+                <field name="model">packing_list.model</field>
+                <field name="arch" type="xml">
+                    <form string="Commercial_Invoices">
+                        <header>
+                        </header>
+
+                        <sheet string="Packing_List">
+                            <h2 class="mt1 com_invoice_title">
+                                <span class="com_invoice_title_span">PACKING LIST</span>
+                            </h2>
+
+                            <div class="row">
+                                <div class="col-xs-7">
+                                    <group> 
+                                        <field name="name" on_change="onchange_commercial_invoice_id(name)"/>
+                                        <field name="commercial_invoice_no" invisible="1"/>
+                                        <field name="customer_name"/>
+                                        <field name="customer_full_address"/>
+                                        <field name="commodity"/>
+                                        <field name="delivery_form"/>
+                                        <!-- <field name="expected_delivery_date" on_change="onchange_expected_delivery_date(expected_delivery_date)"/> -->
+                                    </group>
+                                </div>
+                                <div class="col-xs-5">
+                                    <group>
+                                        <field name="packing_list_created_date" />
+                                    </group>
+                                </div>
+
+                                <!-- <table structure start> -->
+                                <div class="col-xs-12">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-default">
+                                            <tr>
+                                                <th class="text-center">Item</th>
+                                                <th class="text-center">No. of Bags</th>
+                                                <th class="text-center">Quantity in kgs.</th>
+                                                <th class="text-center">Gross Weight in kgs.</th>
+                                                <!-- <th class="text-center">Expected Delivery Date</th> -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <field name="ordered_products_name"  style='width:450px;'/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <field name="ordered_products_number_of_bags"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <field name="ordered_products_quantity"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <field name="gross_weights"/>
+                                                </td>
+                                                <!-- <td class="text-center">
+                                                    <field name="expected_delivery_date2"/>
+                                                </td> -->
+                                            </tr>
+                
+                                            <tr style='border: 1px solid #ededed !important;'>
+                                                <td class="text-center" style='border-right:none !important;'>
+                                                
+                                                </td>
+                                                <td  style='border:none !important;'>
+                                                    <field name="total_bags"/>      
+                                                </td>
+                                                <td  style='border:none !important;'>
+                                                                        
+                                                </td>              
+                                                <td class="text-center"  style='border:none !important;'>
+                                                    <field name="total_gross_weight"/>
+                                                </td>
+                                                <td class="text-center"  style='border:none !important;'>
+                                                    
+                                                </td>
+                                            </tr>        
+                                        </tbody>
+                                    </table>    
+                                </div>
+                                <!-- <table structure end> -->
+
+                                <div class="col-xs-12">
+                                    <p>Packing : Standard Bag Packing <field name="num_of_bags" class="oe_inline" nolabel="1"/>kgs./bag</p>
+                                    <p>Total Quantity : Gross Weight <field name="total_gross_weight2" class="oe_inline" nolabel="1"/> kgs./<field name="total_bags2" class="oe_inline" nolabel="1"/> Bags</p>
+
+                                    <p>Proforma Invoice No. : <field name="proforma_invoice_uniq_id" class="oe_inline" nolabel="1"/> dated <field name="proforma_invoice_created_date" class="oe_inline" nolabel="1"/></p> 
+
+                                    <p>L/C No. : <field name="lc_num" class="oe_inline" nolabel="1"/> dated <field name="lc_date" class="oe_inline" nolabel="1"/></p> 
+                                    <p>Remarks : This Letter of Credit is Issued against Export Sales Contact No.<field name="contact_no" class="oe_inline" nolabel="1"/> dated <field name="contact_no_date" class="oe_inline" nolabel="1"/></p>
+                                </div>    
+                                
+                                <!-- <last part start> -->
+                                <div class="col-xs-6">
+                                    <h3 class='text-center'>MARK</h3>
+                                    <div class='boder margin_top'>
+                                        <div class='padding_left padding_right'>
+                                            <p class='text-center'><span class='daynamic_value'><field name="customer_name2" class="oe_inline"/></span></p>
+                                            <p class='text-center'>L/C No: <span class='daynamic_value'><field name="lc_num2" class="oe_inline"/></span></p>
+                                            <p class='text-center'>Dated: <span class='daynamic_value'><field name="lc_date2" class="oe_inline"/></span></p>
+                                        </div>
+                                    </div>
+                                </div>    
+                                <div class="col-xs-6">
+                                    <p class='text-center' style='margin-top:90px;'>Authorized Signature</p>    
+                                </div>    
+                                <!-- <last part end> -->
+
+                            </div>
+                        </sheet>
+                    </form>
+                </field>
+            </record>            
+            <!-- <form view end> -->
+
+            <!-- <search start> -->
+            <record id="view_packing_list_search" model="ir.ui.view">
+                <field name="name">packing_list.model.search</field>
+                <field name="model">packing_list.model</field>
+                <field name="priority" eval="8" />
+                <field name="arch" type="xml">
+                    <search string="Commercial_Invoices">
+                        <field name="name" />
+                        <field name="packing_list_created_date" />
+                        <field name="customer_name" />
+                        <field name="customer_full_address" />
+                        <field name="commodity" />
+                        <field name="delivery_form" />
+                        <!-- <field name="expected_delivery_date" /> -->
+                        <field name="ordered_products_name" />
+                        <field name="ordered_products_number_of_bags" />
+                        <field name="ordered_products_quantity" />
+                        <field name="gross_weights" />
+                        <field name="total_gross_weight" />
+                        <field name="total_bags" />
+                        <field name="num_of_bags" />
+                        <field name="proforma_invoice_uniq_id" />
+                        <field name="lc_num" />
+                        <field name="lc_date" />
+                        <field name="contact_no" />
+                        <field name="contact_no_date" />
+                    </search>
+                </field>
+            </record>
+            <!-- <search end> -->
+
+            <!-- <act_window start> -->
+            <record id="act_open_packing_list_view" model="ir.actions.act_window">
+                <field name="name">Packing List</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">packing_list.model</field>
+                <field name="view_type">form</field>
+                <field name="view_mode">tree,form</field>
+                <field name="search_view_id" ref='view_packing_list_search'/>
+                <field name='domain'>[]</field>
+                <field name="context">{}</field>
+                <field name="help" type="html">
+                    <p class="oe_view_nocontent_create">
+                        Click here to creat Packing List
+                    </p>
+                </field>
+            </record>
+            <record model="ir.actions.act_window.view" id="act_open_packing_list_view_tree">
+                <field name="act_window_id" ref="act_open_packing_list_view" />
+                <field name="sequence" eval="10" />
+                <field name="view_mode">tree</field>
+                <field name="view_id" ref="view_packing_list_tree" />
+            </record>
+            <record model="ir.actions.act_window.view" id="act_open_packing_list_view_form">
+                <field name="act_window_id" ref="act_open_packing_list_view" />
+                <field name="sequence" eval="20" />
+                <field name="view_mode">form</field>
+                <field name="view_id" ref="view_packing_list_form" />
+            </record>
+            <!-- <act_window end> -->
+        <!-- commercial invoice generator end -->
+
+
+        <!-- Creat child menu / Action menu -->
+        <menuitem action="act_open_packing_list_view" name="Packing List" id="custom_child_menu4" parent="custom_sub_menu"  sequence="4"/> 
+
+        <!-- pdf report generate start-->
+        <report
+            id="report_of_packing_list" 
+            model="packing_list.model"
+            string="Packing List"
+            name="lc_report_generator.report_packing_list_report_view"
+            file="lc_report_generator.packing_list.model"
+            report_type="qweb-pdf"/>
+
+            <template id="report_packing_list_report_view">
+                    
+                <t t-call="report.external_layout" t-lang="en_US">              
+                    <t t-foreach="docs" t-as="o">
+                        <t>          
+                            <div class="page" style='margin-left:30px !important;'>
+                               <!-- < page content start> -->
+                                <div class="container">
+                                    <h4 class="text-center"><span style='border-bottom:2px solid #000;font-weight:bold;'>PACKING LIST</span>
+                                    </h4>
+                                </div>     
+
+                                <div class="row" style='margin-top:40px !important;'>
+                                    <div class="col-xs-3">
+                                        <p>Invoice No</p>
+                                    </div>
+                                    <div class="col-xs-1">
+                                        <p> :</p>        
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <p style='font-weight:bold;'><span t-field="o.name"/></p>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <p>Date  :  <span  style='font-weight:bold;' t-field="o.packing_list_created_date"/></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <p>Buyer</p>
+                                    </div>
+                                    <div class="col-xs-1">
+                                        <p> :</p>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <p style='font-weight:bold;'><span t-field="o.customer_name"/>,</p>
+                                        <p style='font-weight:bold;'><span t-field="o.customer_full_address"/>.</p>
+                                    </div>
+                                    <div class="col-xs-3"></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <p>Comodity</p>
+                                    </div>
+                                    <div class="col-xs-1">
+                                        <p> :</p>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <p style='font-weight:bold;'><span t-field="o.commodity"/>.</p>
+                                    </div>
+                                    <div class="col-xs-3"></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <p>Delivery From</p>
+                                    </div>
+                                    <div class="col-xs-1">
+                                        <p> :</p>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <p style='font-weight:bold;'><span t-field="o.delivery_form"/>.</p>
+                                    </div>
+                                    <div class="col-xs-3"></div>
+                                </div>
+
+                                <!-- <div class="row">
+                                    <div class="col-xs-3">
+                                        <p>Expected Delivery Date</p>
+                                    </div>
+                                    <div class="col-xs-1">
+                                        <p> :</p>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <p><span t-field="o.expected_delivery_date"/>.</p>
+                                    </div>
+                                    <div class="col-xs-3"></div>
+                                </div> -->
+
+                                <!-- <table start>-->
+                                <div class='row'>
+                                    <div class="col-xs-12">
+                                        <table class="table table-bordered">
+                                            <thead class="thead-default">
+                                                <tr>
+                                                    <th class="text-center">Item</th>
+                                                    <th class="text-center">No. of Bags</th>
+                                                    <th class="text-center">Quantity in kgs.</th>
+                                                    <th class="text-center">Gross Weight in kgs.</th>
+                                                    <!-- <th class="text-center">Expected Delivery Date</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <span t-field="o.ordered_products_name"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-field="o.ordered_products_number_of_bags"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-field="o.ordered_products_quantity"/>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-field="o.gross_weights"/>
+                                                    </td>
+                                                    <!-- <td class="text-center">
+                                                        <span t-field="o.expected_delivery_date2"/>
+                                                    </td> -->
+                                                </tr>
+                            
+                                                <tr style='border: 1px solid #ededed !important;'>
+                                                    <td class="text-center" style='border-right:none !important;'>
+                                                    
+                                                    </td>
+                                                    <td  style='border:none !important;' class='text-center'>
+                                                        <span t-field="o.total_bags"/>      
+                                                    </td>
+                                                    <td  style='border:none !important;'>
+                                                                            
+                                                    </td>              
+                                                    <td class="text-center"  style='border:none !important;'>
+                                                        <span t-field="o.total_gross_weight"/>
+                                                    </td>
+                                                    <!-- <td class="text-center"  style='border:none !important;'>
+                                                        
+                                                    </td> -->
+                                                </tr>        
+                                            </tbody>
+                                        </table>    
+                                    </div>
+                                </div>        
+                                <!-- <table end>-->
+
+                                <div class='row'>
+                                    <div class="col-xs-12">
+
+                                            <div class="col-xs-3">
+                                                <p>Packing</p>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <p> : </p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <p style='font-weight:bold;'>Standard Bag Packing <span t-field="o.num_of_bags"/>kgs./bag </p>
+                                            </div>
+
+                                            <div class="col-xs-3">
+                                                <p>Total Quantity</p>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <p> : </p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <p style='font-weight:bold;'>Gross Weight <span t-field="o.total_gross_weight"/> kgs./<span t-field="o.total_bags2"/> Bags</p>
+                                            </div>
+
+                                            <div class="col-xs-3">
+                                                <p>Proforma Invoice No.</p>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <p> : </p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <p style='font-weight:bold;'><span t-field="o.proforma_invoice_uniq_id"/> dated <span t-field="o.proforma_invoice_created_date"/></p>
+                                            </div>
+
+                                            <div class="col-xs-3">
+                                                <p>L/C No.</p>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <p> : </p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <p style='font-weight:bold;'><span t-field="o.lc_num" /> dated <span t-field="o.lc_date"/></p>
+                                            </div>
+
+
+                                            <div class="col-xs-3">
+                                                <p>Remarks</p>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <p> : </p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <p style='font-weight:bold;'>This Letter of Credit is Issued against Export Sales Contact No.<span t-field="o.contact_no" /> dated <span t-field="o.contact_no_date" /></p>
+                                            </div>
+                                    </div>
+
+                                    <div class="col-xs-6" style='margin-top:20px;margin-bottom:20px;'>
+                                            <p class="text-center"><span style='font-weight:bold;'>Mark</span></p>
+                                            <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12' style='border:1px solid #000; padding:0px !important;margin-top:5px;'>
+                                                    <p class="text-center" style="margin-bottom:0px !important;"><span style='font-weight:bold;margin-left:10px;'><span t-field="o.customer_name2"/></span></p>
+    
+                                                    <p class="text-center" style="margin-bottom:0px !important;"><span style='font-weight:bold;margin-left:10px;'>L/C No : <span t-field="o.lc_num2"/></span></p>
+    
+                                                    <p class="text-center" style="margin-bottom:0px !important;"><span style='font-weight:bold;margin-left:10px;'>Dated : <span t-field="o.lc_date2"/></span></p>
+                                            </div>
+                                    </div>
+                                    <div class="col-xs-6" style='margin-top:20px;margin-bottom:20px;'>
+                                        <p style='visibility:hidden;'>sdfds</p>
+                                        <p style='visibility:hidden;'>sdfsd</p>
+                                        <p class="text-center "><span style='font-weight:bold;'>Authorized Signature</span></p>
+                                    </div>
+                                </div>
+                               <!-- < page content end> -->     
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </template>                
+        <!-- pdf report generate end-->
+
+    </data>
+</openerp>         
+

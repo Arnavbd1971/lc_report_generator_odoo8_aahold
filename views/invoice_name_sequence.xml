@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+        <!-- <record model="ir.sequence.type" id="seq_type_invoice_num">
+            <field name="name">Invoice Numbers</field>
+            <field name="code">commercial_invoice.model</field>
+        </record> -->
+
+        <record model="ir.sequence.type" id="seq_type_commercial_invoice_num">
+            <field name="name">Invoice Numbers</field>
+            <field name="code">commercial_invoice_report_num</field>
+        </record>
+        <record model="ir.sequence" id="seq_commercial_invoice_num">
+            <field name="name">Invoice Numbers</field>
+            <field name="code">commercial_invoice_report_num</field>
+            <field name="prefix">AAYML-%(year)s/</field>
+            <field name="padding">5</field>
+        </record>
+
+
+        <record model="ir.sequence.type" id="seq_type_commercial_invoice_num2">
+            <field name="name">Only Num</field>
+            <field name="code">only_num</field>
+        </record>
+        <record model="ir.sequence" id="seq_commercial_invoice_num2">
+            <field name="name">Only Num</field>
+            <field name="code">only_num</field>
+            <field name="prefix"></field>
+            <field name="padding">5</field>
+        </record>
+
+
+        <record model="ir.sequence.type" id="seq_type_proforma_invoice_num">
+            <field name="name">Proforma Invoice Numbers</field>
+            <field name="code">proforma_invoice.model</field>
+        </record>
+        <record model="ir.sequence" id="seq_proforma_invoice_num">
+            <field name="name">Proforma Invoice Numbers</field>
+            <field name="code">proforma_invoice.model</field>
+            <field name="prefix">P/I.%(year)s.</field>
+            <field name="padding">5</field>
+        </record>
+
+        <!-- <record model="ir.sequence" id="seq_beneficiary_certificate_num">
+            <field name="name">Beneficiary Certificate Numbers</field>
+            <field name="code">beneficiary_certificate.model</field>
+            <field name="prefix">AAYML-CERT/%(year)s</field>
+            <field name="padding" style='display:none;'>0</field>
+        </record> -->
+    </data>
+</openerp>

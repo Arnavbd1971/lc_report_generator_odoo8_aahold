@@ -1,0 +1,40 @@
+.com_invoice_title{
+ text-align: center;
+}
+
+.com_invoice_title_span{
+    border-bottom: 2px solid #000000;
+}
+
+.boder{
+    border: 1px solid #000000;
+    
+}
+
+.padding_left{
+    padding-left: 5px;
+}
+
+.padding_right{
+    padding-right: 5px;
+}
+
+.margin_top{
+    margin-top: 5px;
+}
+
+.daynamic_value{
+    font-weight: bold;
+}
+
+.openerp .oe_form .oe_form_field {
+    margin-top: -2px;
+}
+
+
+
+/* This css for signature upload xml file */
+
+.openerp .oe_form_editable .oe_form .oe_form_field_date input {
+    width: 100%;
+}

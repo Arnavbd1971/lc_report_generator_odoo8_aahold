@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data> 
+
+        <!-- Top menu -->
+        <menuitem name="LC Documents" id="custom_top_menu" />
+        <!-- Sub child menu -->
+        <menuitem name="LC Documents" id ="custom_sub_menu" parent="custom_top_menu"/>
+
+        <!--Import assets-->
+        <template id="assets_backend" name="custom assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/lc_report_generator/static/src/css/style.css"/>
+                <!-- <script type="text/javascript" src="/lc_report_generator/static/src/js//myscript.js"/> -->
+            </xpath>
+        </template>
+        <!-- inherit_id="web.assets_frontend" -->
+        <!--Import assets-->
+
+        <!-- truck challan start -->
+
+        <!-- <tree view start> -->
+            <record id="view_truck_challan_tree" model="ir.ui.view">
+                <field name="name">truck_challan.model.tree</field>
+                <field name="model">truck_challan.model</field>
+                <field name="priority" eval="8" />
+                <field name="arch" type="xml">
+                    <tree string="Truck_Challan" default_order="id desc">
+                        <field name="name" />
+                        <field name="truck_challan_created_date" />
+                        <field name="commercial_invoice_id" />
+                        <field name="supplier_name" />
+                        <field name="customer_name" />
+                        <field name="truck_no" />
+                        <field name="lc_num" />
+                    </tree>
+                </field>
+            </record>
+        <!-- <tree view end> -->
+
+        <!-- <form view start> -->
+            <record id="view_truck_challan_form" model="ir.ui.view">
+                <field name="name">truck_challan.form</field>
+                <field name="model">truck_challan.model</field>
+                <field name="arch" type="xml">
+                    <form string="Truck_Challan">
+                        <header>
+                        </header>
+        
+                        <sheet string="Truck_Challan">
+                            <h2 class="mt1 com_invoice_title">
+                                <span class="com_invoice_title_span">TRUCK CHALLAN/RECEIPT</span>
+                            </h2> 
+                             
+                             <div class="row">
+                                <div class="col-xs-7">
+                                    <group>  
+                                        <field name="commercial_invoice_id" on_change="onchange_commercial_invoice_id(commercial_invoice_id)"/>
+                                        <field name="name"/>
+                                        <field name="supplier_name"/>
+                                        <field name="supplier_address"/>
+                                    </group>
+
+                                </div>
+                                <div class="col-xs-5"> 
+                                    <group> 
+                                        <field name="truck_challan_created_date"/>
+                                    </group>
+                                </div>
+
+                                <div class="col-xs-6">
+                                    <h3 style="text-weight:bold; margin-top:15px;">
+                                        <span style="border-bottom:2px solid #000;">Consigned to the Order of: </span>
+                                    </h3>
+                                    <group>
+                                        <field name="bank_name"/>
+                                        <field name="bank_brunch"/>
+                                        <field name="bank_addr"/>
+                                    </group>    
+                                </div>
+                                <div class="col-xs-6">
+                                    <h3 style="text-weight:bold; margin-top:15px;">
+                                        <span style="border-bottom:2px solid #000;">Notify Party: </span>
+                                    </h3>
+                                    <group>
+                                        <field name="customer_name"/>
+                                        <field name="customer_full_address"/>
+                                    </group>
+                                </div>
+
+                                <!-- <table structure start> -->
+                                <div class="col-xs-12">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-default">
+                                            <tr>
+                                                <th class="text-center">Item</th>
+                                                <th class="text-center">No. of Bags</th>
+                                                <th class="text-center">Quantity in kgs.</th>
+                                                <!-- <th class="text-center">Expected Delivery Date</th> -->
+                                                <th class="text-center">Truck No.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <field name="ordered_products_name"  style='width:450px;'/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <field name="ordered_products_number_of_bags"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <field name="ordered_products_quantity"/>
+                                                </td>
+                                                <!-- <td class="text-center">
+                                                    <field name="expected_delivery_date"/>
+                                                </td> -->
+                                                <td class="text-center">
+                                                    <field name="truck_no"/>
+                                                </td>
+                                            </tr>
+                            
+                                            <tr style='border: 1px solid #ededed !important;'>
+                                                <td class="text-center" style='border-right:no!important;'>
+                                                            
+                                                </td>
+                                                <td  style='border:none !important;'>
+                                                    <field name="total_bags"/>      
+                                                </td>
+                                                <td  style='border:none !important;'>
+                                                    <field name="ordered_products_total_quantity"/>                                
+                                                </td>              
+                                                <td class="text-center"  style='border:none !important'>
+                                                                
+                                                </td>
+                                                <td class="text-center"  style='border:none !important'>
+                                                                
+                                                </td>
+                                            </tr>        
+                                        </tbody>
+                                    </table>    
+                                </div>
+                                <!-- <table structure end> -->
+
+                                <div class="col-xs-12">
+                                        <p>Total Quantity : Gross Weight <field name="gross_weight" class="oe_inline" nolabel="1"/> kgs./<field name="total_bags2" class="oe_inline" nolabel="1"/> Bags</p>
+                                        
+                                        <p>Proforma Invoice No. : <field name="proforma_invoice_uniq_id" class="oe_inline" nolabel="1"/> dated <field name="proforma_invoice_created_date" class="oe_inline" nolabel="1"/></p> 
+                                        
+                                        <p>L/C No. : <field name="lc_num" class="oe_inline" nolabel="1"/> dated <field name="lc_date" class="oe_inline" nolabel="1"/></p> 
+                                                                            
+                                        <p>Remarks : This Letter of Credit is Issued against Export Sales Contact No.<field name="contact_no" class="oe_inline" nolabel="1"/> dated <field name="contact_no_date" class="oe_inline" nolabel="1"/></p>  
+                                        
+                                        <p>Freight : <field name="freight" class="oe_inline" nolabel="1"/></p>
+                                </div>
+                                
+                                <!-- <last part start> -->
+                                <div class="col-xs-6">
+                                                
+                                </div>    
+                                <div class="col-xs-6">
+                                    <p class='text-center' style='margin-top:90px;'>Authorized Signature</p>    
+                                </div>    
+                                <!-- <last part end> -->
+
+                             </div>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+        <!-- <form view start> -->  
+
+        <!-- <search start> -->
+            <record id="view_truck_challan_search" model="ir.ui.view">
+                <field name="name">truck_challan.model.search</field>
+                <field name="model">truck_challan.model</field>
+                <field name="priority" eval="8" />
+                <field name="arch" type="xml">
+                    <search string="Truck_Challan">
+                        <field name="name" />
+                        <field name="commercial_invoice_id" />
+                        <field name="truck_challan_created_date" />
+                        <field name="supplier_name" />
+                        <field name="supplier_address" />
+                        <field name="bank_name" />
+                        <field name="bank_brunch" />
+                        <field name="bank_addr" />
+                        <field name="customer_name" />
+                        <field name="customer_full_address" />
+                        <field name="ordered_products_name" />
+                        <field name="ordered_products_number_of_bags" />
+                        <field name="ordered_products_quantity" />
+                        <!-- <field name="expected_delivery_date" /> -->
+                        <field name="truck_no" />
+                        <field name="total_bags" />
+                        <field name="ordered_products_total_quantity" />
+                        <field name="gross_weight" />
+                        <field name="proforma_invoice_uniq_id" />
+                        <field name="proforma_invoice_created_date" />
+                        <field name="lc_num" />
+                        <field name="lc_date" />
+                        <field name="contact_no" />
+                        <field name="contact_no_date" />
+                        <field name="freight" />
+                    </search>
+                </field>
+            </record>
+            <!-- <search end> -->                   
+
+
+                <!-- <act_window start> -->
+                <record id="act_open_truck_challan_view" model="ir.actions.act_window">
+                        <field name="name">Truck Challan</field>
+                        <field name="type">ir.actions.act_window</field>
+                        <field name="res_model">truck_challan.model</field>
+                        <field name="view_type">form</field>
+                        <field name="view_mode">tree,form</field>
+                        <field name="search_view_id" ref='view_truck_challan_search'/>
+                        <field name='domain'>[]</field>
+                        <field name="context">{}</field>
+                        <field name="help" type="html">
+                            <p class="oe_view_nocontent_create">
+                                Click here to creat Truck Challan
+                            </p>
+                        </field>
+                    </record>
+                    <record model="ir.actions.act_window.view" id="act_open_truck_challan_view_tree">
+                        <field name="act_window_id" ref="act_open_truck_challan_view" />
+                        <field name="sequence" eval="10" />
+                        <field name="view_mode">tree</field>
+                        <field name="view_id" ref="view_truck_challan_tree" />
+                    </record>
+                    <record model="ir.actions.act_window.view" id="act_open_truck_challan_view_form">
+                        <field name="act_window_id" ref="act_open_truck_challan_view" />
+                        <field name="sequence" eval="20" />
+                        <field name="view_mode">form</field>
+                        <field name="view_id" ref="view_truck_challan_form" />
+                    </record>
+                    <!-- <act_window end> -->
+        <!-- truck challan start -->
+
+        <menuitem action="act_open_truck_challan_view" name="Truck Challan" id="custom_child_menu5" parent="custom_sub_menu"  sequence="5"/>
+
+        <!-- pdf report generate start-->
+        <report
+            id="report_of_truck_challan" 
+            model="truck_challan.model"
+            string="Truck Challan"
+            name="lc_report_generator.report_truck_challan_report_view"
+            file="lc_report_generator.truck_challan.model"
+            report_type="qweb-pdf"/>
+
+        <template id="report_truck_challan_report_view">
+                    
+                <t t-call="report.external_layout" t-lang="en_US">              
+                    <t t-foreach="docs" t-as="o">
+                        <t>          
+                            <div class="page" style='margin-left:30px !important;'>
+                               <!-- < page content start> -->
+                                <div class="container">
+                                    <h4 class="text-center"><span style='border-bottom:2px solid #000;font-weight:bold;'>TRUCK CHALLAN/RECEIPT</span>
+                                    </h4>
+                                </div>
+                                
+                                <div class="row" style='margin-top:40px !important;'>
+                                    <div class="col-xs-3">
+                                        <p>Truck Receipt No</p>
+                                    </div>
+                                    <div class="col-xs-1">
+                                        <p> :</p>        
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <p style='font-weight:bold;'><span t-field="o.name"/></p>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <p style='font-weight:bold;'>Date : <span t-field="o.truck_challan_created_date"/></p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <p>Supplier</p>
+                                    </div>
+                                    <div class="col-xs-1">
+                                        <p> :</p>
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <p style='font-weight:bold;'><span t-field="o.supplier_name"/>,</p>
+                                        <p style='font-weight:bold;'><span t-field="o.supplier_address"/>.</p>
+                                    </div>
+                                    <div class="col-xs-3"></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <h4 style="text-weight:bold; margin-top:15px;">
+                                            <span style="border-bottom:2px solid #000;">Consigned to the Order of: </span>
+                                        </h4>
+                                        <p style='font-weight:bold;'><span t-field="o.bank_name"/></p>
+                                        <p style='font-weight:bold;'><span t-field="o.bank_brunch"/>, <span t-field="o.bank_addr"/></p>     
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <h4 style="text-weight:bold; margin-top:15px;">
+                                            <span style="border-bottom:2px solid #000;">Notify Party: </span>
+                                        </h4>
+                                        <p style='font-weight:bold;'><span t-field="o.customer_name"/></p>
+                                        <p style='font-weight:bold;'><span t-field="o.customer_full_address"/>,</p>
+                                    </div>
+                                </div>
+
+
+                                <!-- <table structure start> -->
+                                <div class="row" style='margin-top:20px'>    
+                                        <div class="col-xs-12">
+                                            <table class="table table-bordered">
+                                                <thead class="thead-default">
+                                                    <tr>
+                                                        <th class="text-center">Item</th>
+                                                        <th class="text-center">No. of Bags</th>
+                                                        <th class="text-center">Quantity in kgs.</th>
+                                                        <!-- <th class="text-center">Expected Delivery Date</th> -->
+                                                        <th class="text-center">Truck No.</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <span t-field="o.ordered_products_name"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span t-field="o.ordered_products_number_of_bags"/>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span t-field="o.ordered_products_quantity"/>
+                                                        </td>
+                                                        <!-- <td class="text-center">
+                                                            <span t-field="o.expected_delivery_date"/>
+                                                        </td> -->
+                                                        <td class="text-center">
+                                                            <span t-field="o.truck_no"/>
+                                                        </td>
+                                                    </tr>
+                                    
+                                                    <tr style='border: 1px solid #ededed !important;'>
+                                                        <td class="text-center" style='border-right:no!important;'>
+                                                                    
+                                                        </td>
+                                                        <td class='text-center'  style='border:none !important;'>
+                                                            <span t-field="o.total_bags"/>      
+                                                        </td>
+                                                        <td  class='text-center' style='border:none !important;'>
+                                                            <span t-field="o.ordered_products_total_quantity"/>                                
+                                                        </td>              
+                                                        <td class="text-center"  style='border:none !important'>
+                                                                        
+                                                        </td>
+                                                        <!-- <td class="text-center"  style='border:none !important'>
+                                                                        
+                                                        </td> -->
+                                                    </tr>        
+                                                </tbody>
+                                            </table>    
+                                        </div>
+                                    </div>
+                                    <!-- <table structure end> -->
+                                    <div class="col-xs-12">
+                                            <div class="col-xs-3">
+                                                <p>Total Quantity</p>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <p> : </p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <p style='font-weight:bold;'>Gross Weight <span t-field="o.gross_weight"/> kgs./<span t-field="o.total_bags2"/> Bags</p>
+                                            </div>
+
+                                            <div class="col-xs-3">
+                                                <p>Proforma Invoice No.</p>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <p> : </p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <p style='font-weight:bold;'><span t-field="o.proforma_invoice_uniq_id" /> dated <span t-field="o.proforma_invoice_created_date" /></p>
+                                            </div>
+
+                                            <div class="col-xs-3">
+                                                <p>L/C No.</p>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <p> : </p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <p style='font-weight:bold;'><span t-field="o.lc_num" /> dated <span t-field="o.lc_date"/></p>
+                                            </div>
+
+                                            <div class="col-xs-3">
+                                                <p>Remarks.</p>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <p> : </p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <p style='font-weight:bold;'>This Letter of Credit is Issued against Export Sales Contact No.<span t-field="o.contact_no"/> dated <span t-field="o.contact_no_date"/></p>
+                                            </div>
+
+                                            <div class="col-xs-3">
+                                                <p>Freight</p>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                <p> : </p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <p style='font-weight:bold;'><span t-field="o.freight" /></p>
+                                            </div>
+                                    </div>
+                                    
+                                    <!-- <last part start> -->
+                                    <div class="col-xs-6">
+                                                    
+                                    </div>    
+                                    <div class="col-xs-6">
+                                        <p class='text-center' style='margin-top:90px; font-weight:bold;'>Authorized Signature</p>    
+                                    </div>    
+
+                                <!-- < page content end> -->
+                            </div>
+                        </t>
+                    </t>
+                </t>
+        </template>                        
+        <!-- pdf report generate end--> 
+
+    </data>
+</openerp>        
