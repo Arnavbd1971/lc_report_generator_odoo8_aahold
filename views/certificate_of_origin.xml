@@ -66,7 +66,7 @@
                                 <div class="row">
                                     <div class="col-xs-12" style='margin-top:30px;'>
                                         <p>
-                                            We hereby declare that the <field name="supplied_product" class='oe_inline' nolabel="1"/> supplied L/C No. <field name="lc_num" class='oe_inline' nolabel="1"/> dated <field name="lc_date" class='oe_inline' nolabel="1"/> against Export Sales Contact No. <field name="contact_no" class='oe_inline' nolabel="1"/> dated <field name="contact_no_date" class='oe_inline' nolabel="1"/> under our Commercial Invoice No. <field name="commercial_invoice_no" class='oe_inline' nolabel="1"/> dated <field name="commercial_invoice_created_date" class='oe_inline' nolabel="1"/> Delivery Challan No. <field name="delivery_challan_no" class='oe_inline' nolabel="1"/> dated <field name="delivery_challan_created_date" class='oe_inline' nolabel="1"/> is of <field name="country_of_origin" class='oe_inline' nolabel="1"/> origin which have been manufactured in our factory at <field name="dealer_factory_name" class='oe_inline' nolabel="1"/>
+                                            We hereby declare that the <field name="supplied_product" class='oe_inline' nolabel="1"/> supplied L/C No. <field name="lc_num" class='oe_inline' nolabel="1"/> dated <field name="lc_date" class='oe_inline' nolabel="1"/> against Export Sales Contact No. <field name="contact_no" class='oe_inline' nolabel="1"/>  under our Commercial Invoice No. <field name="commercial_invoice_no" class='oe_inline' nolabel="1"/> dated <field name="commercial_invoice_created_date" class='oe_inline' nolabel="1"/> Delivery Challan No. <field name="delivery_challan_no" class='oe_inline' nolabel="1"/> dated <field name="delivery_challan_created_date" class='oe_inline' nolabel="1"/> is of <field name="country_of_origin" class='oe_inline' nolabel="1"/> origin which have been manufactured in our factory at <field name="dealer_factory_name" class='oe_inline' nolabel="1"/>
                                         </p>
                                     </div>
 
@@ -96,7 +96,6 @@
                         <field name="lc_num" />
                         <field name="lc_date" />
                         <field name="contact_no" />
-                        <field name="contact_no_date" />
                         <field name="commercial_invoice_no" />
                         <field name="commercial_invoice_created_date" />
                         <field name="delivery_challan_no" />
@@ -178,7 +177,7 @@
                                 <div class="row">
                                     <div class="col-xs-12" style='margin-top:30px;'>
                                         <p>
-                                            We hereby declare that the <span style='font-weight:bold;'><span t-field="o.supplied_product" /></span> supplied L/C No. <span style='font-weight:bold;'><span t-field="o.lc_num" /> dated <span t-field="o.lc_date" /></span> against Export Sales Contact No. <span style='font-weight:bold;'><span t-field="o.contact_no" /> dated <span t-field="o.contact_no_date" /></span> under our Commercial Invoice No. <span style='font-weight:bold;'><span t-field="o.commercial_invoice_no" /> dated <span t-field="o.commercial_invoice_created_date" /></span> Delivery Challan No. <span style='font-weight:bold;'><span t-field="o.delivery_challan_no" /> dated <span t-field="o.delivery_challan_created_date" /></span> is of <span style='font-weight:bold;'><span t-field="o.country_of_origin" /></span> origin which have been manufactured in our factory at <span style='font-weight:bold;'><span t-field="o.dealer_factory_name" /></span>
+                                            We hereby declare that the <span style='font-weight:bold;'><span t-field="o.supplied_product" /></span> supplied L/C No. <span style='font-weight:bold;'><span t-field="o.lc_num" /> dated <span t-field="o.lc_date" /></span> against Export Sales Contact No. <span style='font-weight:bold;'><span t-field="o.contact_no" /> </span> under our Commercial Invoice No. <span style='font-weight:bold;'><span t-field="o.commercial_invoice_no" /> dated <span t-field="o.commercial_invoice_created_date" /></span> Delivery Challan No. <span style='font-weight:bold;'><span t-field="o.delivery_challan_no" /> dated <span t-field="o.delivery_challan_created_date" /></span> is of <span style='font-weight:bold;'><span t-field="o.country_of_origin" /></span> origin which have been manufactured in our factory at <span style='font-weight:bold;'><span t-field="o.dealer_factory_name" /></span>
                                         </p>
                                     </div>
 

@@ -37,9 +37,8 @@ class BillOfExchangeModel(models.Model):
     lc_bank_address = fields.Char(string='lc_bank_address' , required=True)
 
     contact_no = fields.Char(string='contact_no', required=True)
-    contact_no_date = fields.Date(string='contact_no_date', required=True)
 
-    company_name = fields.Many2one('beneficiary_full_name.model',string='Company name', required=True)
+    company_name = fields.Char(string='Company name', required=True)
 
     
 
@@ -53,23 +52,18 @@ class BillOfExchangeModel(models.Model):
             cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
             proforma_invoice_id = all_data_of_commercial_invoice.proforma_invoice_id
             contact_no = all_data_of_commercial_invoice.contact_no
-            contact_no_date = all_data_of_commercial_invoice.contact_no_date
+
+            sale_order_id = self.pool.get('sale.order').search(cr, uid,[('name','=',proforma_invoice_id),],context=context)
+            sale_order_data_list = self.pool.get('sale.order').read(cr, uid,sale_order_id,['beneficiary_bank_name2', 'beneficiary_bank_branch2','beneficiary_bank_address','swift_code','benificiary_name'], context=context)
+            beneficiary_bank_name = self.split_from_list(sale_order_data_list,'beneficiary_bank_name2')
+            beneficiary_bank_branch = self.split_from_list(sale_order_data_list,'beneficiary_bank_branch2')
+            beneficiary_bank_address = self.split_from_list(sale_order_data_list,'beneficiary_bank_address')
+            swift_code = self.split_from_list(sale_order_data_list,'swift_code')
+
+            company_name = self.split_from_list(sale_order_data_list,'benificiary_name')
 
 
-            all_data_obj_of_PI = self.pool.get('proforma_invoice.model').browse(cr, uid,proforma_invoice_id.id,context=context)
-            beneficiary_bank_name_id = all_data_obj_of_PI.beneficiary_bank_name
-            all_data_obj_of_beneficiary_bank_names = self.pool.get('bank_names.model').browse(cr, uid,beneficiary_bank_name_id.id,context=context)
-            beneficiary_bank_name = all_data_obj_of_beneficiary_bank_names.name
-
-            beneficiary_bank_branch_id = all_data_obj_of_PI.beneficiary_bank_branch
-            all_data_obj_of_beneficiary_bank_branch = self.pool.get('bank_branch.model').browse(cr, uid,beneficiary_bank_branch_id.id,context=context)
-            beneficiary_bank_branch = all_data_obj_of_beneficiary_bank_branch.name
-
-            beneficiary_bank_address = all_data_obj_of_PI.beneficiary_bank_address
-            swift_code = all_data_obj_of_PI.swift_code
-
-
-            service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id,context=context)
+            service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id.id,context=context)
             service_obj2= self.pool.get('res.partner').browse(cr, uid,service_obj.partner_id.id,context=context)
             service_obj3= self.pool.get('res.country').browse(cr, uid,service_obj2.country_id.id,context=context)
             currency_symbol= self.pool.get('res.currency').browse(cr, uid,service_obj.currency_id.id,context=context)
@@ -92,7 +86,7 @@ class BillOfExchangeModel(models.Model):
 
 
 
-            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id),],context=context)
+            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id.id),],context=context)
 
             invoice_lines_product_amount = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['price_subtotal'], context=context)
 
@@ -121,12 +115,19 @@ class BillOfExchangeModel(models.Model):
                 'lc_bank_brunch':lc_bank_branch,
                 'lc_bank_address':lc_bank_address,
                 'contact_no':contact_no, 
-                'contact_no_date':contact_no_date,
+                'company_name':company_name,
             }}
 
         else:
             res={}  
         return res     
+
+    def split_from_list(self,list_name,data_field):
+        save = []
+        for r in list_name:
+            save.append(r[data_field])
+            combine = '\n'.join([str(i) for i in save])
+        return combine
 
 
 

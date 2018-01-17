@@ -149,7 +149,7 @@
                                         
                                         <p>L/C No. : <field name="lc_num" class="oe_inline" nolabel="1"/> dated <field name="lc_date" class="oe_inline" nolabel="1"/></p> 
                                                                             
-                                        <p>Remarks : This Letter of Credit is Issued against Export Sales Contact No.<field name="contact_no" class="oe_inline" nolabel="1"/> dated <field name="contact_no_date" class="oe_inline" nolabel="1"/></p>  
+                                        <p>Remarks : This Letter of Credit is Issued against Export Sales Contact No.<field name="contact_no" class="oe_inline" nolabel="1"/> </p>  
                                         
                                         <p>Freight : <field name="freight" class="oe_inline" nolabel="1"/></p>
                                 </div>
@@ -200,7 +200,6 @@
                         <field name="lc_num" />
                         <field name="lc_date" />
                         <field name="contact_no" />
-                        <field name="contact_no_date" />
                         <field name="freight" />
                     </search>
                 </field>
@@ -401,7 +400,7 @@
                                                 <p> : </p>
                                             </div>
                                             <div class="col-xs-8">
-                                                <p style='font-weight:bold;'>This Letter of Credit is Issued against Export Sales Contact No.<span t-field="o.contact_no"/> dated <span t-field="o.contact_no_date"/></p>
+                                                <p style='font-weight:bold;'>This Letter of Credit is Issued against Export Sales Contact No.<span t-field="o.contact_no"/> </p>
                                             </div>
 
                                             <div class="col-xs-3">

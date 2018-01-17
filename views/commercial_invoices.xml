@@ -60,7 +60,7 @@
                                         </h3>
                                         <group>
                                             <field name='customer_invoice_id' on_change="onchange_customer_invoice_id(customer_invoice_id)"/>
-                                            <!-- <field name="customer_invoice_id"  invisible="1"/> -->
+                                            <field name="num_of_bags"  invisible="1"/>
                                             <field name="customer_name"/>
                                             <field name="customer_full_address"/> 
                                         </group>

@@ -51,17 +51,15 @@ class ForwardingLetterModel(models.Model):
             cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
             proforma_invoice_id = all_data_of_commercial_invoice.proforma_invoice_id
 
-            all_data_obj_of_PI = self.pool.get('proforma_invoice.model').browse(cr, uid,proforma_invoice_id.id,context=context)
-            beneficiary_bank_name_id = all_data_obj_of_PI.beneficiary_bank_name
-            all_data_obj_of_beneficiary_bank_names = self.pool.get('bank_names.model').browse(cr, uid,beneficiary_bank_name_id.id,context=context)
-            beneficiary_bank_name = all_data_obj_of_beneficiary_bank_names.name
-            beneficiary_bank_branch_id = all_data_obj_of_PI.beneficiary_bank_branch
-            all_data_obj_of_beneficiary_bank_branch = self.pool.get('bank_branch.model').browse(cr, uid,beneficiary_bank_branch_id.id,context=context)
-            beneficiary_bank_branch = all_data_obj_of_beneficiary_bank_branch.name
-            beneficiary_bank_address = all_data_obj_of_PI.beneficiary_bank_address
-            swift_code = all_data_obj_of_PI.swift_code
+            sale_order_id = self.pool.get('sale.order').search(cr, uid,[('name','=',proforma_invoice_id),],context=context)
+            sale_order_data_list = self.pool.get('sale.order').read(cr, uid,sale_order_id,['beneficiary_bank_name2', 'beneficiary_bank_branch2','beneficiary_bank_address','swift_code'], context=context)
+            beneficiary_bank_name = self.split_from_list(sale_order_data_list,'beneficiary_bank_name2')
+            beneficiary_bank_branch = self.split_from_list(sale_order_data_list,'beneficiary_bank_branch2')
+            beneficiary_bank_address = self.split_from_list(sale_order_data_list,'beneficiary_bank_address')
+            swift_code = self.split_from_list(sale_order_data_list,'swift_code')
 
-            service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id,context=context)
+            
+            service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id.id,context=context)
             currency_symbol= self.pool.get('res.currency').browse(cr, uid,service_obj.currency_id.id,context=context)
 
 
@@ -79,7 +77,7 @@ class ForwardingLetterModel(models.Model):
 
 
 
-            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id),],context=context)
+            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id.id),],context=context)
 
             invoice_lines_product_amount = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['price_subtotal'], context=context)
 
@@ -109,6 +107,13 @@ class ForwardingLetterModel(models.Model):
         else:
             res={}  
         return res         
+
+    def split_from_list(self,list_name,data_field):
+        save = []
+        for r in list_name:
+            save.append(r[data_field])
+            combine = '\n'.join([str(i) for i in save])
+        return combine 
 
     def products_total_amount(self,invoice_lines_product_amount):
         total_amount= []

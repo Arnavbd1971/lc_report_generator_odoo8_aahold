@@ -28,7 +28,6 @@ class PackingListModel(models.Model):
     lc_num = fields.Char(string='L/C No.', required=True)
     lc_date = fields.Date(string='L/C Dated', required=True)
     contact_no = fields.Char(string='contact no', required=True)
-    contact_no_date = fields.Date(string='contact_no_date', required=True)
 
 
 
@@ -44,22 +43,20 @@ class PackingListModel(models.Model):
             cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
             seq_num = all_data_of_commercial_invoice.only_seq_num
             proforma_invoice_id = all_data_of_commercial_invoice.proforma_invoice_id
-            proforma_invoice_uniq_id = all_data_of_commercial_invoice.proforma_invoice_id2
+            proforma_invoice_uniq_id = all_data_of_commercial_invoice.proforma_invoice_id
             proforma_invoice_created_date= all_data_of_commercial_invoice.proforma_invoice_created_date
             lc_num = all_data_of_commercial_invoice.lc_num   
             contact_no= all_data_of_commercial_invoice.contact_no
-            contact_no_date= all_data_of_commercial_invoice.contact_no_date
 
             all_data_obj_of_LC = self.pool.get('lc_informations.model').browse(cr, uid,lc_num.id,context=context)
             lc_num = all_data_obj_of_LC.name
             lc_date = all_data_obj_of_LC.created_date
 
-            all_data_obj_of_PI = self.pool.get('proforma_invoice.model').browse(cr, uid,proforma_invoice_id.id,context=context)
-            num_of_bags = all_data_obj_of_PI.bags_of_packing
+            num_of_bags = all_data_of_commercial_invoice.num_of_bags
 
 
 
-            service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id,context=context)
+            service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id.id,context=context)
             service_obj2= self.pool.get('res.partner').browse(cr, uid,service_obj.partner_id.id,context=context)
             service_obj3= self.pool.get('res.country').browse(cr, uid,service_obj2.country_id.id,context=context)
             currency_symbol= self.pool.get('res.currency').browse(cr, uid,service_obj.currency_id.id,context=context)
@@ -68,7 +65,7 @@ class PackingListModel(models.Model):
             cus_full_address = str(service_obj2.street) + " , " + str(service_obj2.street2) + " , " + str(service_obj2.city)+ " - " + str(service_obj2.zip) + " , " + str(service_obj3.name)
 
 
-            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id),],context=context)
+            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id.id),],context=context)
 
             invoice_lines_product_name = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['name'], context=context)
 
@@ -106,7 +103,6 @@ class PackingListModel(models.Model):
                 'lc_num':lc_num,
                 'lc_date':lc_date,
                 'contact_no':contact_no,
-                'contact_no_date':contact_no_date,
             }}
         else:
             res={}  

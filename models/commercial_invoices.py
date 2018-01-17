@@ -69,6 +69,7 @@ class CommercialInvoiceModel(models.Model):
     contact_no = fields.Text(string='contact no',  required=True)
 
     only_seq_num = fields.Char(string='only_seq_num', size=255)
+    num_of_bags = fields.Char(string='num_of_bags', size=255)
 
     #This fuction is for create a uniq number for a invoice report.
     @api.model
@@ -203,7 +204,7 @@ class CommercialInvoiceModel(models.Model):
                 'erc_no':erc_no,
                 'country_of_origin':country_of_origin,
                 'country_of_origin2':country_of_origin,
-                # 'contact_no': delivery_order_num,
+                'num_of_bags': num_of_bags,
 
                 'ordered_products_name':ordered_products_names,
                 'ordered_products_number_of_bags':ordered_products_number_of_bags,

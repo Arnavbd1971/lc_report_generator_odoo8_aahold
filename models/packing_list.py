@@ -12,14 +12,10 @@ class PackingListModel(models.Model):
     customer_name = fields.Char(string='Buyer', required=True)
     customer_name2 = fields.Char(string='Buyer', required=True)
     customer_full_address = fields.Text(string='Buyer Address', required=True)
-    # commodity = fields.Many2one('commodity.model',string='Commodity', required=True)
     commodity = fields.Char(string='Commodity', required=True)
 
     delivery_form = fields.Text(string='Delivery From', required=True)
     
-    # expected_delivery_date = fields.Date(string='Expected Delivery Date', required=True)
-    # expected_delivery_date2 = fields.Date(string='Expected Delivery Date', required=True)
-
 
     ordered_products_name = fields.Text(string='ordered_products_name') 
     ordered_products_number_of_bags = fields.Text(string='ordered_products_number_of_bags') 
@@ -40,7 +36,6 @@ class PackingListModel(models.Model):
     lc_date2 = fields.Date(string='L/C Dated', required=True)
 
     contact_no = fields.Char(string='contact no', required=True)
-    contact_no_date = fields.Date(string='contact_no_date', required=True)
     
 
 
@@ -50,19 +45,16 @@ class PackingListModel(models.Model):
         res= {}
         if name:
             all_data_of_commercial_invoice = self.pool.get('commercial_invoice.model').browse(cr, uid, name,context=context)
+
             cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
             commercial_invoice_no = all_data_of_commercial_invoice.name
             proforma_invoice_id = all_data_of_commercial_invoice.proforma_invoice_id
-            proforma_invoice_uniq_id = all_data_of_commercial_invoice.proforma_invoice_id2
+            proforma_invoice_uniq_id = all_data_of_commercial_invoice.proforma_invoice_id
             proforma_invoice_created_date= all_data_of_commercial_invoice.proforma_invoice_created_date
             lc_info_id= all_data_of_commercial_invoice.lc_num   
             contact_no= all_data_of_commercial_invoice.contact_no
-            contact_no_date= all_data_of_commercial_invoice.contact_no_date
             supplier_factory_address= all_data_of_commercial_invoice.supplier_factory_address
-
-
-            all_data_obj_of_PI = self.pool.get('proforma_invoice.model').browse(cr, uid,proforma_invoice_id.id,context=context)
-            num_of_bags = all_data_obj_of_PI.bags_of_packing  
+            num_of_bags = all_data_of_commercial_invoice.num_of_bags  
 
 
             lc_info_pool_ids = self.pool.get('lc_informations.model').browse(cr, uid,lc_info_id.id,context=context)
@@ -70,7 +62,7 @@ class PackingListModel(models.Model):
             lc_date = lc_info_pool_ids.created_date
 
 
-            service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id,context=context)
+            service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id.id,context=context)
             service_obj2= self.pool.get('res.partner').browse(cr, uid,service_obj.partner_id.id,context=context)
             service_obj3= self.pool.get('res.country').browse(cr, uid,service_obj2.country_id.id,context=context)
             currency_symbol= self.pool.get('res.currency').browse(cr, uid,service_obj.currency_id.id,context=context)
@@ -80,7 +72,7 @@ class PackingListModel(models.Model):
 
 
 
-            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id),],context=context)
+            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id.id),],context=context)
 
             invoice_lines_product_name = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['name'], context=context)
 
@@ -128,7 +120,6 @@ class PackingListModel(models.Model):
                 'lc_date':lc_date, 
                 'lc_date2':lc_date,
                 'contact_no':contact_no, 
-                'contact_no_date':contact_no_date,
                 'delivery_form':supplier_factory_address,
             }} 
         else:

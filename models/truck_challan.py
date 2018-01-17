@@ -37,7 +37,6 @@ class TruckChallanModel(models.Model):
     lc_num = fields.Char(string='L/C No.', required=True)
     lc_date = fields.Date(string='L/C Dated', required=True)
     contact_no = fields.Char(string='contact no', required=True)
-    contact_no_date = fields.Date(string='contact_no_date', required=True)
     freight = fields.Char(string='Freight', required=True)
 
 
@@ -48,23 +47,23 @@ class TruckChallanModel(models.Model):
         res= {}
         if commercial_invoice_id:
             all_data_of_commercial_invoice = self.pool.get('commercial_invoice.model').browse(cr, uid, commercial_invoice_id,context=context)
+
             cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
             proforma_invoice_id = all_data_of_commercial_invoice.proforma_invoice_id
-            proforma_invoice_uniq_id = all_data_of_commercial_invoice.proforma_invoice_id2
+            proforma_invoice_uniq_id = all_data_of_commercial_invoice.proforma_invoice_id
             proforma_invoice_created_date= all_data_of_commercial_invoice.proforma_invoice_created_date
             seq_num = all_data_of_commercial_invoice.only_seq_num
             lc_info_id= all_data_of_commercial_invoice.lc_num   
             contact_no= all_data_of_commercial_invoice.contact_no
-            contact_no_date= all_data_of_commercial_invoice.contact_no_date
             commercial_invoice_no= all_data_of_commercial_invoice.name
+            num_of_bags = all_data_of_commercial_invoice.num_of_bags
+            
 
-            supplier_factory_name_id = all_data_of_commercial_invoice.supplier_factory_name
-            supplier_factory_datas = self.pool.get('supplier_factory_name_address.model').browse(cr, uid,supplier_factory_name_id.id,context=context)
-            supplier_factory_name = supplier_factory_datas.name
+            # supplier_factory_name_id = all_data_of_commercial_invoice.supplier_factory_name
+            # supplier_factory_datas = self.pool.get('supplier_factory_name_address.model').browse(cr, uid,supplier_factory_name_id.id,context=context)
+
+            supplier_factory_name = all_data_of_commercial_invoice.supplier_factory_name
             supplier_factory_address= all_data_of_commercial_invoice.supplier_factory_address
-
-
-
 
             lc_info_pool_ids = self.pool.get('lc_informations.model').browse(cr, uid,lc_info_id.id,context=context)
             lc_num = lc_info_pool_ids.name
@@ -78,13 +77,7 @@ class TruckChallanModel(models.Model):
             bank_addr = lc_info_pool_ids.bank_address
 
 
-
-
-
-            all_data_obj_of_PI = self.pool.get('proforma_invoice.model').browse(cr, uid,proforma_invoice_id.id,context=context)
-            num_of_bags = all_data_obj_of_PI.bags_of_packing
-
-            service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id,context=context)
+            service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id.id,context=context)
             service_obj2= self.pool.get('res.partner').browse(cr, uid,service_obj.partner_id.id,context=context)
             service_obj3= self.pool.get('res.country').browse(cr, uid,service_obj2.country_id.id,context=context)
             currency_symbol= self.pool.get('res.currency').browse(cr, uid,service_obj.currency_id.id,context=context)
@@ -93,16 +86,14 @@ class TruckChallanModel(models.Model):
             cus_full_address = str(service_obj2.street) + " , " + str(service_obj2.street2) + " , " + str(service_obj2.city)+ " - " + str(service_obj2.zip) + " , " + str(service_obj3.name)
 
 
-            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id),],context=context)
+            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id.id),],context=context)
 
             invoice_lines_product_name = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['name'], context=context)
 
             invoice_lines_product_quantity = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['quantity'], context=context)
 
 
-            expected_date_from_packing_list_ids = self.pool.get('packing_list.model').search(cr, uid,[('commercial_invoice_no','=',commercial_invoice_no),],context=context)
-
-            # expected_date_data = self.pool.get('packing_list.model').read(cr, uid,expected_date_from_packing_list_ids,['expected_delivery_date'], context=context)
+            # expected_date_from_packing_list_ids = self.pool.get('packing_list.model').search(cr, uid,[('commercial_invoice_no','=',commercial_invoice_no),],context=context)
 
 
             ordered_products_names = self.split_products_names(invoice_lines_product_name) 
@@ -116,8 +107,6 @@ class TruckChallanModel(models.Model):
             ordered_products_total_quantity = self.products_total_quantity(invoice_lines_product_quantity)
 
             gross_weight = self.calculation_of_gross_weight(invoice_lines_product_quantity)
-
-            # expected_delivery_date = self.split_expected_delivery_date(expected_date_data)
 
 
             res = {'value':{
@@ -139,10 +128,8 @@ class TruckChallanModel(models.Model):
                 'lc_num':lc_num,
                 'lc_date':lc_date,
                 'contact_no':contact_no, 
-                'contact_no_date':contact_no_date, 
                 'supplier_name':supplier_factory_name,  
                 'supplier_address':supplier_factory_address,
-                # 'expected_delivery_date':expected_delivery_date,
             }} 
         else:
             res={}  

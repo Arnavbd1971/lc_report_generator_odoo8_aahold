@@ -99,7 +99,7 @@
                                 </div>
 
                                 <div class="col-xs-12">
-                                    <p>DRAWN under L/C No.<field name="lc_num" class="oe_inline" nolabel="1"/> dated <field name="lc_date" class="oe_inline" nolabel="1"/> issued by <field name="lc_bank_name" class="oe_inline" nolabel="1"/>, against Export Sales Contact No.<field name="contact_no" class="oe_inline" nolabel="1"/> dated <field name="contact_no_date" class="oe_inline" nolabel="1"/></p>
+                                    <p>DRAWN under L/C No.<field name="lc_num" class="oe_inline" nolabel="1"/> dated <field name="lc_date" class="oe_inline" nolabel="1"/> issued by <field name="lc_bank_name" class="oe_inline" nolabel="1"/>, against <field name="contact_no" class="oe_inline" nolabel="1"/> </p>
                                 </div>
                             </div>    
 
@@ -155,7 +155,6 @@
                                     <field name="lc_bank_brunch" /> 
                                     <field name="lc_bank_address" />
                                     <field name="contact_no" />
-                                    <field name="contact_no_date" />
                                     <field name="company_name" />
                                 </search>
                             </field>
@@ -260,7 +259,7 @@
                                         </div>
         
                                         <div class="col-xs-12">
-                                            <p>DRAWN under L/C No.<span style='font-weight:bold;' t-field="o.lc_num" /> dated <span style='font-weight:bold;' t-field="o.lc_date" /> issued by <span style='font-weight:bold;' t-field="o.lc_bank_name" />, against Export Sales Contact No.<span style='font-weight:bold;' t-field="o.contact_no" /> dated <span t-field="o.contact_no_date" /></p>
+                                            <p>DRAWN under L/C No.<span style='font-weight:bold;' t-field="o.lc_num" /> dated <span style='font-weight:bold;' t-field="o.lc_date" /> issued by <span style='font-weight:bold;' t-field="o.lc_bank_name" />, against <span style='font-weight:bold;' t-field="o.contact_no" /> </p>
                                         </div>
                                 </div>    
         
@@ -334,7 +333,7 @@
                                                     </div>
                     
                                                     <div class="col-xs-12">
-                                                        <p>DRAWN under L/C No.<span t-field="o.lc_num" /> dated <span t-field="o.lc_date" /> issued by <span t-field="o.lc_bank_name" />, against Export Sales Contact No.<span t-field="o.contact_no" /> dated <span t-field="o.contact_no_date" /></p>
+                                                        <p>DRAWN under L/C No.<span t-field="o.lc_num" /> dated <span t-field="o.lc_date" /> issued by <span t-field="o.lc_bank_name" />, against <span t-field="o.contact_no" /> </p>
                                                     </div>
                                             </div>    
                     

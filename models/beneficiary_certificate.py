@@ -29,7 +29,6 @@ class BeneficiaryCertificateModel(models.Model):
     lc_num = fields.Char(string='L/C No.', required=True)
     lc_date = fields.Date(string='lc_date', required=True)
     contact_no = fields.Char(string='contact_no', required=True)
-    contact_no_date = fields.Date(string='contact_no_date', required=True)
     dealer_factory_name = fields.Char(string='Delivery From', required=True)
 
 
@@ -48,10 +47,9 @@ class BeneficiaryCertificateModel(models.Model):
             customer_full_address = all_data_of_commercial_invoice.customer_full_address
             commercial_invoice_no = all_data_of_commercial_invoice.name
             commercial_invoice_created_date = all_data_of_commercial_invoice.commercial_invoice_created_date
-            proforma_invoice_no = all_data_of_commercial_invoice.proforma_invoice_id2
+            proforma_invoice_no = all_data_of_commercial_invoice.proforma_invoice_id
             proforma_invoice_created_date = all_data_of_commercial_invoice.proforma_invoice_created_date
             contact_no = all_data_of_commercial_invoice.contact_no
-            contact_no_date = all_data_of_commercial_invoice.contact_no_date
             only_seq_num = all_data_of_commercial_invoice.only_seq_num
             supplier_factory_address= all_data_of_commercial_invoice.supplier_factory_address
 
@@ -64,7 +62,7 @@ class BeneficiaryCertificateModel(models.Model):
             
 
 
-            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id),],context=context)
+            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id.id),],context=context)
 
             invoice_lines_product_name = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['name'], context=context)
 
@@ -115,7 +113,6 @@ class BeneficiaryCertificateModel(models.Model):
                 'lc_num':lc_num,
                 'lc_date':lc_date,
                 'contact_no':contact_no, 
-                'contact_no_date':contact_no_date,
                 'commodity':commodity,
                 'truck_receipt_no':only_seq_num,
                 'truck_challan_created_date':truck_challan_created_date,

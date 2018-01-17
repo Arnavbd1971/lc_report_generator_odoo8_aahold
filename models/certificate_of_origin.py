@@ -14,7 +14,6 @@ class BeneficiaryCertificateModel(models.Model):
     lc_num = fields.Char(string='L/C No.', required=True)
     lc_date = fields.Date(string='lc_date', required=True)
     contact_no = fields.Char(string='contact_no', required=True)
-    contact_no_date = fields.Date(string='contact_no_date', required=True)
     commercial_invoice_no = fields.Char(string='Commercial Invoice no', required=True)
     commercial_invoice_created_date = fields.Date(string='commercial_invoice_created_date', required=True)
     delivery_challan_no = fields.Char(string='Delivery Challan No.', required=True)
@@ -32,7 +31,6 @@ class BeneficiaryCertificateModel(models.Model):
             all_data_of_commercial_invoice = self.pool.get('commercial_invoice.model').browse(cr, uid, commercial_invoice_id,context=context)
             cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
             contact_no = all_data_of_commercial_invoice.contact_no
-            contact_no_date = all_data_of_commercial_invoice.contact_no_date
             commercial_invoice_no = all_data_of_commercial_invoice.name
             commercial_invoice_created_date = all_data_of_commercial_invoice.commercial_invoice_created_date
             delivery_challan_no = all_data_of_commercial_invoice.only_seq_num
@@ -63,7 +61,6 @@ class BeneficiaryCertificateModel(models.Model):
                 'lc_num':lc_num,
                 'lc_date':lc_date,
                 'contact_no':contact_no, 
-                'contact_no_date':contact_no_date,
                 'commercial_invoice_no':commercial_invoice_no,  
                 'commercial_invoice_created_date':commercial_invoice_created_date,
                 'delivery_challan_no':delivery_challan_no,  
