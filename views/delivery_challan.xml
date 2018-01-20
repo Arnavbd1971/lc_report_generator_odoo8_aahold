@@ -129,7 +129,7 @@
                                         
                                     <p>L/C No. : <field name="lc_num" class="oe_inline" nolabel="1"/> dated <field name="lc_date" class="oe_inline" nolabel="1"/></p> 
                                                                             
-                                    <p>Remarks : This Letter of Credit is Issued against Export Sales Contact No.<field name="contact_no" class="oe_inline" nolabel="1"/> </p>  
+                                    <p>Remarks : This Letter of Credit is Issued against <field name="contact_no" class="oe_inline" nolabel="1"/> </p>  
                                 </div>    
 
                                 <div class="col-xs-6"></div>
@@ -235,8 +235,8 @@
                         <div class="page" style='margin-left:30px !important;'>
                            <!-- < page content start> -->
                             <div class="container">
-                                <h4 class="text-center"><span style='border-bottom:2px solid #000;font-weight:bold;'>DELIVERY CHALLAN</span>
-                                </h4>
+                                <h3 class="text-center"><span style='border-bottom:2px solid #000;font-weight:bold;'>DELIVERY CHALLAN</span>
+                                </h3>
                             </div>  
                             
                             <div class="row" style='margin-top:40px !important;'>
@@ -249,13 +249,13 @@
 
                                 <div class="col-xs-5">
                                     <div class="row" style='border:1px solid #000; margin-right:0px !important; padding-right:0px !important;'>
-                                        <div class="col-xs-3">
+                                        <div class="col-xs-2" style='padding-right:0px !important;margin-right:0px !important;'>
                                             <p style='margin-top:3px;'>No</p>
                                         </div>
-                                        <div class="col-xs-1">
+                                        <div class="col-xs-1" style='padding:0px !important;margin:0px !important;'>
                                             <p style='margin-top:3px;'> : </p>
                                         </div>
-                                        <div class="col-xs-8">
+                                        <div class="col-xs-9" style='padding-left:0px !important;margin-left:0px !important;'>
                                             <p style='margin-top:3px;font-weight:bold;'><span t-field="o.name"/></p>
                                         </div>
 
@@ -263,13 +263,13 @@
                                     </div>
 
                                     <div class="row" style='border:1px solid #000; margin-right:0px !important; padding-right:0px !important;'>
-                                        <div class="col-xs-3">
+                                        <div class="col-xs-2" style='padding-right:0px !important;margin-right:0px !important;'>
                                             <p style='margin-top:3px;'>Date</p>
                                         </div>
-                                        <div class="col-xs-1">
+                                        <div class="col-xs-1" style='padding:0px !important;margin:0px !important;'>
                                             <p style='margin-top:3px;'> : </p>
                                         </div>
-                                        <div class="col-xs-8">
+                                        <div class="col-xs-9" style='padding-left:0px !important;margin-left:0px !important;'>
                                             <p style='margin-top:3px;font-weight:bold;'><span t-field="o.delivery_challan_created_date"/></p>
                                         </div>
                                     </div>
@@ -290,19 +290,19 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <span t-field="o.ordered_products_name"/>
+                                                    <span t-field="o.ordered_products_name" style='font-size:12px!important;'/>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span t-field="o.ordered_products_number_of_bags"/>
+                                                    <span t-field="o.ordered_products_number_of_bags" style='font-size:12px!important;'/>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span t-field="o.ordered_products_quantity"/>
+                                                    <span t-field="o.ordered_products_quantity" style='font-size:12px!important;'/>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span t-field="o.delivery_order_no"/>
+                                                    <span t-field="o.delivery_order_no" style='font-size:12px!important;'/>
                                                 </td>
                                                 <td class="text-center">
-                                                    <span t-field="o.do_date"/>
+                                                    <span t-field="o.do_date" style='font-size:12px!important;'/>
                                                 </td>
                                             </tr>
                                         
@@ -310,10 +310,10 @@
                                                 <td class="text-center" style='border-right:none!important;'>
                                                                         
                                                 </td>
-                                                <td class='text-center' style='border:none !important;'>
+                                                <td class='text-center' style='border:none !important; font-weight:bold !important;'>
                                                     <span t-field="o.total_bags"/>      
                                                 </td>
-                                                <td class='text-center' style='border:none !important;'>
+                                                <td class='text-center' style='border:none !important; font-weight:bold !important;'>
                                                     <span t-field="o.ordered_products_total_quantity"/>                                
                                                 </td>              
                                                 <td class="text-center"  style='border:none !important'>
@@ -329,50 +329,50 @@
                                 <!-- <table structure end> -->
 
                                 <div class="row" >
-                                    <div class="col-xs-3">
+                                    <div class="col-xs-2" style='margin-right:0px !important;padding-right:0px !important;'>
                                         <p style='margin-left:15px!important;'>Total Quantity</p>
                                     </div>
-                                    <div class="col-xs-1">
+                                    <div class="col-xs-1" style='margin:0px !important; padding:0px !important;'>
                                         <p> : </p>
                                     </div>
-                                    <div class="col-xs-8">
+                                    <div class="col-xs-9" style='margin:0px !important; padding:0px !important;'>
                                         <p style='font-weight:bold;'>Gross Weight <span t-field="o.gross_weight"/> kgs./<span t-field="o.total_bags2" /> Bags</p>
                                     </div>
                                 </div>
 
                                 <div class="row" >
-                                    <div class="col-xs-3">
+                                    <div class="col-xs-2" style='margin-right:0px !important;padding-right:0px !important;'>
                                         <p style='margin-left:15px!important;'>Proforma Invoice No</p>
                                     </div>
-                                    <div class="col-xs-1">
+                                    <div class="col-xs-1" style='margin:0px !important;padding:0px !important;'>
                                         <p> : </p>
                                     </div>
-                                    <div class="col-xs-8">
+                                    <div class="col-xs-9" style='margin:0px !important; padding:0px !important;'>
                                         <p style='font-weight:bold;'><span t-field="o.proforma_invoice_uniq_id" /> dated <span t-field="o.proforma_invoice_created_date" /></p>
                                     </div>
                                 </div>
 
                                 <div class="row" >
-                                    <div class="col-xs-3">
+                                    <div class="col-xs-2" style='margin-right:0px !important;padding-right:0px !important;'>
                                         <p style='margin-left:15px!important;'>L/C No</p>
                                     </div>
-                                    <div class="col-xs-1">
+                                    <div class="col-xs-1" style='margin:0px !important; padding:0px !important;'>
                                         <p> : </p>
                                     </div>
-                                    <div class="col-xs-8">
+                                    <div class="col-xs-9" style='margin:0px !important; padding:0px !important;'>
                                         <p style='font-weight:bold;'><span t-field="o.lc_num" /> dated <span t-field="o.lc_date" /></p> 
                                     </div>
                                 </div>
 
                                 <div class="row" >
-                                    <div class="col-xs-3">
+                                    <div class="col-xs-2" style='margin-right:0px !important;padding-right:0px !important;'>
                                         <p style='margin-left:15px!important;'>Remarks</p>
                                     </div>
-                                    <div class="col-xs-1">
+                                    <div class="col-xs-1" style='margin:0px !important; padding:0px !important;'>
                                         <p> : </p>
                                     </div>
-                                    <div class="col-xs-8">
-                                        <p style='font-weight:bold;'>This Letter of Credit is Issued against Export Sales Contact No.<span t-field="o.contact_no" /> </p>
+                                    <div class="col-xs-9" style='margin:0px !important; padding:0px !important;'>
+                                        <p style='font-weight:bold;'>This Letter of Credit is Issued against <span t-field="o.contact_no" /> </p>
                                     </div>
                                 </div>
 

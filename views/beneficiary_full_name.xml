@@ -103,7 +103,7 @@
         <!-- bank names end -->
 
         <!-- Creat child menu / Action menu -->
-        <menuitem action="act_open_beneficiary_full_name_view" name="Beneficiary Full Name" id="beneficiary_full_name" parent="custom_sub_menu2"  sequence="10"/>  
+        <menuitem action="act_open_beneficiary_full_name_view" name="Beneficiary Full Name" id="beneficiary_full_name" parent="custom_sub_menu2"  sequence="14"/>  
 
     </data>
 </openerp>        

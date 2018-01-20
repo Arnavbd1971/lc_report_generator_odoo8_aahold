@@ -127,7 +127,7 @@
         <!-- bank names end -->
 
         <!-- Creat child menu / Action menu -->
-        <menuitem action="act_open_signature_view" name="Set Signature" id="signature" parent="custom_sub_menu2"  sequence="15"/>  
+        <menuitem action="act_open_signature_view" name="Set Signature" id="signature" parent="custom_sub_menu2"  sequence="19"/>  
 
     </data>
 </openerp>        

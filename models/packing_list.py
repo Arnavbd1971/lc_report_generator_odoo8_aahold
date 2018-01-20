@@ -133,7 +133,7 @@ class PackingListModel(models.Model):
         idx = 0
         for r in invoice_lines_product_name:
             names.append(r['name'])
-            combine = '\n \n'.join([str(i) for i in names])  
+            combine = '\n'.join([str(i) for i in names])  
         return combine
 
     def split_products_number_of_bags(self,invoice_lines_product_quantity,num_of_bags):
@@ -142,7 +142,7 @@ class PackingListModel(models.Model):
         bags = int(num_of_bags)
         for r in invoice_lines_product_quantity:
             number_of_bags.append("{:,}".format( int(r['quantity'] / bags)) )
-            combine = '\n \n \n'.join([str(i) for i in number_of_bags])
+            combine = '\n \n'.join([str(i) for i in number_of_bags])
         return combine
 
     def total_bags_in_quantity(self,invoice_lines_product_quantity,num_of_bags):
@@ -159,7 +159,7 @@ class PackingListModel(models.Model):
         idx = 0
         for r in invoice_lines_product_quantity:
             quantity.append("{:,}".format( int(r['quantity'])) )
-            combine = '\n \n \n'.join([str(i) for i in quantity])
+            combine = '\n \n'.join([str(i) for i in quantity])
         return combine
 
 
@@ -170,7 +170,7 @@ class PackingListModel(models.Model):
             gross_weights.append(r['quantity'])
             result = [ "{:,}".format( int(x * into) ) for x in gross_weights]
             # gross = int(result) 
-            combine = '\n \n \n'.join([str(i) for i in result])   
+            combine = '\n \n'.join([str(i) for i in result])   
 
         return combine
 

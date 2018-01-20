@@ -100,7 +100,7 @@
         <!-- bank names end -->
 
         <!-- Creat child menu / Action menu -->
-        <menuitem action="act_open_terms_of_delivery_view" name="Terms Of Delivery" id="terms_of_delivery" parent="custom_sub_menu2"  sequence="14"/>  
+        <menuitem action="act_open_terms_of_delivery_view" name="Terms Of Delivery" id="terms_of_delivery" parent="custom_sub_menu2"  sequence="18"/>  
 
     </data>
 </openerp>        

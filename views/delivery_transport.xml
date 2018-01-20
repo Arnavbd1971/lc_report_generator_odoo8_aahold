@@ -100,7 +100,7 @@
         <!-- L/C informations end -->
 
         <!-- Creat child menu / Action menu -->
-        <menuitem action="act_open_delivery_transport_view" name="Means Of Transport" id="delivery_transport" parent="custom_sub_menu2"  sequence="3"/>  
+        <menuitem action="act_open_delivery_transport_view" name="Means Of Transport" id="delivery_transport" parent="custom_sub_menu2"  sequence="13"/>  
 
     </data>
 </openerp>        

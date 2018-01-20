@@ -103,7 +103,7 @@
         <!-- L/C informations end -->
 
         <!-- Creat child menu / Action menu -->
-        <menuitem action="act_open_shipping_factory_name_address_view" name="Shipping To Address" id="shipping_factory_name_address" parent="custom_sub_menu2"  sequence="5"/>  
+        <menuitem action="act_open_shipping_factory_name_address_view" name="Shipping To Address" id="shipping_factory_name_address" parent="custom_sub_menu2"  sequence="15"/>  
 
     </data>
 </openerp>        

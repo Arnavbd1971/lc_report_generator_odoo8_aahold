@@ -103,7 +103,7 @@
         <!-- L/C informations end -->
 
         <!-- Creat child menu / Action menu -->
-        <menuitem action="act_open_supplier_factory_name_address_view" name="Supplier Factory Refarence" id="supplier_factory_name_address" parent="custom_sub_menu2"  sequence="5"/>  
+        <menuitem action="act_open_supplier_factory_name_address_view" name="Supplier Factory Refarence" id="supplier_factory_name_address" parent="custom_sub_menu2"  sequence="16"/>  
 
     </data>
 </openerp>        

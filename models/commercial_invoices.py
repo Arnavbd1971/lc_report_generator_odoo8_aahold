@@ -46,8 +46,10 @@ class CommercialInvoiceModel(models.Model):
     issuing_bank = fields.Text(string='Issuing Bank',  required=True)
     vat_code = fields.Char(string='VAT No.' ,  required=True)
     irc_num = fields.Char(string='IRC No.' ,  required=True)
-    bin_num = fields.Char(string='BIN No.' ,  required=True)
+    bin_num = fields.Char(string='BIN No.' ,  required=True) 
     tin_num = fields.Char(string='TIN No.' ,  required=True)
+    amend_no = fields.Char(string='Amend No' )
+    amend_date = fields.Char(string='Amend Date' )
 
     ordered_products_name = fields.Text(string='ordered_products_name') 
     ordered_products_number_of_bags = fields.Text(string='ordered_products_number_of_bags') 
@@ -89,6 +91,8 @@ class CommercialInvoiceModel(models.Model):
         vals['only_seq_num'] = only_num
         return super(CommercialInvoiceModel, self).create(vals)
 
+    
+
   
 
     # This function is for load data automatically in the existing field from another table
@@ -106,6 +110,9 @@ class CommercialInvoiceModel(models.Model):
             bin_no = rec.bin_no
             tin_no = rec.tin_no
 
+            amend_no = rec.amend_no
+            amend_date = rec.amend_date
+
             all_data_obj_of_bank_names = self.pool.get('bank_names.model').browse(cr, uid,bank_name_id.id,context=context)
 
             bank_name = all_data_obj_of_bank_names.name
@@ -114,7 +121,7 @@ class CommercialInvoiceModel(models.Model):
 
             bank_branch = all_data_obj_of_bank_branch.name
 
-            bank_info = str(bank_name) + "\n\n" + str(bank_branch) + "\n" + str(bank_address)
+            bank_info = str(bank_name) + "\n" + str(bank_branch) + "\n" + str(bank_address)
 
             res= {
                     'value':
@@ -125,8 +132,10 @@ class CommercialInvoiceModel(models.Model):
                             'lc_date2':rec.created_date,
                             'vat_code':rec.vat_no,
                             'irc_num':rec.irc_no,
-                            'bin_num':rec.irc_no,
+                            'bin_num':rec.irc_no, 
                             'tin_num':rec.irc_no,
+                            'amend_no':rec.amend_no,
+                            'amend_date':rec.amend_date,
                         }
                 }
         else:
@@ -188,7 +197,7 @@ class CommercialInvoiceModel(models.Model):
 
             ordered_products_total_amount = self.products_total_amount(invoice_lines_product_amount)
 
-            # ordered_products_total_amount_in_word = self.numToWords(ordered_products_total_amount)
+            ordered_products_total_amount_in_word = self.numToWords(ordered_products_total_amount)
 
             
 
@@ -212,19 +221,20 @@ class CommercialInvoiceModel(models.Model):
                 'ordered_products_amount': ordered_products_amount,
                 'ordered_products_total_quantity': "{:,}".format(ordered_products_total_quantity),
                 'ordered_products_total_amount': "{:,}".format(ordered_products_total_amount),
-                # 'ordered_products_total_amount_in_word':ordered_products_total_amount_in_word,
-                # 'currency_symbol_name':currency_symbol.name,
-                # 'currency_symbol_name1':currency_symbol.name,
-                # 'currency_symbol_name2':currency_symbol.name,
-                # 'currency_symbol':currency_symbol.symbol,
-                # 'currency_symbol1':currency_symbol.symbol,
-                # 'currency_symbol2':currency_symbol.symbol, 
+                'ordered_products_total_amount_in_word':ordered_products_total_amount_in_word,
+                'currency_symbol_name':currency_symbol.name,
+                'currency_symbol_name1':currency_symbol.name,
+                'currency_symbol_name2':currency_symbol.name,
+                'currency_symbol':currency_symbol.symbol,
+                'currency_symbol1':currency_symbol.symbol,
+                'currency_symbol2':currency_symbol.symbol, 
                 
             }}
 
         else:
             res={}  
         return res    
+    
 
     def split_from_list(self,list_name,data_field):
         save = []
@@ -233,12 +243,13 @@ class CommercialInvoiceModel(models.Model):
             combine = '\n'.join([str(i) for i in save])
         return combine    
 
+
     def split_products_names(self,invoice_lines_product_name):
         names= []
         idx = 0
         for r in invoice_lines_product_name:
             names.append(r['name'])
-            combine = '\n \n'.join([str(i) for i in names])  
+            combine = '\n'.join([str(i) for i in names])  
         return combine
 
     def split_products_number_of_bags(self,invoice_lines_product_quantity,num_of_bags):
@@ -247,7 +258,7 @@ class CommercialInvoiceModel(models.Model):
         bags = int(num_of_bags)
         for r in invoice_lines_product_quantity:
             number_of_bags.append(int(r['quantity'] / bags))
-            combine = '\n \n \n'.join([str(i) for i in number_of_bags])
+            combine = '\n \n'.join([str(i) for i in number_of_bags])
         return combine
 
     def split_products_quantity(self,invoice_lines_product_quantity):
@@ -255,7 +266,7 @@ class CommercialInvoiceModel(models.Model):
         idx = 0
         for r in invoice_lines_product_quantity:
             quantity.append( "{:,}".format( int(r['quantity']) ) )
-            combine = '\n \n \n'.join([str(i) for i in quantity])
+            combine = '\n \n'.join([str(i) for i in quantity])
         return combine
 
     def split_products_price_of_unit(self,invoice_lines_product_price_of_unit):
@@ -263,7 +274,7 @@ class CommercialInvoiceModel(models.Model):
         idx = 0
         for r in invoice_lines_product_price_of_unit:
             price_of_unit.append("{:,}".format(r['price_unit']))
-            combine = '\n \n \n'.join([str(i) for i in price_of_unit])
+            combine = '\n \n'.join([str(i) for i in price_of_unit])
         return combine
 
     def split_products_amount(self,invoice_lines_product_amount):
@@ -271,7 +282,7 @@ class CommercialInvoiceModel(models.Model):
         idx = 0
         for r in invoice_lines_product_amount:
             amount.append("{:,}".format( r['price_subtotal']) )
-            combine = '\n \n \n'.join([str(i) for i in amount])
+            combine = '\n \n'.join([str(i) for i in amount])
         return combine
 
 

@@ -88,7 +88,7 @@
                 <!-- <act_window end> -->
         <!-- beneficiary_bank_branch end -->
 
-        <menuitem action="act_open_beneficiary_bank_branch_view" name="Beneficiary Bank Branch" id="beneficiary_bank_branch" parent="custom_sub_menu2"  sequence="6"/>  
+        <menuitem action="act_open_beneficiary_bank_branch_view" name="Beneficiary Bank Branch" id="beneficiary_bank_branch" parent="custom_sub_menu2"  sequence="7"/>  
 
     </data>
 </openerp>

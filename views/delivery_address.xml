@@ -100,7 +100,7 @@
         <!-- L/C informations end -->
 
         <!-- Creat child menu / Action menu -->
-        <menuitem action="act_open_delivery_address_view" name="Delivery From Address" id="delivery_address" parent="custom_sub_menu2"  sequence="4"/>  
+        <menuitem action="act_open_delivery_address_view" name="Delivery From Address" id="delivery_address" parent="custom_sub_menu2"  sequence="8"/>  
 
     </data>
 </openerp>        

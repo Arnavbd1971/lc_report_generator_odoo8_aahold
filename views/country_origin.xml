@@ -100,7 +100,7 @@
         <!-- L/C informations end -->
 
         <!-- Creat child menu / Action menu -->
-        <menuitem action="act_open_country_origin_view" name="Country Of Origin" id="country_origin" parent="custom_sub_menu2"  sequence="2"/>  
+        <menuitem action="act_open_country_origin_view" name="Country Of Origin" id="country_origin" parent="custom_sub_menu2"  sequence="5"/>  
 
     </data>
 </openerp>        

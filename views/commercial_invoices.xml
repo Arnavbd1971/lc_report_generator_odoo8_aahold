@@ -91,6 +91,8 @@
                                         <group>
                                             <field name="lc_num" on_change="onchange_lc_num_service(lc_num)"/>
                                             <field name="lc_date"/>
+                                            <field name="amend_no"/>
+                                            <field name="amend_date"/>
                                             <field name="issuing_bank"/>
                                             <field name="vat_code"/>
                                             <field name="irc_num"/>
@@ -148,13 +150,13 @@
                                                                     <field name="ordered_products_total_amount"/>
                                                                 </td>
                                                             </tr>
-                                                            <!-- <tr>
+                                                            <tr>
                                                                 <td colspan="5">
                                                                     <div style="float:right !important;"> 
                                                                         <p style="font-weight:bold; ">(<field name="currency_symbol_name2"  class="oe_inline" nolabel="1"/><field name="currency_symbol2" class="oe_inline"/> <field name="ordered_products_total_amount_in_word" class="oe_inline"/> only )</p>
                                                                     </div>    
                                                                 </td>
-                                                            </tr> -->
+                                                            </tr>
                                                             
                                                     </tbody>
                                             </table>    
@@ -300,8 +302,8 @@
                     <!-- < page content start> -->
 
                         <div class="container">
-                            <h4 class="text-center"><span style='border-bottom:2px solid #000;font-weight:bold;'>COMMERCIAL INVOICE</span>
-                            </h4>
+                            <h3 class="text-center"><span style='border-bottom:2px solid #000;font-weight:bold'>COMMERCIAL INVOICE</span>
+                            </h3>
 
 
                             <div class="row" style='margin-top:40px !important;'>
@@ -309,9 +311,9 @@
                                     <!-- left part start -->
                                         <div class="col-xs-6" >
                                             <p><span style='border-bottom:2px solid #000;font-weight:bold;'>For Account Of:</span></p>
-                                            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" style=' padding:0px !important;'>
-                                                <p style='margin-left:5px;font-weight:bold;'><span t-field="o.customer_name"/></p>
-                                                <p style='margin-left:5px;font-weight:bold;'><span t-field="o.customer_full_address"/> </p>
+                                            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" style=' padding-left:0px !important; margin-left:0px !important'>
+                                                <p style='padding-left:0px !important; margin-left:0px !important;font-weight:bold;'><span t-field="o.customer_name"/></p>
+                                                <p style='padding-left:0px !important; margin-left:0px !important;font-weight:bold;'><span t-field="o.customer_full_address"/> </p>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"></div>
                                                 
@@ -320,45 +322,24 @@
                                                 <div class="col-xs-5">
                                                     <p style='margin-top:5px!important;'>Means Of Transport</p>
                                                 </div>
-                                                <div class="col-xs-1">
-                                                    <p style='margin-top:5px!important;'> : </p>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <p style='margin-top:5px!important;font-weight:bold;'><span t-field="o.transport"/></p>
+                                                <div class="col-xs-7">
+                                                    <p style='margin-top:5px!important;font-weight:bold;'>: <span t-field="o.transport"/></p>
                                                 </div>
 
 
-                                                <div class="col-xs-5">
-                                                    <p>Form</p>
-                                                </div>
-                                                <div class="col-xs-1">
-                                                    <p style=''> : </p>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <p style='font-weight:bold;'><span t-field="o.supplier_factory_name"/>,<span t-field="o.supplier_factory_address"/></p>
+                                                <div class="col-xs-12">
+                                                    <p>Form : <span style='font-weight:bold;' t-field="o.supplier_factory_name"/>,<span  style='font-weight:bold;' t-field="o.supplier_factory_address"/></p>
                                                 </div>
 
                                                 <br/>
                                                 <br/>
 
-                                                <div class="col-xs-5">
-                                                    <p>Beneficiary VAT No</p>
-                                                </div>
-                                                <div class="col-xs-1">
-                                                    <p style=''> : </p>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <p style='font-weight:bold;'><span t-field="o.beneficiary_vat_no"/></p>
+                                                <div class="col-xs-12">
+                                                    <p>Beneficiary VAT No : <span style='font-weight:bold;' t-field="o.beneficiary_vat_no"/></p>
                                                 </div>
 
                                                 <div class="col-xs-5">
-                                                    <p>ERC No</p>
-                                                </div>
-                                                <div class="col-xs-1">
-                                                    <p style=''> : </p>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <p style='font-weight:bold;'><span t-field="o.erc_no"/></p>
+                                                    <p>ERC No : <span style='font-weight:bold;' t-field="o.erc_no"/></p>
                                                 </div>
                                             </div>
 
@@ -378,7 +359,7 @@
                                     <!-- right part start -->
                                         <div class="col-xs-6" style=''>
                                             <div class="row" style='border:1px solid #000;padding-right:0px !important;margin-right:0px !important;'>
-                                                <div class="col-xs-4">
+                                                <div class="col-xs-3">
                                                     <p style='margin-top:5px!important;'>Invoice No</p>
                                                     <p style=''>Date</p>
                                                 </div>
@@ -386,7 +367,7 @@
                                                     <p style='margin-top:5px!important;'>  :</p>
                                                     <p> :</p>
                                                 </div>
-                                                <div class="col-xs-7">
+                                                <div class="col-xs-8">
                                                     <p style='margin-top:5px!important;font-weight:bold;'><span t-field="o.name"/></p>
                                                     <p style='font-weight:bold;'><span t-field="o.commercial_invoice_created_date"/></p>
                                                 </div>
@@ -394,7 +375,7 @@
 
 
                                             <div class="row" style='border:1px solid #000;margin-top:5px;padding-right:0px !important;margin-right:0px !important;'>
-                                                <div class="col-xs-4">
+                                                <div class="col-xs-5">
                                                     <p style='margin-top:5px!important;'>Country Of Origin</p>
                                                     <p style=''>Destination</p>
                                                 </div>
@@ -402,7 +383,7 @@
                                                     <p style='margin-top:5px!important;'> :</p>
                                                     <p> :</p>
                                                 </div>
-                                                <div class="col-xs-7">
+                                                <div class="col-xs-6">
                                                     <p style='margin-top:5px!important;font-weight:bold;'><span t-field="o.country_of_origin"/></p>
                                                     <p style='font-weight:bold;'><span t-field="o.destination_address"/></p>
                                                 </div>
@@ -415,26 +396,38 @@
                                             </div>
 
                                             <div class="row" style='border:1px solid #000;margin-top:5px;padding-right:0px !important;margin-right:0px !important;'>
-                                                <div class="col-xs-4">
+                                                <div class="col-xs-5">
                                                     <p style='margin-top:5px!important;'>L/C No.</p>
                                                     <p style=''>Dated</p>
-                                                    <p style=''>VAT Reg./BIN No</p>
-                                                    <p style=''>IRC/TIN </p>
+                                                    <span t-if='o.amend_no'> 
+                                                        <p style=''>Amend and Date</p>
+                                                    </span>
                                                     <p style=''>Issuing Bank</p>
+                                                    <!-- <p style=''>VAT Reg./BIN No</p>
+                                                    <p style=''>IRC/TIN </p> -->
+                                                    
                                                 </div>
                                                 <div class="col-xs-1">
                                                     <p style='margin-top:5px!important;'> :</p>
                                                     <p> :</p>
+                                                    <span t-if='o.amend_no'> 
+                                                        <p> :</p>
+                                                    </span>
                                                     <p> :</p>
-                                                    <p> :</p>
-                                                    <p> :</p>
+                                                    <!-- <p> :</p>
+                                                    <p> :</p> -->
                                                 </div>
-                                                <div class="col-xs-7">
+                                                <div class="col-xs-6">
                                                     <p style='margin-top:5px!important;font-weight:bold;'><span t-field="o.lc_num"/></p>
                                                     <p style='font-weight:bold;'><span t-field="o.lc_date"/></p>
-                                                    <p style='font-weight:bold;'><span t-field="o.vat_code"/></p>
-                                                    <p style='font-weight:bold;'><span t-field="o.irc_num"/></p>
+                                                    <span t-if='o.amend_no'> 
+                                                        <p style='font-weight:bold;'><span t-field="o.amend_no"/> DT.<span t-field="o.amend_date"/></p>
+                                                    </span>
                                                     <p style='font-weight:bold;'> <span t-field="o.issuing_bank"/></p>
+                                                </div>
+                                                <div class='col-xs-12'>
+                                                    <p>VAT No : <span style='font-weight:bold;' t-field="o.vat_code"/></p>
+                                                    <p>IRC/BIN/TIN : <span style='font-weight:bold;' t-field="o.irc_num"/>, <span style='font-weight:bold;' t-field="o.bin_num"/>, <span style='font-weight:bold;' t-field="o.tin_num"/></p>
                                                 </div>
                                             </div>
 
@@ -444,61 +437,64 @@
 
                                 <!-- second part start -->
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style='margin-top:20px;margin-bottom:20px;'>
+
                                         <table class="table table-bordered">
                                                 <thead class="thead-default">
                                                   <tr>
                                                     <th class="text-center">Item</th>
                                                     <th class="text-center">No. of Bags</th>
-                                                    <th class="text-center">Quantity in kgs.</th>
-                                                    <th class="text-center">Unit Price in <span t-field="o.currency_symbol_name2"/><span t-field="o.currency_symbol2"/></th>
-                                                    <th class="text-center">Total Price in <span t-field="o.currency_symbol_name2"/><span t-field="o.currency_symbol2"/></th>
+                                                    <th class="text-center">Quantity</th>
+                                                    <th class="text-center">Unit Price <span t-field="o.currency_symbol_name2"/><span t-field="o.currency_symbol2"/></th>
+                                                    <th class="text-center">Total Price<span t-field="o.currency_symbol_name2"/><span t-field="o.currency_symbol2"/></th>
                                                   </tr>
                                                 </thead>
                                                 <tbody>
                                                   <tr>
                                                     <td>
-                                                        <span t-field="o.ordered_products_name"/>
+                                                        <span t-field="o.ordered_products_name" style='font-size:12px!important;'/>
                                                     </td>
                                                     <td class="text-center">
-                                                            <span t-field="o.ordered_products_number_of_bags"/>
+                                                            <span t-field="o.ordered_products_number_of_bags" style='font-size:12px!important;'/>
                                                     </td>
                                                     <td class="text-center">
-                                                            <span t-field="o.ordered_products_quantity"/>
+                                                            <span t-field="o.ordered_products_quantity" style='font-size:12px!important;'/>
                                                     </td>
                                                     <td class="text-center">
-                                                            <span t-field="o.ordered_products_price_of_unit"/>
+                                                            <span t-field="o.ordered_products_price_of_unit" style='font-size:12px!important;'/>
                                                     </td>
                                                     <td class="text-center">
-                                                            <span t-field="o.ordered_products_amount"/>
+                                                            <span t-field="o.ordered_products_amount" style='font-size:12px!important;'/>
                                                     </td>
                                                   </tr>
 
                                                     <tr style='border: 1px solid #ededed !important;'>
-                                                        <td class="" style='border-right:none !important;'>Total:</td>
+                                                        <td class="" style='border-right:none !important; font-weight:bold !important;'>Total:</td>
                                                         <td  style='border:none !important;'>
                                                             
                                                         </td>
-                                                        <td class="text-center"  style='border:none !important;'>
+                                                        <td class="text-center"  style='border:none !important;font-weight:bold !important;'>
                                                                 <span class='daynamic_value'><span t-field="o.ordered_products_total_quantity"/></span>
                                                         </td>
                                                         <td class="text-center"  style='border:none !important;'>
                                                                 
                                                         </td>
-                                                        <td class="text-center"  style='border:none !important;'>
+                                                        <td class="text-center"  style='border:none !important;font-weight:bold !important;'>
                                                                 <span class='daynamic_value'><span t-field="o.ordered_products_total_amount"/></span>
                                                         </td>
                                                     </tr>
 
-                                                    <tr>
+                                                    <tr>  
                                                         <td colspan="5">
                                                             <div style="float:right !important;"> 
                                                                 <p style="font-weight:bold; ">(<span t-field="o.currency_symbol_name2"  class="oe_inline" nolabel="1"/><span t-field="o.currency_symbol2" class="oe_inline"/> <span t-field="o.ordered_products_total_amount_in_word" class="oe_inline"/> only )</p>
+
                                                             </div>    
                                                         </td>
                                                     </tr>
 
                                                 </tbody>
                                         </table>
+
                                 </div>        
                                 <!-- second part end -->
 
@@ -506,8 +502,7 @@
                                 <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
                                     <p>Above goods supplied as per Proforma Invoice No.<span style='font-weight:bold;'> <span t-field="o.proforma_invoice_id"/></span> dated <span style='font-weight:bold;'><span t-field="o.proforma_invoice_created_date"/></span></p>
                                     
-                                    <p>Remarks: This Letter of Credit is Issued against Export Contract No. 
-                                        <span t-field="o.contact_no" style='font-weight:bold;'/></p>
+                                    <p>Remarks: This Letter of Credit is Issued against <span t-field="o.contact_no" style='font-weight:bold;'/></p>
 
                                     <p>We hereby certify that above mentioned goods are of <span style='font-weight:bold;'><span t-field="o.country_of_origin2"/></span> Origin.</p>
                                 </div>

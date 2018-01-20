@@ -100,7 +100,7 @@
         <!-- bank names end -->
 
         <!-- Creat child menu / Action menu -->
-        <menuitem action="act_open_product_type_view" name="Product Type" id="product_type" parent="custom_sub_menu2"  sequence="13"/>  
+        <menuitem action="act_open_product_type_view" name="Product Type" id="product_type" parent="custom_sub_menu2"  sequence="10"/>  
 
     </data>
 </openerp>        

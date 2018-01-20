@@ -100,7 +100,7 @@
         <!-- terms_conditions end -->
 
         <!-- Creat child menu / Action menu -->
-        <menuitem action="act_open_terms_conditions_view" name="Other Terms and Conditions" id="terms_conditions" parent="custom_sub_menu2"  sequence="6"/>  
+        <menuitem action="act_open_terms_conditions_view" name="Other Terms and Conditions" id="terms_conditions" parent="custom_sub_menu2"  sequence="17"/>  
 
     </data>
 </openerp>        
