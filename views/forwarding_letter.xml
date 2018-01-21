@@ -263,19 +263,20 @@
                 <t t-call="report.external_layout" t-lang="en_US">              
                     <t t-foreach="docs" t-as="o">
                         <t>          
-                            <div class="page" style='margin-left:30px !important;'>
+                            <div class="page" style='margin-left:30px !important; padding-top:80px;'>
                                <!-- < page content start> -->
 
                                 <div class="row">
                                     <div class="col-xs-12" >
-                                        <p style='font-weight:bold;'>Ref.No :  <span t-field="o.name" /></p>
-                                        <p style='font-weight:bold;'>Date   :  <span t-field="o.date" /> </p>
+                                        <p style='font-weight:bold;'>Ref. No :  <span t-field="o.name" /></p>
+                                        <p style='font-weight:bold;'><span t-field="o.date" /> </p>
                                     </div>   
                                     <div class="col-xs-12" style='margin-top:25px!important;'> 
                                         <p style='font-weight:bold;'><span t-field="o.for_whom" /></p>
                                         <p style='font-weight:bold;'><span t-field="o.bank_name" /></p>
                                         <p style='font-weight:bold;'><span t-field="o.bank_brunch" /></p> 
-                                        <p style='font-weight:bold;'><span t-field="o.bank_address" />, Swift Code : <span t-field="o.swift_code" /></p>
+                                        <p style='font-weight:bold;'><span t-field="o.bank_address" /></p> 
+                                        <p  style='font-weight:bold;'>Swift Code : <span t-field="o.swift_code" /></p>
                                     </div>
                                 </div> 
 
@@ -286,14 +287,14 @@
                                 </div> 
                                 
                                 <div class="row">
-                                    <div class="col-xs-12" style='margin-top:25px!important;'>
+                                    <div class="col-xs-12" style='margin-top:25px!important; font-size:17px;'>
                                             <p  style=''>Dear Sir,</p>
                                             <p  style=''>Assalamu Alaikum, </p>
                                             <span  style=''>This is to inform you that we are submitting the following original document against L/C No. <span style='font-weight:bold;'><span t-field="o.lc_num2" /> dated <span t-field="o.lc_date2" /></span> of <span style='font-weight:bold;'><span t-field="o.lc_bank_name" />,<span t-field="o.lc_bank_brunch" />,<field name="lc_bank_address" /></span> amounting to <span style='font-weight:bold;'><span t-field="o.currency_symbol" /><span t-field="o.ordered_products_total_amount" /></span> in favour of our Company.</span>
                                     </div>
                                 </div>
 
-                                <div class="row" style='margin-top:8px;'>
+                                <div class="row" style='margin-top:8px; font-size:17px;'>
                                     <div class="col-xs-6" >
                                         <p style='margin-left:30px'>1.  Commercial Invoice</p>
                                     </div>
@@ -360,24 +361,24 @@
 
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <p style=''>
+                                        <p style='font-size:17px;'>
                                              We would therefore request you to kindly arrange for negotiating th documents at the earliest and also request you to kindly transfer <span style='font-weight:bold;' t-field="o.transfer_per" />% of the L/C Proceeds to tour F/C Account No. <span style='font-weight:bold;' t-field="o.fc_account_no" />
                                         </p>
             
                                         <br/>
                                         <br/>
             
-                                        <p style=''>
+                                        <p style='font-size:17px;'>
                                             Thanking You.
                                         </p>
-                                        <p style=''>
+                                        <p style='font-size:17px;'>
                                             Sincerely yours,
                                         </p>
             
                                         <br/>
                                         <br/>
             
-                                        <p style='margin-top:20px;font-weight:bold;'>
+                                        <p style='margin-top:20px;font-weight:bold;font-size:17px;'>
                                             Authorized Signature
                                         </p>
                                     </div>
