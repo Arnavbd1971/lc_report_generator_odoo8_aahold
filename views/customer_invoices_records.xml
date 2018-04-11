@@ -27,47 +27,207 @@
              <field name="search_view_id" eval="False"/>
              <field name="context">{}</field>
              <field name="arch" type="xml">
-                <!-- <p class="oe_view_nocontent_create">
-                    Click here to creat Customer Invoices
-                </p> -->
                 <xpath expr="//button[@name='invoice_print'][1]" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </xpath>
              </field> 
         </record>
 
-
-
-        <!-- <record id="customer_invoices_action_tree" model="ir.ui.view">
-            <field name="name">account.invoice.tree</field>
+        <record id="view_cutomer_invoices_tree" model="ir.ui.view">
+            <field name="name">CustomerInvoiceModel.name.account.invoice.tree</field>
             <field name="model">account.invoice</field>
-            <field name="view_mode">tree</field>
-            <field name="inherit_id" ref=""/>
-
+            <field name="inherit_id" ref="account.invoice_tree" />
             <field name="arch" type="xml">
-                <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" string="Invoice">
-                    <field name="partner_id" groups="base.group_user" string="Customer"/>
-                    <field name="date_invoice"/>
-                    <field name="number"/>
-                    <field name="commercial_partner_id" invisible="1"/>
-                    <field name="reference" invisible="1"/>
-                    <field name="name" invisible="1"/>
-                    <field name="journal_id" invisible="1"/>
-                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
-                    <field name="user_id"/>
-                    <field name="date_due"/>
-                    <field name="origin"/>
-                    <field name="amount_total_signed" sum="Total" />
-                    <field name="residual_signed" sum="Amount due"/>
-                    <field name="currency_id" invisible="1"/>
-                    <field name="company_currency_id" invisible="1"/>
-                    <field name="state"/>
-                    <field name="type" invisible="context.get('type',True)"/>
-                </tree>
+                <field name="origin" position="after">
+                    <field name="pi_no" />
+                    <field name="do_no" />
+                    <field name="process_status" />
+                </field>    
             </field>
-        </record> -->
+        </record>
+
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">CustomerInvoiceModel.account.invoice.supplier.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form" />
+            <field name="arch" type="xml">
+                <field name="currency_id" position="after">
+                    <field name="pi_no" />
+                    <field name="do_no" />
+                    <field name="process" on_change="onchange_process(process)" attrs="{'invisible': [('process', '=', ['Done'])]}"/>
+                    <field name="process_status" attrs="{'invisible': [('process', '!=', ['Done'])]}"/>
+                </field>
+            </field>
+        </record>    
+
 
         <!-- Creat child menu / Action menu -->
-        <menuitem action="customer_invoices_action" name="Customer Invoices" id="custom_child_menu1" parent="custom_sub_menu"  sequence="1"/>
+        <menuitem action="customer_invoices_action" name="All Delivery Challans" id="custom_child_menu1" parent="custom_sub_menu"  sequence="1"/>
+
+        <!-- pdf report generate start-->
+        <!-- <report
+            id="report_of_delivery_challan" 
+            model="account.invoice"
+            string="Delivery Challan"
+            name="lc_report_generator.delivery_challan"
+            file="lc_report_generator.delivery_challan.model"
+            report_type="qweb-pdf"/>
+
+        <template id="delivery_challan">
+                    
+            <t t-call="report.external_layout" t-lang="en_US">              
+                <t t-foreach="docs" t-as="o">
+                    <t>          
+                        <div class="page" style='margin-left:30px !important;margin-top:30px !important;'>
+                           
+                            <div class="container">
+                                <h3 class="text-center"><span style='border-bottom:2px solid #000;font-weight:bold;'>DELIVERY CHALLAN</span>
+                                </h3>
+                            </div>
+
+                            <div class="row" style='margin-top:40px !important;'>
+                                <div class="col-xs-5">
+                                    <address t-field="o.partner_id"
+                                        t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
+                                </div>
+
+                                <div class="col-xs-2"></div>
+
+                                <div class="col-xs-5">
+                                    <div class="row" style='border:1px solid #000; margin-right:0px !important; padding-right:0px !important;'>
+                                        <div class="col-xs-2" style='padding-right:0px !important;margin-right:0px !important;'>
+                                            <p style='margin-top:3px;'>No</p>
+                                        </div>
+                                        <div class="col-xs-1" style='padding:0px !important;margin:0px !important;'>
+                                            <p style='margin-top:3px;'> : </p>
+                                        </div>
+                                        <div class="col-xs-9" style='padding-left:0px !important;margin-left:0px !important;'>
+                                            <p style='margin-top:3px;'><span t-field="o.origin"/></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style='border:1px solid #000; margin-right:0px !important; padding-right:0px !important;'>
+                                        <div class="col-xs-2" style='padding-right:0px !important;margin-right:0px !important;'>
+                                            <p style='margin-top:3px;'>Date</p>
+                                        </div>
+                                        <div class="col-xs-1" style='padding:0px !important;margin:0px !important;'>
+                                            <p style='margin-top:3px;'> : </p>
+                                        </div>
+                                        <div class="col-xs-9" style='padding-left:0px !important;margin-left:0px !important;'>
+                                            <p style='margin-top:3px;'><span t-field="o.create_date" t-field-options='{"format": "dd/MM/yyyy"}'/></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                               
+                                <div class='row'>
+                                    <div class="col-xs-8" style='margin-right:0px!important;padding-right:0px!important;'>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>Iteam</th>
+                                                    <th>Quantity</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="invoice_tbody">
+                                                <tr t-foreach="o.invoice_line" t-as="l">
+                                                    <td><span t-field="l.name"/></td>
+                                                    <td>
+                                                        <span t-field="l.quantity"/>
+                                                        <span t-field="l.uos_id"  groups="product.group_uom"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class='col-xs-4' style='margin-left:0px!important;padding-left:0px!important;'>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>D/O No</th>
+                                                    <th>D/O date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="invoice_tbody">
+                                                <tr>
+                                                    <td><span t-field="o.do_no"/></td>
+                                                    <td><span t-field="o.date_invoice"/></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>  
+                                </div>
+
+                                <div class="row" >
+                                    <div class="col-xs-3" style='margin-right:0px !important;padding-right:0px !important;'>
+                                        <p style='margin-left:15px!important;'>Total Quantity</p>
+                                    </div>
+                                    <div class="col-xs-1" style='margin:0px !important; padding:0px !important;'>
+                                        <p> : </p>
+                                    </div>
+                                    <div class="col-xs-8" style='margin:0px !important; padding:0px !important;'>
+                                        <p style=''>Gross Weight 000 kgs./000 Bags</p>
+                                    </div>
+                                </div>
+
+                                <div class="row" >
+                                    <div class="col-xs-3" style='margin-right:0px !important;padding-right:0px !important;'>
+                                        <p style='margin-left:15px!important;'>Proforma Invoice No</p>
+                                    </div>
+                                    <div class="col-xs-1" style='margin:0px !important;padding:0px !important;'>
+                                        <p> : </p>
+                                    </div>
+                                    <div class="col-xs-8" style='margin:0px !important; padding:0px !important;'>
+                                        
+                                        <p style=''><span t-field="o.pi_no" /> dated 000</p>
+                                    </div>
+                                </div>
+
+                                <div class="row" >
+                                    <div class="col-xs-3" style='margin-right:0px !important;padding-right:0px !important;'>
+                                        <p style='margin-left:15px!important;'>L/C No</p>
+                                    </div>
+                                    <div class="col-xs-1" style='margin:0px !important; padding:0px !important;'>
+                                        <p> : </p>
+                                    </div>
+                                    <div class="col-xs-8" style='margin:0px !important; padding:0px !important;'>
+                                        
+                                        <p style=''>0000 dated 000</p> 
+                                    </div>
+                                </div>
+
+                                <div class="row" >
+                                    <div class="col-xs-3" style='margin-right:0px !important;padding-right:0px !important;'>
+                                        <p style='margin-left:15px!important;'>Remarks</p>
+                                    </div>
+                                    <div class="col-xs-1" style='margin:0px !important; padding:0px !important;'>
+                                        <p> : </p>
+                                    </div>
+                                    <div class="col-xs-8" style='margin:0px !important; padding:0px !important;'>
+                                       
+                                        <p style=''>This Letter of Credit is Issued against 000 dated 000 </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-6"></div>
+                                <div class="col-xs-6">
+                                    <p style='margin-top:50px;'>Received the above in good condition for handling/delivery</p>
+                                </div>
+
+                                <div class="col-xs-6">
+                                    <p class='text-center' style='margin-top:90px; float: left;border-top:1px solid #000;'>Authorized Signature</p>
+                                </div>
+                                <div class="col-xs-6">
+                                    <p class='text-center' style='margin-top:90px;float:right;border-top:1px solid #000;'>Consignee Signature with Seal</p>
+                                </div> 
+
+
+
+                            </div>    
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>                         -->
     </data>
 </openerp>    

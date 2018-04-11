@@ -223,16 +223,16 @@
             id="report_of_delivery_challan" 
             model="delivery_challan.model"
             string="Delivery Challan"
-            name="lc_report_generator.report_delivery_challan_report_view"
+            name="lc_report_generator.delivery_challan"
             file="lc_report_generator.delivery_challan.model"
             report_type="qweb-pdf"/>
 
-        <template id="report_delivery_challan_report_view">
+        <template id="delivery_challan">
                     
             <t t-call="report.external_layout" t-lang="en_US">              
                 <t t-foreach="docs" t-as="o">
                     <t>          
-                        <div class="page" style='margin-left:30px !important;'>
+                        <div class="page" style='margin-left:30px !important;margin-top:30px !important;'>
                            <!-- < page content start> -->
                             <div class="container">
                                 <h3 class="text-center"><span style='border-bottom:2px solid #000;font-weight:bold;'>DELIVERY CHALLAN</span>
@@ -241,8 +241,8 @@
                             
                             <div class="row" style='margin-top:40px !important;'>
                                 <div class="col-xs-5">
-                                    <p style='font-weight:bold;'><span t-field="o.customer_name"/></p>
-                                    <p style='font-weight:bold;'><span t-field="o.customer_full_address"/></p>
+                                    <p style=''><span t-field="o.customer_name"/></p>
+                                    <p style=''><span t-field="o.customer_full_address"/></p>
                                 </div>
 
                                 <div class="col-xs-2"></div>
@@ -256,7 +256,7 @@
                                             <p style='margin-top:3px;'> : </p>
                                         </div>
                                         <div class="col-xs-9" style='padding-left:0px !important;margin-left:0px !important;'>
-                                            <p style='margin-top:3px;font-weight:bold;'><span t-field="o.name"/></p>
+                                            <p style='margin-top:3px;'><span t-field="o.name"/></p>
                                         </div>
 
                                         
@@ -270,7 +270,7 @@
                                             <p style='margin-top:3px;'> : </p>
                                         </div>
                                         <div class="col-xs-9" style='padding-left:0px !important;margin-left:0px !important;'>
-                                            <p style='margin-top:3px;font-weight:bold;'><span t-field="o.delivery_challan_created_date"/></p>
+                                            <p style='margin-top:3px;'><span t-field="o.delivery_challan_created_date"/></p>
                                         </div>
                                     </div>
                                 </div>
@@ -329,56 +329,56 @@
                                 <!-- <table structure end> -->
 
                                 <div class="row" >
-                                    <div class="col-xs-2" style='margin-right:0px !important;padding-right:0px !important;'>
+                                    <div class="col-xs-3" style='margin-right:0px !important;padding-right:0px !important;'>
                                         <p style='margin-left:15px!important;'>Total Quantity</p>
                                     </div>
                                     <div class="col-xs-1" style='margin:0px !important; padding:0px !important;'>
                                         <p> : </p>
                                     </div>
-                                    <div class="col-xs-9" style='margin:0px !important; padding:0px !important;'>
-                                        <p style='font-weight:bold;'>Gross Weight <span t-field="o.gross_weight"/> kgs./<span t-field="o.total_bags2" /> Bags</p>
+                                    <div class="col-xs-8" style='margin:0px !important; padding:0px !important;'>
+                                        <p style=''>Gross Weight <span t-field="o.gross_weight"/> kgs./<span t-field="o.total_bags2" /> Bags</p>
                                     </div>
                                 </div>
 
                                 <div class="row" >
-                                    <div class="col-xs-2" style='margin-right:0px !important;padding-right:0px !important;'>
+                                    <div class="col-xs-3" style='margin-right:0px !important;padding-right:0px !important;'>
                                         <p style='margin-left:15px!important;'>Proforma Invoice No</p>
                                     </div>
                                     <div class="col-xs-1" style='margin:0px !important;padding:0px !important;'>
                                         <p> : </p>
                                     </div>
-                                    <div class="col-xs-9" style='margin:0px !important; padding:0px !important;'>
-                                        <p style='font-weight:bold;'><span t-field="o.proforma_invoice_uniq_id" /> dated <span t-field="o.proforma_invoice_created_date" /></p>
+                                    <div class="col-xs-8" style='margin:0px !important; padding:0px !important;'>
+                                        <p style=''><span t-field="o.proforma_invoice_uniq_id" /> dated <span t-field="o.proforma_invoice_created_date" /></p>
                                     </div>
                                 </div>
 
                                 <div class="row" >
-                                    <div class="col-xs-2" style='margin-right:0px !important;padding-right:0px !important;'>
+                                    <div class="col-xs-3" style='margin-right:0px !important;padding-right:0px !important;'>
                                         <p style='margin-left:15px!important;'>L/C No</p>
                                     </div>
                                     <div class="col-xs-1" style='margin:0px !important; padding:0px !important;'>
                                         <p> : </p>
                                     </div>
-                                    <div class="col-xs-9" style='margin:0px !important; padding:0px !important;'>
-                                        <p style='font-weight:bold;'><span t-field="o.lc_num" /> dated <span t-field="o.lc_date" /></p> 
+                                    <div class="col-xs-8" style='margin:0px !important; padding:0px !important;'>
+                                        <p style=''><span t-field="o.lc_num" /> dated <span t-field="o.lc_date" /></p> 
                                     </div>
                                 </div>
 
                                 <div class="row" >
-                                    <div class="col-xs-2" style='margin-right:0px !important;padding-right:0px !important;'>
+                                    <div class="col-xs-3" style='margin-right:0px !important;padding-right:0px !important;'>
                                         <p style='margin-left:15px!important;'>Remarks</p>
                                     </div>
                                     <div class="col-xs-1" style='margin:0px !important; padding:0px !important;'>
                                         <p> : </p>
                                     </div>
-                                    <div class="col-xs-9" style='margin:0px !important; padding:0px !important;'>
-                                        <p style='font-weight:bold;'>This Letter of Credit is Issued against <span t-field="o.contact_no" /> </p>
+                                    <div class="col-xs-8" style='margin:0px !important; padding:0px !important;'>
+                                        <p style=''>This Letter of Credit is Issued against <span t-field="o.contact_no" /> </p>
                                     </div>
                                 </div>
 
                                 <div class="col-xs-6"></div>
                                 <div class="col-xs-6">
-                                    <p style='margin-top:50px;font-weight:bold;'>Received the above in good condition for handling/delivery</p>
+                                    <p style='margin-top:50px;'>Received the above in good condition for handling/delivery</p>
                                 </div>
 
                                 <div class="col-xs-6">

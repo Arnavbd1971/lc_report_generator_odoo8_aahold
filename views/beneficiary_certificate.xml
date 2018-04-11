@@ -152,11 +152,11 @@
             id="report_of_beneficiary_certificate" 
             model="beneficiary_certificate.model"
             string="Beneficiary Certificate"
-            name="lc_report_generator.report_beneficiary_certificate_report_view"
+            name="lc_report_generator.beneficiary_certificate"
             file="lc_report_generator.beneficiary_certificate.model"
             report_type="qweb-pdf"/>
 
-            <template id="report_beneficiary_certificate_report_view">
+            <template id="beneficiary_certificate">
                     
                 <t t-call="report.external_layout" t-lang="en_US">              
                     <t t-foreach="docs" t-as="o">
@@ -183,7 +183,7 @@
                                 <div class="row">
                                         <div class="col-xs-12" style='margin-top:30px; font-size:17px;'>
                                             <p>
-                                                This is to certify that we are the manufacturer of cotton spun yarn and supplied <span style='font-weight:bold;'><span t-field="o.ordered_products_total_quantity" /> kgs.</span> of <span style='font-weight:bold;'><span t-field="o.commodity" /></span> to <span style='font-weight:bold;'><span t-field="o.customer_name" /> <span t-field="o.customer_full_address" /></span> under our Commercial Invoice No. <span style='font-weight:bold;'><span t-field="o.commercial_invoice_no" /></span> dated <span style='font-weight:bold;'><span t-field="o.commercial_invoice_created_date" /></span> Proforma Invoice No. <span style='font-weight:bold;'><span t-field="o.proforma_invoice_no" /> dated <span t-field="o.proforma_invoice_created_date" /></span> Truck Receipt No. <span style='font-weight:bold;'><span t-field="o.truck_receipt_no" /> dated <span t-field="o.truck_challan_created_date" /></span> Delivery Challan No. <span style='font-weight:bold;'><span t-field="o.delivery_challan_no" /> dated <span t-field="o.delivery_challan_created_date" /></span> against L/C No. <span style='font-weight:bold;'><span t-field="o.lc_num" /> dated <span t-field="o.lc_date" /></span> which is issued against  <span style='font-weight:bold;'><span t-fiels="o.contact_no" /> </span> and Locally manufactured at our factory <span style='font-weight:bold;'><span t-field="o.dealer_factory_name" /></span>.
+                                                This is to certify that we are the manufacturer of cotton spun yarn and supplied <span style=''><span t-field="o.ordered_products_total_quantity" /> kgs.</span> of <span style=''><span t-field="o.commodity" /></span> to <span style=''><span t-field="o.customer_name" /> <span t-field="o.customer_full_address" /></span> under our Commercial Invoice No. <span style=''><span t-field="o.commercial_invoice_no" /></span> dated <span style=''><span t-field="o.commercial_invoice_created_date" /></span> Proforma Invoice No. <span style=''><span t-field="o.proforma_invoice_no" /> dated <span t-field="o.proforma_invoice_created_date" /></span> Truck Receipt No. <span style=''><span t-field="o.truck_receipt_no" /> dated <span t-field="o.truck_challan_created_date" /></span> Delivery Challan No. <span style=''><span t-field="o.delivery_challan_no" /> dated <span t-field="o.delivery_challan_created_date" /></span> against L/C No. <span style=''><span t-field="o.lc_num" /> dated <span t-field="o.lc_date" /></span> which is issued against  <span style=''><span t-fiels="o.contact_no" /> </span> and Locally manufactured at our factory <span style=''><span t-field="o.dealer_factory_name" /></span>.
                                             </p>
                                         </div>
                                         <div class="col-xs-12">

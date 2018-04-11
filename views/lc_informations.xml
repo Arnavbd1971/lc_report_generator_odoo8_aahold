@@ -25,8 +25,9 @@
                 <field name="model">lc_informations.model</field>
                 <field name="priority" eval="16" />
                 <field name="arch" type="xml">
-                    <tree string="lc_informations">
+                    <tree string="lc_informations"> 
                         <field name="name" />
+                        <field name="pi_no" />
                         <field name="created_date" />
                         <field name="bank_name" />
                         <field name="bank_branch" />
@@ -44,20 +45,31 @@
                 <field name="arch" type="xml">
                     <form string="lc_informations">
                         <sheet>
-                            <group colspan="4" col="4" name="main" >
-                                <field name="name" />
-                                <field name="bank_branch" on_change="onchange_bank_name_branch(bank_name,bank_branch)"/>
-                                <field name="bank_name" on_change="onchange_bank_name_branch(bank_name,bank_branch)"/>
-                                <field name="bank_address" />
-                                <field name="vat_no" />
-                                <field name="irc_no" />
-                                <field name="bin_no" />
-                                <field name="tin_no" />
-                                <field name="shipment_last_date" />
-                                <field name="amend_no" />
-                                <field name="amend_date" />
-                                <field name="created_date" />
-                            </group>
+                            <div class='row'>
+                                <div class='col-xs-6'>
+                                    <group>
+                                        <field name="name" />
+                                        <field name="pi_no_id" on_change="onchange_pi_no_id(pi_no_id)"/>
+                                        <field name="pi_no" invisible="1"/>
+                                        <field name="vat_no" />
+                                        <field name="irc_no" />
+                                        <field name="bin_no" />
+                                        <field name="tin_no" />   
+                                        <field name="amend_no" /> 
+                                        <field name="amend_date" />                             
+                                    </group>
+                                </div>
+                                <div class='col-xs-6'>
+                                    <group>
+                                        <field name="bank_name" on_change="onchange_bank_name_branch(bank_name)"/>
+                                        <field name="bank_name2" invisible="1"/>
+                                        <field name="bank_branch" />
+                                        <field name="bank_address" />
+                                        <field name="shipment_last_date" />
+                                        <field name="created_date" />
+                                    </group>                                    
+                                </div>
+                            </div>
                         </sheet>
                     </form>
                 </field>
@@ -93,7 +105,7 @@
                 <field name="context">{}</field> 
                 <field name="help" type="html">
                     <p class="oe_view_nocontent_create">
-                        Click here to creat L/C Informations
+                        Click here to create L/C Informations
                     </p>
                 </field>
             </record>

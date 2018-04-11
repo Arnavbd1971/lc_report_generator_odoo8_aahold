@@ -10,7 +10,7 @@ class BeneficiaryCertificateModel(models.Model):
     name = fields.Char(string='Ref.No', required=True)
     date = fields.Date(string='Created Date', required=True,default=fields.Date.today())
 
-    supplied_product = fields.Char(string='Supplied Product', required=True)
+    supplied_product = fields.Char(string='Supplied Product', required=True, default='"Yarn"')
     lc_num = fields.Char(string='L/C No.', required=True)
     lc_date = fields.Date(string='lc_date', required=True)
     contact_no = fields.Char(string='contact_no', required=True)
@@ -24,26 +24,29 @@ class BeneficiaryCertificateModel(models.Model):
 
 
     # This function is for load data automatically in the existing field from another table
-    def onchange_commercial_invoice_id(self, cr, uid, ids, commercial_invoice_id=False, context=None):
+    def onchange_commercial_invoice_id(self, cr, uid, ids, name=False, context=None):
         res= {}
-        if commercial_invoice_id:
+        if name:
+            all_data_of_commercial_invoice = self.pool.get('commercial_invoice.model').browse(cr, uid, name,context=context)
 
-            all_data_of_commercial_invoice = self.pool.get('commercial_invoice.model').browse(cr, uid, commercial_invoice_id,context=context)
-            cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
+            # cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
             contact_no = all_data_of_commercial_invoice.contact_no
             commercial_invoice_no = all_data_of_commercial_invoice.name
             commercial_invoice_created_date = all_data_of_commercial_invoice.commercial_invoice_created_date
             delivery_challan_no = all_data_of_commercial_invoice.only_seq_num
             country_of_origin = all_data_of_commercial_invoice.country_of_origin2
             supplier_factory_address= all_data_of_commercial_invoice.supplier_factory_address
+            proforma_invoice_id = all_data_of_commercial_invoice.pi_id
+            proforma_invoice_uniq_id = all_data_of_commercial_invoice.proforma_invoice_id
 
-            lc_num = all_data_of_commercial_invoice.lc_num
-            all_data_obj_of_LC = self.pool.get('lc_informations.model').browse(cr, uid,lc_num.id,context=context)
-            lc_num = all_data_obj_of_LC.name
-            lc_date = all_data_obj_of_LC.created_date
+            service_obj= self.pool.get('sale.order').browse(cr, uid,proforma_invoice_id.id,context=context)
+            lc_id = service_obj.lc_num_id
+            lc_info_pool_ids = self.pool.get('lc_informations.model').browse(cr, uid,lc_id.id,context=context)
+            lc_num = lc_info_pool_ids.name
+            lc_date = lc_info_pool_ids.created_date
 
 
-            delivery_challan_datas = self.pool.get('delivery_challan.model').search(cr, uid,[('commercial_invoice_id','=',commercial_invoice_id),],context=context)
+            delivery_challan_datas = self.pool.get('delivery_challan.model').search(cr, uid,[('commercial_invoice_id','=',name),],context=context)
 
             dates = self.pool.get('delivery_challan.model').read(cr, uid,delivery_challan_datas, ['delivery_challan_created_date'], context=context)
 

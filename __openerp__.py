@@ -6,7 +6,7 @@
 
     'description': 'Simplly creat your LC report',
 
-    'author': "Arnav, Metaporphosis.com.bd",
+    'author': "Metaporphosis.com.bd",
     'website': "http://www.metamorphosis.com.bd/",
 
     'version': '0.1',
@@ -35,11 +35,11 @@
         'views/bill_of_exchange.xml', 
         'views/terms_conditions.xml',   
         'views/supplier_factory_name_addr.xml', 
-        'views/customer_factory_name_addr.xml',  
-        'views/bank_names.xml',
-        'views/bank_branch.xml', 
+        # 'views/customer_factory_name_addr.xml',  
+        # 'views/bank_names.xml',
+        # 'views/bank_branch.xml', 
         'views/bank_names_branch_address.xml', 
-        'views/beneficiary_full_name.xml', 
+        # 'views/beneficiary_full_name.xml', 
         'views/reimbursement.xml',  
         'views/method_of_payment.xml', 
         'views/product_type.xml', 

@@ -28,8 +28,9 @@
                 <field name="arch" type="xml">
                     <tree string="Bill Of Exchange" default_order="id desc">
                         <field name="commercial_invoice_id" />
-                        <field name="bill_of_exchange_created_date" />
+                        <field name="bill_of_exchange_created_date" /> 
                         <field name="ordered_products_total_amount" />
+                        <field name="document_status" />
                     </tree>
                 </field>
             </record>
@@ -42,6 +43,7 @@
                 <field name="arch" type="xml">
                     <form string="Bill_Of_Exchange">
                         <header>
+                            <button name="confirm_lc" string="Confirm Document Set" type="object"   class="oe_highlight" attrs="{'invisible':[('document_status','=','Done')]}"/>
                         </header>
         
                         <sheet string="Bill_Of_Exchange">
@@ -54,6 +56,7 @@
                                 <div class="col-xs-6">
                                     <group>
                                         <field name="commercial_invoice_id" on_change="onchange_commercial_invoice_id(commercial_invoice_id)"/>
+                                        <field name='pi_no' invisible="1" />
                                     </group>
                                 </div>
                                 <div class="col-xs-6"></div>
@@ -121,7 +124,9 @@
                                     <p>Authorized Signature</p>
                                     <p style='font-weight:bold;'><field name="company_name" class="oe_inline" nolabel="1"/></p>
                                 </div>
-
+                                <field name="document_status" class="oe_inline" nolabel="1"/>
+                                <field name="commercial_invoice_name" class="oe_inline" nolabel="1"/>
+                                
                             </div>
 
                         </sheet>
@@ -201,16 +206,16 @@
         id="report_of_bill_of_exchange" 
         model="bill_of_exchange.model"
         string="Bill Of Exchange"
-        name="lc_report_generator.report_bill_of_exchange_report_view"
+        name="lc_report_generator.bill_of_exchange"
         file="lc_report_generator.bill_of_exchange.model"
         report_type="qweb-pdf"/>
 
-        <template id="report_bill_of_exchange_report_view">
+        <template id="bill_of_exchange">
                 
             <t t-call="report.external_layout" t-lang="en_US">              
                 <t t-foreach="docs" t-as="o">
                     <t>          
-                        <div class="page">
+                        <div class="page" style='margin-top:30px !important;'>
                            <!-- < page content start> -->
                             <!-- <part1 start> -->
                             <div style='border:1px solid #000; padding:15px; margin-top:80px;'>
@@ -269,9 +274,9 @@
                                                 <p>To : </p>
                                             </div>
                                             <div class="col-xs-10" style='margin-left:0px !important; padding-left:0px !important;'>
-                                                <p><span style='font-weight:bold;' t-field="o.lc_bank_name2" /></p>
-                                                <p><span style='font-weight:bold;' t-field="o.lc_bank_brunch" /></p>
-                                                <p><span style='font-weight:bold;' t-field="o.lc_bank_address" /></p>
+                                                <p><span style='' t-field="o.lc_bank_name2" /></p>
+                                                <p><span style='' t-field="o.lc_bank_brunch" /></p>
+                                                <p><span style='' t-field="o.lc_bank_address" /></p>
                                             </div>
                                         </div>
         
@@ -332,7 +337,7 @@
                                         </div>
         
                                         <div class="col-xs-12">
-                                            <p>DRAWN under L/C No.<span  t-field="o.lc_num" /> dated <span  t-field="o.lc_date" /> issued by <span t-field="o.lc_bank_name" />, against <span style='font-weight:bold;' t-field="o.contact_no" /> </p>
+                                            <p>DRAWN under L/C No.<span  t-field="o.lc_num" /> dated <span  t-field="o.lc_date" /> issued by <span t-field="o.lc_bank_name" />, against <span style='' t-field="o.contact_no" /> </p>
                                         </div>
                                 </div>    
         
@@ -342,9 +347,9 @@
                                                 <p>To : </p>
                                             </div>
                                             <div class="col-xs-10" style='margin-left:0px !important; padding-left:0px !important;'>
-                                                <p><span style='font-weight:bold;' t-field="o.lc_bank_name2" /></p>
-                                                <p><span style='font-weight:bold;' t-field="o.lc_bank_brunch" /></p>
-                                                <p><span style='font-weight:bold;' t-field="o.lc_bank_address" /></p>
+                                                <p><span style='' t-field="o.lc_bank_name2" /></p>
+                                                <p><span style='' t-field="o.lc_bank_brunch" /></p>
+                                                <p><span style='' t-field="o.lc_bank_address" /></p>
                                             </div>
                                         </div>
         

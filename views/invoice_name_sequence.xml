@@ -41,6 +41,7 @@
             <field name="padding">5</field>
         </record>
 
+        
         <!-- <record model="ir.sequence" id="seq_beneficiary_certificate_num">
             <field name="name">Beneficiary Certificate Numbers</field>
             <field name="code">beneficiary_certificate.model</field>

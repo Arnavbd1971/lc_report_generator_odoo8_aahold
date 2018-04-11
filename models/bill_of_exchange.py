@@ -1,5 +1,6 @@
 from openerp import models, fields, api,_
 import datetime
+from openerp.exceptions import except_orm, Warning, RedirectWarning
 
 # packing list Model start
 
@@ -18,13 +19,12 @@ class BillOfExchangeModel(models.Model):
     currency_symbol_name2 = fields.Char(string='currency_symbol_name', required=True)
     currency_symbol = fields.Char(string='currency_symbol', required=True)
     currency_symbol2 = fields.Char(string='currency_symbol', required=True)
-    days = fields.Char(string='days', required=True)
+    days = fields.Char(string='days', required=True, default='90')
 
     bank_name = fields.Char(string='Bank Name' , required=True)
     bank_brunch = fields.Char(string='Bank Brunch' , required=True)
     bank_address = fields.Char(string='Bank Address' , required=True)
     swift_code = fields.Char(string='Swift Code' , required=True)
-
 
     customer_name = fields.Char(string='Customer Name', required=True)
     customer_full_address = fields.Text(string='Customer Address' , required=True)
@@ -40,30 +40,30 @@ class BillOfExchangeModel(models.Model):
 
     company_name = fields.Char(string='Company name', required=True)
 
-    
+    pi_no = fields.Char(string='pi_no')
 
+    commercial_invoice_name = fields.Char(string='pi_no')
+
+    document_status = fields.Char(string='Document Status', default='set_for_LC')
 
     # This function is for load data automatically in the existing field from another table
-    def onchange_commercial_invoice_id(self, cr, uid, ids, commercial_invoice_id=False, context=None):
+    def onchange_commercial_invoice_id(self, cr, uid, ids, name=False, context=None):
         res= {}
-        if commercial_invoice_id:
+        if name:
 
-            all_data_of_commercial_invoice = self.pool.get('commercial_invoice.model').browse(cr, uid, commercial_invoice_id,context=context)
-            cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
-            proforma_invoice_id = all_data_of_commercial_invoice.proforma_invoice_id
+            all_data_of_commercial_invoice = self.pool.get('commercial_invoice.model').browse(cr, uid, name,context=context)
+            commercial_invoice_name = all_data_of_commercial_invoice.name
+            proforma_invoice_id = all_data_of_commercial_invoice.pi_id
+            proforma_invoice_uniq_id = all_data_of_commercial_invoice.proforma_invoice_id
             contact_no = all_data_of_commercial_invoice.contact_no
 
-            sale_order_id = self.pool.get('sale.order').search(cr, uid,[('name','=',proforma_invoice_id),],context=context)
-            sale_order_data_list = self.pool.get('sale.order').read(cr, uid,sale_order_id,['beneficiary_bank_name2', 'beneficiary_bank_branch2','beneficiary_bank_address','swift_code','benificiary_name'], context=context)
-            beneficiary_bank_name = self.split_from_list(sale_order_data_list,'beneficiary_bank_name2')
-            beneficiary_bank_branch = self.split_from_list(sale_order_data_list,'beneficiary_bank_branch2')
-            beneficiary_bank_address = self.split_from_list(sale_order_data_list,'beneficiary_bank_address')
-            swift_code = self.split_from_list(sale_order_data_list,'swift_code')
+            service_obj= self.pool.get('sale.order').browse(cr, uid,proforma_invoice_id.id,context=context)
 
-            company_name = self.split_from_list(sale_order_data_list,'benificiary_name')
-
-
-            service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id.id,context=context)
+            beneficiary_bank_name = service_obj.beneficiary_bank_name2 
+            beneficiary_bank_branch = service_obj.beneficiary_bank_branch
+            beneficiary_bank_address = service_obj.beneficiary_bank_address
+            swift_code = service_obj.swift_code
+            company_name = service_obj.benificiary_name
             service_obj2= self.pool.get('res.partner').browse(cr, uid,service_obj.partner_id.id,context=context)
             service_obj3= self.pool.get('res.country').browse(cr, uid,service_obj2.country_id.id,context=context)
             currency_symbol= self.pool.get('res.currency').browse(cr, uid,service_obj.currency_id.id,context=context)
@@ -71,29 +71,25 @@ class BillOfExchangeModel(models.Model):
             cus_name = service_obj2.name
             cus_full_address = str(service_obj2.street) + " , " + str(service_obj2.street2) + " , " + str(service_obj2.city)+ " - " + str(service_obj2.zip) + " , " + str(service_obj3.name)
 
+            lc_id = service_obj.lc_num_id
+            lc_info_pool_ids = self.pool.get('lc_informations.model').browse(cr, uid,lc_id.id,context=context)
+            lc_num = lc_info_pool_ids.name
+            lc_date = lc_info_pool_ids.created_date
+            lc_bank_name = lc_info_pool_ids.bank_name2
+            lc_bank_branch = lc_info_pool_ids.bank_branch
+            lc_bank_address = lc_info_pool_ids.bank_address
 
-            lc_num = all_data_of_commercial_invoice.lc_num
-            all_data_obj_of_LC = self.pool.get('lc_informations.model').browse(cr, uid,lc_num.id,context=context)
-            lc_num = all_data_obj_of_LC.name
-            lc_date = all_data_obj_of_LC.created_date
-            lc_bank_name_id = all_data_obj_of_LC.bank_name
-            all_data_obj_of_bank_names = self.pool.get('bank_names.model').browse(cr, uid,lc_bank_name_id.id,context=context)
-            lc_bank_name = all_data_obj_of_bank_names.name
-            lc_bank_branch_id = all_data_obj_of_LC.bank_branch
-            all_data_obj_of_bank_branch = self.pool.get('bank_branch.model').browse(cr, uid,lc_bank_branch_id.id,context=context)
-            lc_bank_branch = all_data_obj_of_bank_branch.name
-            lc_bank_address = all_data_obj_of_LC.bank_address
+            account_invoice_ids = self.pool.get('account.invoice').search(cr, uid,[('pi_no','=',service_obj.name),('process','=','set_for_LC')],context=context)
+            if not account_invoice_ids:
+                # print('Account invoice list is empty.')
+                raise Warning(_('Account invoice list is empty.'))
+            else:
+                invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',account_invoice_ids),],context=context)
 
+                invoice_lines_product_amount = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['price_subtotal','name'], context=context)
 
-
-            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id.id),],context=context)
-
-            invoice_lines_product_amount = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['price_subtotal'], context=context)
-
-
-            ordered_products_total_amount = self.products_total_amount(invoice_lines_product_amount)
-
-            ordered_products_total_amount_in_word = self.numToWords(ordered_products_total_amount)
+                ordered_products_total_amount = self.products_total_amount(invoice_lines_product_amount)
+                ordered_products_total_amount_in_word = self.numToWords(ordered_products_total_amount)
 
             res = {'value':{
                 'ordered_products_total_amount': "{:,}".format( ordered_products_total_amount) ,
@@ -116,11 +112,35 @@ class BillOfExchangeModel(models.Model):
                 'lc_bank_address':lc_bank_address,
                 'contact_no':contact_no, 
                 'company_name':company_name,
+                'pi_no':proforma_invoice_uniq_id,
+                'commercial_invoice_name':commercial_invoice_name
             }}
 
         else:
             res={}  
         return res     
+
+    @api.multi
+    def confirm_lc(self):
+        pi_no = self.pi_no
+        commercial_invoice_name = self.commercial_invoice_name
+        process_status_done = 'Done'
+        process_status_set_for_LC = 'set_for_LC'
+        self.write({})
+
+        self._cr.execute("SELECT id FROM bill_of_exchange_model WHERE commercial_invoice_name = %s AND document_status = %s",(commercial_invoice_name,process_status_set_for_LC))
+        lines = self.env['bill_of_exchange.model'].browse([r[0] for r in self._cr.fetchall()])
+
+        if lines:
+            for inv in self:
+                self._cr.execute("UPDATE bill_of_exchange_model SET document_status=%s WHERE commercial_invoice_name=%s AND document_status=%s",(process_status_done,commercial_invoice_name,process_status_set_for_LC))
+                self._cr.execute("UPDATE account_invoice SET process=%s,process_status=%s WHERE pi_no=%s AND process=%s",(process_status_done,process_status_done,pi_no,process_status_set_for_LC))
+                self.invalidate_cache()
+                
+        else:
+            raise except_orm(_('else'))               
+          
+        return True        
 
     def split_from_list(self,list_name,data_field):
         save = []

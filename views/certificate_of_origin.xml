@@ -146,11 +146,11 @@
             id="report_of_certificate_of_origin" 
             model="certificate_of_origin.model"
             string="Certificate Of Origin"
-            name="lc_report_generator.report_certificate_of_origin_report_view"
+            name="lc_report_generator.certificate_of_origin"
             file="lc_report_generator.certificate_of_origin.model"
             report_type="qweb-pdf"/>
 
-            <template id="report_certificate_of_origin_report_view">
+            <template id="certificate_of_origin">
                     
                 <t t-call="report.external_layout" t-lang="en_US">              
                     <t t-foreach="docs" t-as="o">
@@ -177,11 +177,11 @@
                                 <div class="row">
                                     <div class="col-xs-12" style='margin-top:30px; font-size:17px;'>
                                         <p>
-                                            We hereby declare that the <span style='font-weight:bold;'><span t-field="o.supplied_product" /></span> supplied L/C No. <span style='font-weight:bold;'><span t-field="o.lc_num" /> dated <span t-field="o.lc_date" /></span> against <span style='font-weight:bold;'><span t-field="o.contact_no" /> </span> under our Commercial Invoice No. <span style='font-weight:bold;'><span t-field="o.commercial_invoice_no" /> dated <span t-field="o.commercial_invoice_created_date" /></span> Delivery Challan No. <span style='font-weight:bold;'><span t-field="o.delivery_challan_no" /> dated <span t-field="o.delivery_challan_created_date" /></span> is of <span style='font-weight:bold;'><span t-field="o.country_of_origin" /></span> origin which have been manufactured in our factory at <span style='font-weight:bold;'><span t-field="o.dealer_factory_name" /></span>
+                                            We hereby declare that the <span style=''><span t-field="o.supplied_product" /></span> supplied L/C No. <span style=''><span t-field="o.lc_num" /> dated <span t-field="o.lc_date" /></span> against <span style=''><span t-field="o.contact_no" /> </span> under our Commercial Invoice No. <span style=''><span t-field="o.commercial_invoice_no" /> dated <span t-field="o.commercial_invoice_created_date" /></span> Delivery Challan No. <span style=''><span t-field="o.delivery_challan_no" /> dated <span t-field="o.delivery_challan_created_date" /></span> is of <span style=''><span t-field="o.country_of_origin" /></span> origin which have been manufactured in our factory at <span style=''><span t-field="o.dealer_factory_name" /></span>
                                         </p>
                                     </div>
 
-                                    <div class="col-xs-12" style=' margin-top:90px;'>
+                                    <div class="col-xs-12" style=' margin-top:90px;font-weight:bold;'>
                                         <p stle='float:left;border-top:1px solid #000;'>Authorized Signature</p>
                                     </div>
                                 </div>

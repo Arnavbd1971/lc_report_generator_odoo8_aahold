@@ -1,14 +1,14 @@
 from openerp import models, fields, api,_
 import datetime
-
+import time
 # packing list Model start
 
 class BeneficiaryCertificateModel(models.Model):
     _name = 'beneficiary_certificate.model'
-
-
-    commercial_invoice_id = fields.Many2one('commercial_invoice.model',string='Commercial Invoice No.', required=True)
     name = fields.Char(string='Ref.No', required=True)
+    # name = fields.Char(string='Ref.No', required=True, default=lambda *a: time.strftime('%Y'))
+    commercial_invoice_id = fields.Many2one('commercial_invoice.model',string='Commercial Invoice No.', required=True)
+    
     date = fields.Date(string=' Created Date',default=fields.Date.today(), required=True)
 
     ordered_products_total_quantity = fields.Char(string='ordered_products_total_quantity', required=True)
@@ -31,75 +31,63 @@ class BeneficiaryCertificateModel(models.Model):
     contact_no = fields.Char(string='contact_no', required=True)
     dealer_factory_name = fields.Char(string='Delivery From', required=True)
 
-
-
     
-
-
-
     # This function is for load data automatically in the existing field from another table
-    def onchange_commercial_invoice_id(self, cr, uid, ids, commercial_invoice_id=False, context=None):
+    def onchange_commercial_invoice_id(self, cr, uid, ids, name=False, context=None):
         res= {}
-        if commercial_invoice_id:
-            all_data_of_commercial_invoice = self.pool.get('commercial_invoice.model').browse(cr, uid, commercial_invoice_id,context=context)
-            cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
+        if name:
+            all_data_of_commercial_invoice = self.pool.get('commercial_invoice.model').browse(cr, uid, name,context=context)
+            # cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
             cus_name = all_data_of_commercial_invoice.customer_name
             customer_full_address = all_data_of_commercial_invoice.customer_full_address
             commercial_invoice_no = all_data_of_commercial_invoice.name
             commercial_invoice_created_date = all_data_of_commercial_invoice.commercial_invoice_created_date
-            proforma_invoice_no = all_data_of_commercial_invoice.proforma_invoice_id
+            proforma_invoice_id = all_data_of_commercial_invoice.pi_id
+            proforma_invoice_uniq_id = all_data_of_commercial_invoice.proforma_invoice_id
             proforma_invoice_created_date = all_data_of_commercial_invoice.proforma_invoice_created_date
             contact_no = all_data_of_commercial_invoice.contact_no
             only_seq_num = all_data_of_commercial_invoice.only_seq_num
             supplier_factory_address= all_data_of_commercial_invoice.supplier_factory_address
 
+            service_obj= self.pool.get('sale.order').browse(cr, uid,proforma_invoice_id.id,context=context)
+            lc_id = service_obj.lc_num_id
+            lc_info_pool_ids = self.pool.get('lc_informations.model').browse(cr, uid,lc_id.id,context=context)
+            lc_num = lc_info_pool_ids.name
+            lc_date = lc_info_pool_ids.created_date
 
+            account_invoice_ids = self.pool.get('account.invoice').search(cr, uid,[('pi_no','=',service_obj.name),('process','=','set_for_LC')],context=context)
+            if not account_invoice_ids:
+                # print('Account invoice list is empty.')
+                raise Warning(_('Account invoice list is empty.'))
+            else:
+                invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',account_invoice_ids),],context=context)
 
-            lc_num = all_data_of_commercial_invoice.lc_num
-            all_data_obj_of_LC = self.pool.get('lc_informations.model').browse(cr, uid,lc_num.id,context=context)
-            lc_num = all_data_obj_of_LC.name
-            lc_date = all_data_obj_of_LC.created_date
-            
+                # invoice_lines_product_name = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['name'], context=context)
 
+                invoice_lines_product_quantity = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['quantity'], context=context)
 
-            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id.id),],context=context)
+                ordered_products_total_quantity = self.products_total_quantity(invoice_lines_product_quantity)
 
-            invoice_lines_product_name = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['name'], context=context)
+                packing_list_pool_ids = self.pool.get('packing_list.model').search(cr, uid,[('commercial_invoice_no','=',commercial_invoice_no),],context=context)
 
-            invoice_lines_product_quantity = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['quantity'], context=context)
+                commodity_names = self.pool.get('packing_list.model').read(cr, uid,packing_list_pool_ids, ['commodity'], context=context)
 
-            ordered_products_total_quantity = self.products_total_quantity(invoice_lines_product_quantity)
+                commodity = self.split_commodity(commodity_names)
 
+                truck_challan_datas = self.pool.get('truck_challan.model').search(cr, uid,[('commercial_invoice_id','=',name),],context=context)
 
+                dates = self.pool.get('truck_challan.model').read(cr, uid,truck_challan_datas, ['truck_challan_created_date'], context=context)
 
+                truck_challan_created_date = self.split_truck_challan_created_date(dates)
 
-            packing_list_pool_ids = self.pool.get('packing_list.model').search(cr, uid,[('commercial_invoice_no','=',commercial_invoice_no),],context=context)
+                delivery_challan_datas = self.pool.get('delivery_challan.model').search(cr, uid,[('commercial_invoice_id','=',name),],context=context)
 
-            commodity_names = self.pool.get('packing_list.model').read(cr, uid,packing_list_pool_ids, ['commodity'], context=context)
+                dates = self.pool.get('delivery_challan.model').read(cr, uid,delivery_challan_datas, ['delivery_challan_created_date'], context=context)
 
-            commodity = self.split_commodity(commodity_names)
+                delivery_challan_created_date = self.split_delivery_challan_created_date(dates)
 
-
-            truck_challan_datas = self.pool.get('truck_challan.model').search(cr, uid,[('commercial_invoice_id','=',commercial_invoice_id),],context=context)
-
-            dates = self.pool.get('truck_challan.model').read(cr, uid,truck_challan_datas, ['truck_challan_created_date'], context=context)
-
-            truck_challan_created_date = self.split_truck_challan_created_date(dates)
-
-
-            delivery_challan_datas = self.pool.get('delivery_challan.model').search(cr, uid,[('commercial_invoice_id','=',commercial_invoice_id),],context=context)
-
-            dates = self.pool.get('delivery_challan.model').read(cr, uid,delivery_challan_datas, ['delivery_challan_created_date'], context=context)
-
-            delivery_challan_created_date = self.split_delivery_challan_created_date(dates)
-
-
-            now = datetime.datetime.now()
-            uniq_num = 'AAYML-CERT/'+str(now.year)
-
-
-
-
+                now = datetime.datetime.now()
+                uniq_num = 'AAYML-CERT/'+str(now.year)
 
             res = {'value':{
                 'name': uniq_num,
@@ -108,7 +96,7 @@ class BeneficiaryCertificateModel(models.Model):
                 'customer_full_address':customer_full_address, 
                 'commercial_invoice_no':commercial_invoice_no,  
                 'commercial_invoice_created_date':commercial_invoice_created_date,
-                'proforma_invoice_no':proforma_invoice_no,
+                'proforma_invoice_no':proforma_invoice_uniq_id,
                 'proforma_invoice_created_date':proforma_invoice_created_date,
                 'lc_num':lc_num,
                 'lc_date':lc_date,
@@ -159,5 +147,4 @@ class BeneficiaryCertificateModel(models.Model):
             combine = '\n \n'.join([str(i) for i in names])  
         return combine
 
-    # def generateRefNo(self):
 

@@ -43,46 +43,50 @@ class ForwardingLetterModel(models.Model):
 
 
     # This function is for load data automatically in the existing field from another table
-    def onchange_commercial_invoice_id(self, cr, uid, ids, commercial_invoice_id=False, context=None):
+    def onchange_commercial_invoice_id(self, cr, uid, ids, name=False, context=None):
         res= {}
-        if commercial_invoice_id:
+        if name:
 
-            all_data_of_commercial_invoice = self.pool.get('commercial_invoice.model').browse(cr, uid, commercial_invoice_id,context=context)
-            cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
-            proforma_invoice_id = all_data_of_commercial_invoice.proforma_invoice_id
+            all_data_of_commercial_invoice = self.pool.get('commercial_invoice.model').browse(cr, uid, name,context=context)
+            # cus_invoice_id = all_data_of_commercial_invoice.customer_invoice_id
+            proforma_invoice_id = all_data_of_commercial_invoice.pi_id
+            proforma_invoice_uniq_id = all_data_of_commercial_invoice.proforma_invoice_id
 
-            sale_order_id = self.pool.get('sale.order').search(cr, uid,[('name','=',proforma_invoice_id),],context=context)
-            sale_order_data_list = self.pool.get('sale.order').read(cr, uid,sale_order_id,['beneficiary_bank_name2', 'beneficiary_bank_branch2','beneficiary_bank_address','swift_code'], context=context)
-            beneficiary_bank_name = self.split_from_list(sale_order_data_list,'beneficiary_bank_name2')
-            beneficiary_bank_branch = self.split_from_list(sale_order_data_list,'beneficiary_bank_branch2')
-            beneficiary_bank_address = self.split_from_list(sale_order_data_list,'beneficiary_bank_address')
-            swift_code = self.split_from_list(sale_order_data_list,'swift_code')
+            service_obj= self.pool.get('sale.order').browse(cr, uid,proforma_invoice_id.id,context=context)   
+            # sale_order_id = self.pool.get('sale.order').search(cr, uid,[('name','=',proforma_invoice_id),],context=context)
+            # sale_order_data_list = self.pool.get('sale.order').read(cr, uid,sale_order_id,['beneficiary_bank_name2', 'beneficiary_bank_branch','beneficiary_bank_address','swift_code'], context=context)
+            # beneficiary_bank_name = self.split_from_list(sale_order_data_list,'beneficiary_bank_name2')
+            # beneficiary_bank_branch = self.split_from_list(sale_order_data_list,'beneficiary_bank_branch')
+            # beneficiary_bank_address = self.split_from_list(sale_order_data_list,'beneficiary_bank_address')
+            # swift_code = self.split_from_list(sale_order_data_list,'swift_code')
 
-            
-            service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id.id,context=context)
+            beneficiary_bank_name = service_obj.beneficiary_bank_name2 
+            beneficiary_bank_branch = service_obj.beneficiary_bank_branch
+            beneficiary_bank_address = service_obj.beneficiary_bank_address
+            swift_code = service_obj.swift_code
+            # service_obj= self.pool.get('account.invoice').browse(cr, uid,cus_invoice_id.id,context=context)
             currency_symbol= self.pool.get('res.currency').browse(cr, uid,service_obj.currency_id.id,context=context)
-
-
-            lc_info_id = all_data_of_commercial_invoice.lc_num
-            lc_info_pool_ids = self.pool.get('lc_informations.model').browse(cr, uid,lc_info_id.id,context=context)
+            
+            lc_id = service_obj.lc_num_id
+            lc_info_pool_ids = self.pool.get('lc_informations.model').browse(cr, uid,lc_id.id,context=context)
             lc_num = lc_info_pool_ids.name
             lc_date = lc_info_pool_ids.created_date
-            bank_name_id = lc_info_pool_ids.bank_name
-            all_data_obj_of_bank_names = self.pool.get('bank_names.model').browse(cr, uid,bank_name_id.id,context=context)
-            lc_bank_name = all_data_obj_of_bank_names.name
-            lc_bank_branch_id = lc_info_pool_ids.bank_branch
-            all_data_obj_of_bank_branch = self.pool.get('bank_branch.model').browse(cr, uid,lc_bank_branch_id.id,context=context)
-            lc_bank_branch = all_data_obj_of_bank_branch.name
+            lc_bank_name = lc_info_pool_ids.bank_name2
+            lc_bank_branch = lc_info_pool_ids.bank_branch
             lc_bank_address = lc_info_pool_ids.bank_address
 
+            account_invoice_ids = self.pool.get('account.invoice').search(cr, uid,[('pi_no','=',service_obj.name),('process','=','set_for_LC')],context=context)
+            if not account_invoice_ids:
+                # print('Account invoice list is empty.')
+                raise Warning(_('Account invoice list is empty.'))
+            else:
+                invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',account_invoice_ids),],context=context)
 
+                invoice_lines_product_amount = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['price_subtotal','name'], context=context)
 
-            invoice_line_pool_ids = self.pool.get('account.invoice.line').search(cr, uid,[('invoice_id','=',cus_invoice_id.id),],context=context)
+                ordered_products_total_amount = self.products_total_amount(invoice_lines_product_amount)
 
-            invoice_lines_product_amount = self.pool.get('account.invoice.line').read(cr, uid,invoice_line_pool_ids,['price_subtotal'], context=context)
-
-            ordered_products_total_amount = self.products_total_amount(invoice_lines_product_amount)
-
+            
 
             now = datetime.datetime.now()
             uniq_num = 'AAYML-CERT/'+str(now.year)

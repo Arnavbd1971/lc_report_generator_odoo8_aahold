@@ -15,11 +15,11 @@ from . import forwarding_letter
 from . import bill_of_exchange 
 from . import terms_conditions   
 from . import supplier_factory_name_addr 
-from . import customer_factory_name_addr   
-from . import bank_names
-from . import bank_branch 
+# from . import customer_factory_name_addr   
+# from . import bank_names
+# from . import bank_branch 
 from . import bank_names_branch_address  
-from . import beneficiary_full_name 
+# from . import beneficiary_full_name 
 from . import reimbursement  
 from . import method_of_payment  
 from . import product_type     
