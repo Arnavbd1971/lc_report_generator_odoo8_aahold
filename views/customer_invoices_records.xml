@@ -54,8 +54,8 @@
                 <field name="currency_id" position="after">
                     <field name="pi_no" />
                     <field name="do_no" />
-                    <field name="process" on_change="onchange_process(process)" attrs="{'invisible': [('process', '=', ['Done'])]}"/>
-                    <field name="process_status" attrs="{'invisible': [('process', '!=', ['Done'])]}"/>
+                    <field name="process" on_change="onchange_process(process)" attrs="{'invisible': [('process', 'not in', ['set_for_LC','pandding'])]}"/>
+                    <field name="process_status" invisible="1"/>
                 </field>
             </field>
         </record>    

@@ -12,7 +12,7 @@ class CustomerInvoiceModel(models.Model):
     pi_no = fields.Char(string='P/I No')
     do_no = fields.Char(string='DO No')
     process = fields.Selection([('set_for_LC', 'set_for_LC'),('pandding', 'pandding')],'Process', default='pandding')
-    process_status = fields.Char(string='Process', default='pandding',readonly=True)
+    process_status = fields.Char(string='Process', default='pandding')
 
 
     def create(self, cr, uid, vals, context=None):

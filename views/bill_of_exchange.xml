@@ -124,8 +124,8 @@
                                     <p>Authorized Signature</p>
                                     <p style='font-weight:bold;'><field name="company_name" class="oe_inline" nolabel="1"/></p>
                                 </div>
-                                <field name="document_status" class="oe_inline" nolabel="1"/>
-                                <field name="commercial_invoice_name" class="oe_inline" nolabel="1"/>
+                                <field name="document_status" class="oe_inline" nolabel="1" invisible='1'/>
+                                <field name="commercial_invoice_name" class="oe_inline" nolabel="1" invisible='1'/>
                                 
                             </div>
 
